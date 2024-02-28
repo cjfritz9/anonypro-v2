@@ -7,19 +7,19 @@ import LanguagePicker from './LanguagePicker';
 const companyLinks = [
   {
     displayName: 'About Us',
-    href: '/about-us'
+    href: 'about us'
   },
   {
     displayName: 'Support',
-    href: '/support'
+    href: 'support'
   },
   {
     displayName: 'Terms of Service',
-    href: '/terms-of-service'
+    href: 'terms of service'
   },
   {
     displayName: 'Policies',
-    href: '/policies'
+    href: 'policies'
   }
 ];
 
@@ -37,8 +37,8 @@ const resourcesLinks = [
 const Header: React.FC = () => {
   return (
     <div className='w-full flex justify-center pt-5'>
-      <div className='h-[84px] w-full max-w-[1200px] rounded-[90px] flex justify-between bg-base-200 px-8 bg-opacity-25'>
-        <div className='flex gap-4 items-center'>
+      <div className='lg:h-[84px] py-6 w-full gap-4 max-w-[1200px] rounded-btn lg:rounded-[90px] flex-col flex lg:flex-row justify-between bg-base-200 px-8 bg-opacity-25'>
+        <div className='flex gap-4 items-center justify-center'>
           <Image
             src={BRAND.logoSm}
             height={40}
@@ -48,15 +48,17 @@ const Header: React.FC = () => {
           />
           <p className='text-[32px] font-semibold'>anonypro</p>
         </div>
-        <div className='flex gap-4 items-center'>
-          <LinkMenu dropdownName='Company' links={companyLinks} />
-          <LinkMenu dropdownName='Resources' links={resourcesLinks} />
-        </div>
-        <div className='flex gap-4 items-center'>
-          <LanguagePicker />
-          <button className='btn font-normal btn-accent text-white text-[1rem] px-6'>
-            CONTACT US
-          </button>
+        <div className='flex flex-col-reverse lg:flex-row'>
+          <div className='flex gap-4 items-center justify-center'>
+            <LinkMenu dropdownName='Company' links={companyLinks} />
+            <LinkMenu dropdownName='Resources' links={resourcesLinks} />
+          </div>
+          <div className='flex gap-4 items-center justify-center'>
+            <LanguagePicker />
+            <button className='hidden lg:inline-flex btn font-normal btn-accent text-white text-[1rem] px-4'>
+              CONTACT US
+            </button>
+          </div>
         </div>
       </div>
     </div>

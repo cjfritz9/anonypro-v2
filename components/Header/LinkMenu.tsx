@@ -23,11 +23,14 @@ const LinkMenu: React.FC<Props> = ({ dropdownName, links }) => {
       </div>
       <ul
         tabIndex={0}
-        className='dropdown-content z-[1] menu p-2 mt-[14px] shadow bg-base-200 rounded-box rounded-t-none justify-center flex bg-opacity-25'
+        className='dropdown-content z-[1] menu p-2 lg:mt-[14px] shadow bg-[#3E3186] rounded-box rounded-t-none justify-center flex'
       >
         {links.map((link) => (
           <li key={link.displayName}>
-            <Link href={link.href} className='text-center flex justify-center'>
+            <Link
+              href={'/' + link.href.replaceAll(' ', '-')}
+              className='text-center flex justify-center'
+            >
               {link.displayName}
             </Link>
           </li>

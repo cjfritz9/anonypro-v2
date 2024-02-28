@@ -3,7 +3,7 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header/Header';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ["400", "600"] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '600'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,7 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={poppins.className}>
+      <body
+        className={
+          poppins.className + ' ' +
+          'flex min-h-[6000px] flex-col items-center px-4 lg:px-24'
+        }
+      >
         <Header />
         {children}
       </body>

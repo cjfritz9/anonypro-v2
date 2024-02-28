@@ -1,5 +1,5 @@
 const theme = {
-  primary: '#a991f7',
+  primary: '#FFFFFF',
   'primary-content': '#FFFFFF',
   secondary: '#f6d860',
   accent: '#F66672',

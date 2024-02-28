@@ -1,0 +1,17 @@
+{
+  "header": {
+    "company_links": [
+      { "display_name": "Om os", "href": "om os" },
+      { "display_name": "Support", "href": "support" },
+      { "display_name": "Servicevilkår", "href": "servicevilkår" },
+      { "display_name": "Politikker", "href": "politikker" }
+    ],
+    "resources": {
+      "category": "kategori",
+      "links": [
+        { "display_name": "Blog", "href": "blog" },
+        { "display_name": "Historiefremviser", "href": "historiefremviser" }
+      ]
+    }
+  }
+}
