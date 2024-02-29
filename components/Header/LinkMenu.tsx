@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import React, { useState } from 'react';
-import { IoChevronDown } from 'react-icons/io5';
+import Link from "next/link";
+import React, { useState } from "react";
+import { IoChevronDown } from "react-icons/io5";
 
 interface Props {
   dropdownName: string;
@@ -12,24 +12,24 @@ interface Props {
 
 const LinkMenu: React.FC<Props> = ({ dropdownName, links }) => {
   return (
-    <div className='dropdown w-32 text-center'>
+    <div className="dropdown w-32 text-center">
       <div
         tabIndex={0}
-        role='button'
-        className='btn btn-ghost m-1 hover:bg-transparent font-normal px-0'
+        role="button"
+        className="btn btn-ghost m-1 px-0 font-normal hover:bg-transparent"
       >
         {dropdownName}
         <IoChevronDown />
       </div>
       <ul
         tabIndex={0}
-        className='dropdown-content z-[1] menu p-2 lg:mt-[14px] shadow bg-[#3E3186] rounded-box rounded-t-none justify-center flex'
+        className="menu dropdown-content z-[1] flex justify-center rounded-box rounded-t-none bg-[#3E3186] p-2 shadow lg:mt-[14px]"
       >
         {links.map((link) => (
           <li key={link.display_name}>
             <Link
-              href={'/' + link.href.replaceAll(' ', '-')}
-              className='text-center flex justify-center'
+              href={"/" + link.href.replaceAll(" ", "-")}
+              className="flex justify-center text-center"
             >
               {link.display_name}
             </Link>

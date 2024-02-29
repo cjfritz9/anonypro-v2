@@ -1,70 +1,40 @@
-import BRAND from '@/public/brand/static';
-import Image from 'next/image';
-import React from 'react';
-import LinkMenu from './LinkMenu';
-import LanguagePicker from './LanguagePicker';
-
-const companyLinks = [
-  {
-    displayName: 'About Us',
-    href: 'about us'
-  },
-  {
-    displayName: 'Support',
-    href: 'support'
-  },
-  {
-    displayName: 'Terms of Service',
-    href: 'terms of service'
-  },
-  {
-    displayName: 'Policies',
-    href: 'policies'
-  }
-];
-
-const resourcesLinks = [
-  {
-    displayName: 'Blog',
-    href: '/blog'
-  },
-  {
-    displayName: 'Story Viewer',
-    href: '/category/story-viewer'
-  }
-];
+import BRAND from '@/public/brand/static'
+import Image from 'next/image'
+import React from 'react'
+import LinkMenu from './LinkMenu'
+import LanguagePicker from './LanguagePicker'
 
 interface Props {
   headerData: {
     company: {
-      dropdown_name: string;
-      links: { display_name: string; href: string }[];
-    };
+      dropdown_name: string
+      links: { display_name: string; href: string }[]
+    }
     resources: {
-      dropdown_name: string;
-      links: { display_name: string; href: string }[];
-    };
-    contact_button_text: string;
-  };
+      dropdown_name: string
+      links: { display_name: string; href: string }[]
+    }
+    contact_button_text: string
+  }
 }
 
 const Header: React.FC<Props> = ({ headerData }) => {
-  const { company, resources, contact_button_text } = headerData;
+  const { company, resources, contact_button_text } = headerData
   return (
-    <div className='w-full flex justify-center pt-5'>
-      <div className='lg:h-[84px] py-6 w-full gap-4 max-w-[1200px] rounded-btn lg:rounded-[90px] flex-col flex lg:flex-row justify-between bg-base-200 px-8 bg-opacity-25'>
-        <div className='flex gap-4 items-center justify-center'>
+    <div className="flex w-full justify-center pt-5">
+      <div className="flex w-full max-w-[1200px] flex-col justify-between gap-4 rounded-btn bg-base-200 bg-opacity-25 px-8 py-6 lg:h-[84px] lg:flex-row lg:rounded-[90px]">
+        <div className="flex items-center justify-center gap-4">
           <Image
             src={BRAND.logoSm}
             height={40}
             width={40}
-            alt='anonypro logo'
-            className='w-10 h-10'
+            alt="anonypro logo"
+            className="h-10 w-10"
           />
-          <p className='text-[32px] font-semibold'>anonypro</p>
+          <p className="text-[32px] font-semibold">anonypro</p>
         </div>
-        <div className='flex flex-col-reverse lg:flex-row'>
-          <div className='flex gap-4 items-center justify-center'>
+        <div className="flex flex-col-reverse lg:flex-row">
+          <div className="flex items-center justify-center gap-4">
             <LinkMenu
               dropdownName={company.dropdown_name}
               links={company.links}
@@ -74,16 +44,16 @@ const Header: React.FC<Props> = ({ headerData }) => {
               links={resources.links}
             />
           </div>
-          <div className='flex gap-4 items-center justify-center'>
+          <div className="flex items-center justify-center gap-4">
             <LanguagePicker />
-            <button className='hidden lg:inline-flex btn font-normal btn-accent text-white text-[1rem] px-4'>
+            <button className="btn btn-accent hidden px-4 text-[1rem] font-normal text-white lg:inline-flex">
               {contact_button_text}
             </button>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
