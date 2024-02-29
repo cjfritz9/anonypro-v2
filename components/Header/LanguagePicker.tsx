@@ -88,7 +88,7 @@ const LanguagePicker: React.FC = () => {
             <li
               key={languageCode}
               onClick={() => handleClick(languageCode)}
-              className='cursor-pointer py-2'
+              className='cursor-pointer p-2'
             >
               {displayName}
             </li>

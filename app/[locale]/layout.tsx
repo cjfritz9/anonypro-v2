@@ -5,6 +5,7 @@ import Header from '@/components/Header/Header';
 import initTranslations from '../i18n';
 import TranslationsProvider from '@/components/Context/TranslationsProvider';
 import i18nConfig from '@/i18n.config';
+import InstagramProvider from '@/components/Context/InstagramProvider';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '600'] });
 
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export function generateStaticParams() {
-  return i18nConfig.locales.map(locale => ({ locale }));
+  return i18nConfig.locales.map((locale) => ({ locale }));
 }
 
 const i18nNamespaces = ['common', 'home'];
@@ -47,7 +48,7 @@ export default async function RootLayout({
           }
         >
           <Header headerData={t('header', { returnObjects: true })} />
-          {children}
+          <InstagramProvider>{children}</InstagramProvider>
         </body>
       </html>
     </TranslationsProvider>
