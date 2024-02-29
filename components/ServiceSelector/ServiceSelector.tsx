@@ -7,26 +7,17 @@ import postsIcon from '@/public/assets/posts-icon.svg';
 import highlightsIcon from '@/public/assets/highlights-icon.svg';
 import ppIcon from '@/public/assets/pp-icon.svg';
 
-const buttonsData = [
-  {
-    displayName: 'Stories',
-    icon: storiesIcon
-  },
-  {
-    displayName: 'Posts',
-    icon: postsIcon
-  },
-  {
-    displayName: 'Highlights',
-    icon: highlightsIcon
-  },
-  {
-    displayName: 'Profile',
-    icon: ppIcon
-  }
-];
+const buttonIcons = [storiesIcon, postsIcon, highlightsIcon, ppIcon];
 
-const ServiceSelector: React.FC = () => {
+interface Props {
+  displayNames: string[];
+}
+
+const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
+  const buttonsData = buttonIcons.map((icon, i) => ({
+    displayName: displayNames[i],
+    icon
+  }));
   return (
     <div className='join w-full join-vertical max-w-[668px] lg:join-horizontal'>
       {buttonsData.map((data) => (

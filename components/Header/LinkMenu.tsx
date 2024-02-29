@@ -5,7 +5,7 @@ import { IoChevronDown } from 'react-icons/io5';
 interface Props {
   dropdownName: string;
   links: {
-    displayName: string;
+    display_name: string;
     href: string;
   }[];
 }
@@ -26,12 +26,12 @@ const LinkMenu: React.FC<Props> = ({ dropdownName, links }) => {
         className='dropdown-content z-[1] menu p-2 lg:mt-[14px] shadow bg-[#3E3186] rounded-box rounded-t-none justify-center flex'
       >
         {links.map((link) => (
-          <li key={link.displayName}>
+          <li key={link.display_name}>
             <Link
               href={'/' + link.href.replaceAll(' ', '-')}
               className='text-center flex justify-center'
             >
-              {link.displayName}
+              {link.display_name}
             </Link>
           </li>
         ))}

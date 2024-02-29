@@ -1,17 +1,1 @@
-{
-  "header": {
-    "company_links": [
-      { "display_name": "Om os", "href": "om os" },
-      { "display_name": "Support", "href": "support" },
-      { "display_name": "Servicevilkår", "href": "servicevilkår" },
-      { "display_name": "Politikker", "href": "politikker" }
-    ],
-    "resources": {
-      "category": "kategori",
-      "links": [
-        { "display_name": "Blog", "href": "blog" },
-        { "display_name": "Historiefremviser", "href": "historiefremviser" }
-      ]
-    }
-  }
-}
+{"header":{"company":{"dropdown_name":"Selskab","links":[{"display_name":"Om os","href":"om os"},{"display_name":"Support","href":"support"},{"display_name":"Servicevilkår","href":"servicevilkår"},{"display_name":"Politikker","href":"politikker"}]},"contact_button_text":"KONTAKT OS","resources":{"dropdown_name":"Ressourcer","links":[{"display_name":"Blog","href":"blog"},{"display_name":"Historiefremviser","href":"kategori/historiefremviser"}]}}}

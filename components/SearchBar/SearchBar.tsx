@@ -1,12 +1,16 @@
 import React from 'react';
 
-const SearchBar: React.FC = () => {
+interface Props {
+  placeholderText: string;
+}
+
+const SearchBar: React.FC<Props> = ({ placeholderText }) => {
   return (
-    <label className='input input-bordered flex items-center gap-2 h-[68px]'>
+    <label className='input input-bordered border-white focus-within:outline-accent flex items-center gap-2 h-[68px]'>
       <input
         type='text'
         className='grow placeholder-slate-300'
-        placeholder='Instagram Username'
+        placeholder={placeholderText}
       />
       <svg
         xmlns='http://www.w3.org/2000/svg'
