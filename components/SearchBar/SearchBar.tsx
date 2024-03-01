@@ -1,22 +1,57 @@
-import React from 'react'
+'use client';
+
+import React, { useContext, useState } from 'react';
+import { InstagramContext } from '../Context/InstagramProvider';
 
 interface Props {
-  placeholderText: string
+  placeholderText: string;
 }
 
 const SearchBar: React.FC<Props> = ({ placeholderText }) => {
+  const [username, setUsername] = useState('');
+
+  const { setIgProfile } = useContext(InstagramContext);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = async () => {
+    const response = await fetch('/api/profile', {
+      method: 'POST',
+      body: JSON.stringify({
+        username: username,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result && result.username) {
+      setIgProfile(result)
+    }
+  };
+
   return (
     <label className="input input-bordered flex h-[68px] items-center gap-2 border-white focus-within:outline-accent">
       <input
         type="text"
         className="grow placeholder-slate-300"
         placeholder={placeholderText}
+        onKeyDown={(e) => handleKeyPress(e)}
+        onChange={(e) => handleChange(e)}
       />
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 16 16"
         fill="currentColor"
         className="h-8 w-8 cursor-pointer transition duration-200 ease-in-out hover:scale-110"
+        onClick={handleSubmit}
       >
         <path
           fillRule="evenodd"
@@ -25,7 +60,7 @@ const SearchBar: React.FC<Props> = ({ placeholderText }) => {
         />
       </svg>
     </label>
-  )
-}
+  );
+};
 
-export default SearchBar
+export default SearchBar;

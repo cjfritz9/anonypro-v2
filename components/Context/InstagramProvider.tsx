@@ -13,7 +13,7 @@ interface Context {
     followingCount: number;
     biography: string;
     externalLink: string;
-  };
+  } | null;
   setIgProfile: React.Dispatch<React.SetStateAction<Context['igProfile']>>;
   stories: {
     type: 'image' | 'video';
@@ -27,17 +27,7 @@ interface Context {
 }
 
 const baseContext: Context = {
-  igProfile: {
-    displayName: '',
-    username: '',
-    profilePictureUrl: '',
-    isVerified: false,
-    postCount: 0,
-    followerCount: 0,
-    followingCount: 0,
-    biography: '',
-    externalLink: ''
-  },
+  igProfile: null,
   setIgProfile: (profile) => undefined,
   stories: [{ type: 'image', mediaUrl: '' }],
   setStories: (stories) => undefined,

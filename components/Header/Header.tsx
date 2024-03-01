@@ -1,28 +1,28 @@
-import BRAND from '@/public/brand/static'
-import Image from 'next/image'
-import React from 'react'
-import LinkMenu from './LinkMenu'
-import LanguagePicker from './LanguagePicker'
+import BRAND from '@/public/brand/static';
+import Image from 'next/image';
+import React from 'react';
+import LinkMenu from './LinkMenu';
+import LanguagePicker from './LanguagePicker';
 
 interface Props {
   headerData: {
     company: {
-      dropdown_name: string
-      links: { display_name: string; href: string }[]
-    }
+      dropdown_name: string;
+      links: { display_name: string; href: string }[];
+    };
     resources: {
-      dropdown_name: string
-      links: { display_name: string; href: string }[]
-    }
-    contact_button_text: string
-  }
+      dropdown_name: string;
+      links: { display_name: string; href: string }[];
+    };
+    contact_button_text: string;
+  };
 }
 
 const Header: React.FC<Props> = ({ headerData }) => {
-  const { company, resources, contact_button_text } = headerData
+  const { company, resources, contact_button_text } = headerData;
   return (
     <div className="flex w-full justify-center pt-5">
-      <div className="flex w-full max-w-[1200px] flex-col justify-between gap-4 rounded-btn bg-base-200 bg-opacity-25 px-8 py-6 lg:h-[84px] lg:flex-row lg:rounded-[90px]">
+      <div className="flex w-full max-w-[1280px] flex-col justify-between gap-4 rounded-btn bg-base-200 bg-opacity-25 px-8 py-6 lg:h-[84px] lg:flex-row lg:rounded-[90px]">
         <div className="flex items-center justify-center gap-4">
           <Image
             src={BRAND.logoSm}
@@ -53,7 +53,7 @@ const Header: React.FC<Props> = ({ headerData }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

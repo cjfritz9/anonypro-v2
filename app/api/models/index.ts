@@ -65,7 +65,7 @@ export class IGClient {
     return {
       displayName: data.full_name,
       username: data.username,
-      profilePictureUrl: data.profile_pic_url,
+      profilePictureUrl: data.profile_pic_url_hd,
       isVerified: data.is_verified,
       postCount: data.post_count,
       followerCount: data.followers,
