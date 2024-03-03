@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Profile from '../Profile/Profile';
 import { InstagramContext } from '../Context/InstagramProvider';
 import ContentDisplay from './ContentDisplay';
 import ServiceSelector from './ServiceSelector';
-import { fetchProfile, fetchStories } from '@/utils/requests';
-import { postcss } from 'tailwindcss';
+import { fetchPosts, fetchProfile, fetchStories } from '@/utils/requests';
 
 interface Props {
   username: string;
@@ -20,6 +19,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
     setPosts,
     setHighlights,
     setReels,
+    igProfile,
     stories,
     posts,
     highlights,
@@ -28,24 +28,28 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
   } = useContext(InstagramContext);
 
   useEffect(() => {
-    (async () => {
-      const profile = await fetchProfile(username);
-      setIgProfile(profile);
-    })();
-  }, [username, setIgProfile]);
-
-  useEffect(() => {
+    console.log('use effect');
     (async () => {
       let contentEndpoint = '/api/stories';
-      let setFunction = setStories;
+      let setFunction: any = setStories;
+      let fetchFunction: any = fetchStories.bind(this, username);
+
+      if (!igProfile) {
+        const profile = await fetchProfile(username);
+
+        setIgProfile(profile);
+
+        return;
+      }
 
       if (mode === 0 && stories.length > 0) return;
 
       if (mode === 1) {
-        if (posts.length > 0) return;
+        if (posts) return;
 
         contentEndpoint = '/api/posts';
         setFunction = setPosts;
+        fetchFunction = fetchPosts.bind(this, igProfile.id);
       }
 
       if (mode === 2) {
@@ -61,19 +65,23 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
         setFunction = setReels;
       }
 
-      const contentRes = await fetchStories(username);
+      const contentRes = await fetchFunction();
 
-      if (contentRes) {
+      console.log(contentRes)
+
+      if (contentRes && !contentRes.error) {
         setFunction(contentRes);
       }
     })();
   }, [
     username,
+    igProfile,
     mode,
     stories,
     posts,
     highlights,
     reels,
+    setIgProfile,
     setHighlights,
     setStories,
     setPosts,

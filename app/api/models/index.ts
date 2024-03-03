@@ -1,7 +1,13 @@
 import config from '../config';
 
 // INTERFACES
-interface IGProfileResponse {
+interface IGAPIResponse {
+  data: object;
+  status: 'ok' | 'error';
+  message: null | string;
+}
+
+interface IGProfileResponse extends IGAPIResponse {
   data: {
     id: string;
     username: string;
@@ -29,11 +35,9 @@ interface IGProfileResponse {
     post_count: number;
     eimu_id: string;
   };
-  status: string;
-  message: string | null;
 }
 
-interface IGStoryResponse {
+interface IGStoryResponse extends IGAPIResponse {
   data: {
     stories: {
       image_versions2: {
@@ -55,6 +59,47 @@ interface IGStoryResponse {
       }[];
       has_audio?: boolean;
     }[];
+  };
+}
+
+interface IGPostsResponse extends IGAPIResponse {
+  data: {
+    num_results: number;
+    more_available: boolean;
+    items: {
+      product_type: 'carousel_container' | 'clips' | 'feed';
+      code: string;
+      caption: {
+        text: string;
+        media_id: string;
+      };
+      image_versions2: {
+        candidates: {
+          url: string;
+          height: number;
+          width: number;
+        }[];
+      };
+      carousel_media_count?: number;
+      carousel_media?: {
+        image_versions2: {
+          candidates: {
+            height: number;
+            width: number;
+            url: string;
+          }[];
+        };
+      }[];
+      video_versions?: {
+        height: number;
+        width: number;
+        url: string;
+      }[];
+    }[];
+    next_max_id: string;
+    user: {};
+    auto_load_more_enabled: boolean;
+    status: string;
   };
 }
 
@@ -88,6 +133,7 @@ export class IGClient {
   private formatProfile = (rawProfile: IGProfileResponse) => {
     const { data } = rawProfile;
     return {
+      id: data.id,
       displayName: data.full_name,
       username: data.username,
       profilePictureUrl: data.profile_pic_url_hd,
@@ -110,6 +156,43 @@ export class IGClient {
     }));
   };
 
+  private formatPosts = (rawPosts: IGPostsResponse) => {
+    const { data } = rawPosts;
+
+    return {
+      more_available: data.more_available,
+      num_results: data.num_results,
+      next_max_id: data.next_max_id,
+      items: data.items.map((post) => ({
+        id: post.caption.media_id,
+        type:
+          post.product_type === 'clips'
+            ? 'video'
+            : post.product_type === 'carousel_container'
+              ? 'album'
+              : 'image',
+        media:
+          post.product_type === 'clips'
+            ? post.video_versions!.map((video) => ({
+                height: video.height,
+                width: video.width,
+                url: video.url,
+              }))
+            : post.product_type === 'carousel_container' ? post.carousel_media!.map((media) => ({
+              height: media.image_versions2.candidates[0].height,
+              width: media.image_versions2.candidates[0].width,
+              url: media.image_versions2.candidates[0].url,
+            })) : [{
+              height: post.image_versions2.candidates[0].height,
+              width: post.image_versions2.candidates[0].width,
+              url: post.image_versions2.candidates[0].url,
+              }],
+        caption: post.caption.text,
+        shortcode: post.code,
+      })),
+    };
+  };
+
   // API FETCHERS
   public getProfile = async (username: string) => {
     try {
@@ -119,7 +202,7 @@ export class IGClient {
           headers: this.headers,
         }
       );
-      const result = await response.json();
+      const result: IGProfileResponse = await response.json();
 
       if (result && result.message && result.message.includes('rate limit')) {
         return { error: 'Rate Limit Exceeded' };
@@ -143,7 +226,7 @@ export class IGClient {
         }
       );
 
-      const result = await response.json();
+      const result: IGStoryResponse = await response.json();
 
       if (result && result.message && result.message.includes('rate limit')) {
         return { error: 'Rate Limit Exceeded' };
@@ -151,6 +234,32 @@ export class IGClient {
 
       if (result && result.data) {
         return this.formatStories(result);
+      }
+    } catch (error) {
+      console.error({ error });
+      return error;
+    }
+  };
+
+  public getPosts = async (id: string) => {
+    try {
+      const response = await fetch(`${this.baseUrl}/webuser_posts_v2/${id}?count=8&nocors=true`, {
+        headers: this.headers,
+      });
+
+      const result: IGPostsResponse = await response.json();
+
+      if (result && result.message) {
+        if (result.message.includes('rate limit')) {
+          return { error: 'Rate Limit Exceeded' };
+        } else {
+          console.log(result.message, id)
+          return { error: 'Check logs' };
+        }
+      }
+
+      if (result && result.data) {
+        return this.formatPosts(result);
       }
     } catch (error) {
       console.error({ error });

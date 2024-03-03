@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 interface Context {
   igProfile: {
+    id: string;
     displayName: string;
     username: string;
     profilePictureUrl: string;
@@ -20,12 +21,36 @@ interface Context {
     mediaUrl: string;
   }[];
   setStories: React.Dispatch<React.SetStateAction<Context['stories']>>;
-  posts: { type: 'image' | 'video'; mediaUrl: string }[];
+  posts: {
+    more_available: boolean;
+    num_results: number;
+    next_max_id: string;
+    items: {
+      id: string;
+      shortcode: string;
+      type: 'image' | 'video' | 'album';
+      media: {
+        height: number;
+        width: number;
+        url: string;
+      }[]
+      caption: string;
+    }[];
+  } | null
   setPosts: React.Dispatch<React.SetStateAction<Context['posts']>>;
   highlights: { type: 'image' | 'video'; mediaUrl: string }[];
   setHighlights: React.Dispatch<React.SetStateAction<Context['highlights']>>;
   reels: { type: 'image' | 'video'; mediaUrl: string }[];
   setReels: React.Dispatch<React.SetStateAction<Context['reels']>>;
+  /**
+   * 0: Stories
+   *
+   * 1: Posts
+   *
+   * 2: Highlights
+   *
+   * 3: Reels
+   */
   mode: number;
   setMode: React.Dispatch<React.SetStateAction<Context['mode']>>;
 }
@@ -35,7 +60,7 @@ const baseContext: Context = {
   setIgProfile: (profile) => undefined,
   stories: [],
   setStories: (stories) => undefined,
-  posts: [],
+  posts: null,
   setPosts: (posts) => undefined,
   highlights: [],
   setHighlights: (highlights) => undefined,

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import storiesIcon from '@/public/assets/stories-icon.svg';
 import postsIcon from '@/public/assets/posts-icon.svg';
 import highlightsIcon from '@/public/assets/highlights-icon.svg';
@@ -20,6 +20,7 @@ const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
     displayName: displayNames[i],
     icon,
   }));
+
   return (
     <div className="join join-vertical w-full max-w-[668px] lg:join-horizontal">
       {buttonsData.map((data, i) => (

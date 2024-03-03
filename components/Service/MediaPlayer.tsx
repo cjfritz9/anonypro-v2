@@ -48,23 +48,6 @@ const MediaPlayer: React.FC<Props> = ({ onShowMediaPlayer, selectedIndex }) => {
               }
         )
       );
-    } else if (mode === 1) {
-      setSlides(
-        posts.map((story, i) =>
-          story.type === 'image'
-            ? {
-                type: story.type,
-
-                src: story.mediaUrl,
-              }
-            : {
-                type: story.type,
-
-                autoPlay: true,
-                sources: [{ src: story.mediaUrl, type: 'video/mp4' }],
-              }
-        )
-      );
     } else if (mode === 2) {
       setSlides(
         highlights.map((story, i) =>
