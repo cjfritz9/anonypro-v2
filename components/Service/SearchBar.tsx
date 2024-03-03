@@ -2,6 +2,8 @@
 
 import React, { useContext, useState } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
+import { fetchProfile, fetchStories } from '@/utils/requests';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   placeholderText: string;
@@ -9,8 +11,10 @@ interface Props {
 
 const SearchBar: React.FC<Props> = ({ placeholderText }) => {
   const [username, setUsername] = useState('');
+  const router = useRouter()
 
-  const { setIgProfile } = useContext(InstagramContext);
+  const { setIgProfile, mode, setStories, setPosts, setHighlights, setReels } =
+    useContext(InstagramContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -23,18 +27,7 @@ const SearchBar: React.FC<Props> = ({ placeholderText }) => {
   };
 
   const handleSubmit = async () => {
-    const response = await fetch('/api/profile', {
-      method: 'POST',
-      body: JSON.stringify({
-        username: username,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (result && result.username) {
-      setIgProfile(result)
-    }
+    router.push(`/user-profile/${username}`)
   };
 
   return (

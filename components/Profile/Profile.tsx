@@ -12,7 +12,9 @@ const Profile: React.FC = () => {
   const formatNumber = (baseNumber: number) => {
     const stringNum = baseNumber.toString();
 
-    if (stringNum.length < 7) {
+    if (stringNum.length < 4) {
+      return baseNumber.toLocaleString();
+    } else if (stringNum.length < 7) {
       return stringNum.slice(0, stringNum.length - 3) + 'k';
     } else if (stringNum.length < 10) {
       return (
@@ -41,10 +43,11 @@ const Profile: React.FC = () => {
   if (!igProfile) return null;
 
   return (
-    <div className="flex !w-full max-w-[720px] items-center justify-between">
+    <div className="flex !w-full max-w-[720px] items-center justify-between gap-10">
       <div className="h-[246px] w-[246px]">
         <figure className="flex h-[246px] w-[246px] items-center justify-center rounded-full bg-gradient-to-b from-[#E09B3D] via-[#C21975] to-[#7024C4]">
           <Image
+            priority
             src={igProfile.profilePictureUrl}
             alt={`${igProfile.username}'s Instagram picture`}
             height={360}
@@ -53,7 +56,7 @@ const Profile: React.FC = () => {
           />
         </figure>
       </div>
-      <div className="w-full max-w-[360px]">
+      <div className="w-fit min-w-[400px]">
         <p className="text-2xl font-[500]">{igProfile.displayName}</p>
         <div className="mt-2 flex items-center gap-2">
           <p>@{igProfile.username}</p>
@@ -84,8 +87,14 @@ const Profile: React.FC = () => {
         </div>
         {igProfile.externalLink && (
           <div className="mt-4">
-            <Link href={igProfile.externalLink} target='_blank' className="hover:underline">
-              {igProfile.externalLink.replace('https://', '')}
+            <Link
+              href={igProfile.externalLink}
+              target="_blank"
+              className="hover:underline"
+            >
+              {igProfile.externalLink
+                .replace('https://', '')
+                .replace('http://', '')}
             </Link>
           </div>
         )}

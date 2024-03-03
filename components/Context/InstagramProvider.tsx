@@ -24,17 +24,25 @@ interface Context {
   setPosts: React.Dispatch<React.SetStateAction<Context['posts']>>;
   highlights: { type: 'image' | 'video'; mediaUrl: string }[];
   setHighlights: React.Dispatch<React.SetStateAction<Context['highlights']>>;
+  reels: { type: 'image' | 'video'; mediaUrl: string }[];
+  setReels: React.Dispatch<React.SetStateAction<Context['reels']>>;
+  mode: number;
+  setMode: React.Dispatch<React.SetStateAction<Context['mode']>>;
 }
 
 const baseContext: Context = {
   igProfile: null,
   setIgProfile: (profile) => undefined,
-  stories: [{ type: 'image', mediaUrl: '' }],
+  stories: [],
   setStories: (stories) => undefined,
-  posts: [{ type: 'image', mediaUrl: '' }],
+  posts: [],
   setPosts: (posts) => undefined,
-  highlights: [{ type: 'image', mediaUrl: '' }],
-  setHighlights: (highlights) => undefined
+  highlights: [],
+  setHighlights: (highlights) => undefined,
+  reels: [],
+  setReels: (reels) => undefined,
+  mode: 0,
+  setMode: (mode) => undefined,
 };
 
 export const InstagramContext = React.createContext<Context>(baseContext);
@@ -44,6 +52,8 @@ const InstagramProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [stories, setStories] = useState(baseContext.stories);
   const [posts, setPosts] = useState(baseContext.posts);
   const [highlights, setHighlights] = useState(baseContext.highlights);
+  const [reels, setReels] = useState(baseContext.reels);
+  const [mode, setMode] = useState(baseContext.mode);
 
   return (
     <InstagramContext.Provider
@@ -55,7 +65,11 @@ const InstagramProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         posts,
         setPosts,
         highlights,
-        setHighlights
+        setHighlights,
+        reels,
+        setReels,
+        mode,
+        setMode,
       }}
     >
       {children}

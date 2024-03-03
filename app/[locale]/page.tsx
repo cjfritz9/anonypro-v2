@@ -1,5 +1,5 @@
-import SearchBar from '@/components/SearchBar/SearchBar';
-import ServiceSelector from '@/components/ServiceSelector/ServiceSelector';
+import SearchBar from '@/components/Service/SearchBar';
+import ServiceSelector from '@/components/Service/ServiceSelector';
 import initTranslations from '../i18n';
 import Service from '@/components/Service/Service';
 
@@ -36,9 +36,6 @@ export default async function Home({ params: { locale } }: Metadata) {
             })}
           />
         </div>
-      </section>
-      <section className="flex w-full max-w-[720px] flex-col items-center">
-        <Service />
       </section>
     </main>
   );

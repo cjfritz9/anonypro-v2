@@ -1,6 +1,6 @@
 import config from '../config';
 
-// INTERFACES 
+// INTERFACES
 interface IGProfileResponse {
   data: {
     id: string;
@@ -33,10 +33,35 @@ interface IGProfileResponse {
   message: string | null;
 }
 
+interface IGStoryResponse {
+  data: {
+    stories: {
+      image_versions2: {
+        candidates: {
+          url: string;
+          height: number;
+          width: number;
+        }[];
+      };
+      original_height: number;
+      original_width: number;
+      pk: string;
+      taken_at: number;
+      video_versions?: {
+        url: string;
+        height: number;
+        width: number;
+        type: number;
+      }[];
+      has_audio?: boolean;
+    }[];
+  };
+}
+
 /**
  * API Client used for automatically formatting requests
  * for Rapid API.
- * 
+ *
  * Includes formatting utilities and error handling.
  */
 export class IGClient {
@@ -48,7 +73,7 @@ export class IGClient {
   };
 
   /**
-   * 
+   *
    * @param {string} apiKey - {@link https://rapidapi.com/mrngstar/api/instagram-bulk-scraper-latest | Instagram Bulk Scraper Latest} API Key
    */
   constructor(apiKey: string) {
@@ -75,21 +100,61 @@ export class IGClient {
     };
   };
 
+  private formatStories = (rawStories: IGStoryResponse) => {
+    const { data } = rawStories;
+    return data.stories.map((story) => ({
+      type: story.video_versions ? 'video' : 'image',
+      mediaUrl: story.video_versions
+        ? story.video_versions[0].url
+        : story.image_versions2.candidates[0].url,
+    }));
+  };
+
   // API FETCHERS
   public getProfile = async (username: string) => {
-    console.log(this.baseUrl, username, this.headers);
-    const response = await fetch(`${this.baseUrl}/webget_user_id/${username}`, {
-      headers: this.headers,
-    });
     try {
+      const response = await fetch(
+        `${this.baseUrl}/webget_user_id/${username}`,
+        {
+          headers: this.headers,
+        }
+      );
       const result = await response.json();
+
+      if (result && result.message && result.message.includes('rate limit')) {
+        return { error: 'Rate Limit Exceeded' };
+      }
 
       if (result && result.data) {
         return this.formatProfile(result);
       }
     } catch (error) {
       console.error({ error });
-      throw new Error('Fetch Profile from API Error - check logs');
+      return error;
+    }
+  };
+
+  public getStories = async (username: string) => {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/download_story/${username}`,
+        {
+          headers: this.headers,
+        }
+      );
+
+      const result = await response.json();
+
+      if (result && result.message && result.message.includes('rate limit')) {
+        return { error: 'Rate Limit Exceeded' };
+      }
+
+      if (result && result.data) {
+        return this.formatStories(result);
+      }
+    } catch (error) {
+      console.error({ error });
+      return error;
     }
   };
 }

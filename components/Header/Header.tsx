@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import LinkMenu from './LinkMenu';
 import LanguagePicker from './LanguagePicker';
+import Link from 'next/link';
 
 interface Props {
   headerData: {
@@ -23,7 +24,7 @@ const Header: React.FC<Props> = ({ headerData }) => {
   return (
     <div className="flex w-full justify-center pt-5">
       <div className="flex w-full max-w-[1280px] flex-col justify-between gap-4 rounded-btn bg-base-200 bg-opacity-25 px-8 py-6 lg:h-[84px] lg:flex-row lg:rounded-[90px]">
-        <div className="flex items-center justify-center gap-4">
+        <Link href="/" className="flex items-center justify-center gap-4">
           <Image
             src={BRAND.logoSm}
             height={40}
@@ -32,7 +33,7 @@ const Header: React.FC<Props> = ({ headerData }) => {
             className="h-10 w-10"
           />
           <p className="text-[32px] font-semibold">anonypro</p>
-        </div>
+        </Link>
         <div className="flex flex-col-reverse lg:flex-row">
           <div className="flex items-center justify-center gap-4">
             <LinkMenu
