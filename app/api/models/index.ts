@@ -67,6 +67,9 @@ interface IGPostsResponse extends IGAPIResponse {
     num_results: number;
     more_available: boolean;
     items: {
+      taken_at: number;
+      like_count: number;
+      comment_count: number;
       product_type: 'carousel_container' | 'clips' | 'feed';
       code: string;
       caption: {
@@ -89,6 +92,11 @@ interface IGPostsResponse extends IGAPIResponse {
             url: string;
           }[];
         };
+        video_versions?: {
+          height: number;
+          width: number;
+          url: string;
+        }[];
       }[];
       video_versions?: {
         height: number;
@@ -150,6 +158,7 @@ export class IGClient {
     const { data } = rawStories;
     return data.stories.map((story) => ({
       type: story.video_versions ? 'video' : 'image',
+      thumbnailUrl: story.image_versions2.candidates[0].url,
       mediaUrl: story.video_versions
         ? story.video_versions[0].url
         : story.image_versions2.candidates[0].url,
@@ -165,28 +174,50 @@ export class IGClient {
       next_max_id: data.next_max_id,
       items: data.items.map((post) => ({
         id: post.caption.media_id,
+        created_at: post.taken_at,
+        like_count: post.like_count,
+        comment_count: post.comment_count,
         type:
           post.product_type === 'clips'
             ? 'video'
             : post.product_type === 'carousel_container'
               ? 'album'
               : 'image',
+        thumbnail: post.image_versions2.candidates[0].url,
         media:
           post.product_type === 'clips'
-            ? post.video_versions!.map((video) => ({
-                height: video.height,
-                width: video.width,
-                url: video.url,
-              }))
-            : post.product_type === 'carousel_container' ? post.carousel_media!.map((media) => ({
-              height: media.image_versions2.candidates[0].height,
-              width: media.image_versions2.candidates[0].width,
-              url: media.image_versions2.candidates[0].url,
-            })) : [{
-              height: post.image_versions2.candidates[0].height,
-              width: post.image_versions2.candidates[0].width,
-              url: post.image_versions2.candidates[0].url,
-              }],
+            ? [
+                {
+                  type: 'video',
+                  height: post.video_versions![0].height,
+                  width: post.video_versions![0].width,
+                  url: post.video_versions![0].url,
+                },
+              ]
+            : post.product_type === 'carousel_container'
+              ? post.carousel_media!.map((media) =>
+                  media.video_versions
+                    ? {
+                        type: 'video',
+                        height: media.video_versions[0].height,
+                        width: media.video_versions[0].width,
+                        url: media.video_versions[0].url,
+                      }
+                    : {
+                        type: 'image',
+                        height: media.image_versions2.candidates[0].height,
+                        width: media.image_versions2.candidates[0].width,
+                        url: media.image_versions2.candidates[0].url,
+                      }
+                )
+              : [
+                  {
+                    type: 'image',
+                    height: post.image_versions2.candidates[0].height,
+                    width: post.image_versions2.candidates[0].width,
+                    url: post.image_versions2.candidates[0].url,
+                  },
+                ],
         caption: post.caption.text,
         shortcode: post.code,
       })),
@@ -243,9 +274,12 @@ export class IGClient {
 
   public getPosts = async (id: string) => {
     try {
-      const response = await fetch(`${this.baseUrl}/webuser_posts_v2/${id}?count=8&nocors=true`, {
-        headers: this.headers,
-      });
+      const response = await fetch(
+        `${this.baseUrl}/webuser_posts_v2/${id}?count=9&nocors=true`,
+        {
+          headers: this.headers,
+        }
+      );
 
       const result: IGPostsResponse = await response.json();
 
@@ -253,7 +287,7 @@ export class IGClient {
         if (result.message.includes('rate limit')) {
           return { error: 'Rate Limit Exceeded' };
         } else {
-          console.log(result.message, id)
+          console.log(result.message, id);
           return { error: 'Check logs' };
         }
       }

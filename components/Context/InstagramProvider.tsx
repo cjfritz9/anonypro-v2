@@ -18,6 +18,7 @@ interface Context {
   setIgProfile: React.Dispatch<React.SetStateAction<Context['igProfile']>>;
   stories: {
     type: 'image' | 'video';
+    thumbnailUrl: string;
     mediaUrl: string;
   }[];
   setStories: React.Dispatch<React.SetStateAction<Context['stories']>>;
@@ -28,15 +29,20 @@ interface Context {
     items: {
       id: string;
       shortcode: string;
+      thumbnail: string;
+      created_at: number;
+      like_count: number;
+      comment_count: number;
       type: 'image' | 'video' | 'album';
       media: {
+        type: 'image' | 'video';
         height: number;
         width: number;
         url: string;
-      }[]
+      }[];
       caption: string;
     }[];
-  } | null
+  } | null;
   setPosts: React.Dispatch<React.SetStateAction<Context['posts']>>;
   highlights: { type: 'image' | 'video'; mediaUrl: string }[];
   setHighlights: React.Dispatch<React.SetStateAction<Context['highlights']>>;

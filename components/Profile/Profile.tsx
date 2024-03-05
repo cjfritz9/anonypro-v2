@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import React, { useContext } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
-import { MdVerified } from 'react-icons/md';
 import Link from 'next/link';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
 

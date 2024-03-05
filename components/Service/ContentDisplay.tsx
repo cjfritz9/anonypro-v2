@@ -4,50 +4,39 @@ import React, { useContext, useState } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
 import Image from 'next/image';
 import MediaPlayer from './MediaPlayer';
-import { FaClone, FaVideo } from 'react-icons/fa6';
+import { FaClone, FaPlay, FaVideo } from 'react-icons/fa6';
 import { TbBoxMultiple } from 'react-icons/tb';
 import { LuGalleryHorizontalEnd } from 'react-icons/lu';
 import { BiSolidCarousel } from 'react-icons/bi';
-
-interface SharedProps {
-  onHandleSelect: (index: number) => void;
-}
 
 interface NoContentProps {
   message: string;
 }
 
-const ContentDisplay: React.FC = () => {
-  const [showMediaPlayer, setShowMediaPlayer] = useState(false);
-  const [selection, setSelection] = useState(0);
+interface LightboxSlide {
+  type: 'image' | 'video';
+  height?: number;
+  width?: number;
+  src?: string;
+  autoPlay?: boolean;
+  sources?: {
+    src: string;
+    type: 'video/mp4';
+  }[];
+  caption?: string;
+}
 
+const ContentDisplay: React.FC = () => {
   const { igProfile, stories, posts, highlights, reels, mode } =
     useContext(InstagramContext);
 
-  const onShowMediaPlayer = (bool: boolean) => {
-    setShowMediaPlayer(bool);
-  };
-
-  const onHandleSelect = (index: number) => {
-    setSelection(index);
-    setShowMediaPlayer(true);
-  };
-
   if (!igProfile) return null;
-
-  console.log(igProfile);
 
   return (
     <div>
-      {showMediaPlayer && (
-        <MediaPlayer
-          onShowMediaPlayer={onShowMediaPlayer}
-          selectedIndex={selection}
-        />
-      )}
       {mode === 0 ? (
         stories && stories.length > 0 ? (
-          <Stories onHandleSelect={onHandleSelect} />
+          <Stories />
         ) : (
           <NoContent
             message={`${igProfile.username} has no stories right now`}
@@ -63,14 +52,14 @@ const ContentDisplay: React.FC = () => {
       ) : null}
       {mode === 2 ? (
         highlights && highlights.length > 0 ? (
-          <Highlights onHandleSelect={onHandleSelect} />
+          <Highlights />
         ) : (
           <NoContent message={`${igProfile.username} has no highlights`} />
         )
       ) : null}
       {mode === 3 ? (
         reels && reels.length > 0 ? (
-          <Reels onHandleSelect={onHandleSelect} />
+          <Reels />
         ) : (
           <NoContent message={`${igProfile.username} has no reels`} />
         )
@@ -79,88 +68,52 @@ const ContentDisplay: React.FC = () => {
   );
 };
 
-const Stories: React.FC<SharedProps> = ({ onHandleSelect }) => {
+const Stories: React.FC = () => {
+  const [showMediaPlayer, setShowMediaPlayer] = useState(false);
+  const [selection, setSelection] = useState(0);
   const { igProfile, stories } = useContext(InstagramContext);
 
+  const onHandleSelect = (idx: number) => {
+    setSelection(idx);
+    setShowMediaPlayer(true);
+  };
+
+  const slides: LightboxSlide[] = stories.map((story) => ({
+    type: story.type,
+    src: story.thumbnailUrl,
+    autoPlay: true,
+    sources: [
+      {
+        src: story.mediaUrl,
+        type: 'video/mp4',
+      },
+    ],
+  }));
+
   return (
     <div className="flex flex-wrap justify-evenly gap-4">
-      {stories.map((story, i) =>
-        story.type === 'image' ? (
+      {showMediaPlayer && (
+        <MediaPlayer
+          onShowMediaPlayer={setShowMediaPlayer}
+          selectedIndex={selection}
+          slides={slides}
+        />
+      )}
+      {stories.map((story, i) => (
+        <div
+          key={i}
+          className="relative h-auto w-[23%] object-cover object-center"
+        >
           <Image
-            key={i}
-            src={story.mediaUrl}
+            src={story.thumbnailUrl}
             alt={`${igProfile!.username} story #${i + 1}`}
-            height={1080}
-            width={1920}
-            className="h-auto w-[23%] rounded-xl object-cover object-center"
+            height={640}
+            width={360}
+            className="h-auto w-full cursor-pointer rounded-xl duration-150 hover:-translate-y-2"
             onClick={() => onHandleSelect(i)}
           />
-        ) : (
-          <video
-            key={i}
-            loop
-            controls
-            className="h-auto w-[23%] rounded-xl object-cover object-center"
-            onClick={() => onHandleSelect(i)}
-          >
-            <source src={story.mediaUrl} type="video/mp4" />
-            <source src={story.mediaUrl} type="video/webm" />
-          </video>
-        )
-      )}
-    </div>
-  );
-};
-
-const Posts: React.FC = () => {
-  const { igProfile, posts } = useContext(InstagramContext);
-
-  return (
-    <div className="flex flex-wrap justify-evenly gap-4">
-      {posts!.items.map((post, i) => (
-        <div key={i} className="relative h-auto w-[24%]">
-          {post.type === 'image' ? (
-            <>
-              <Image
-                key={i}
-                src={post.media[0].url}
-                alt={`${igProfile!.username} post #${i + 1}`}
-                height={1080}
-                width={1920}
-                className="h-full w-full rounded-xl object-cover object-center"
-              />
-            </>
-          ) : post.type === 'video' ? (
-            <>
-              <video
-                key={i}
-                loop
-                className="h-full w-full rounded-xl object-cover object-center"
-              >
-                <source src={post.media[0].url} type="video/mp4" />
-                <source src={post.media[0].url} type="video/webm" />
-              </video>
-              <FaVideo
-                size={32}
-                className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
-              />
-            </>
-          ) : (
-            <>
-              <Image
-                key={i}
-                src={post.media[0].url}
-                alt={`${igProfile!.username} post #${i + 1}`}
-                height={1080}
-                width={1920}
-                className="h-full w-full rounded-xl object-cover object-center"
-              />
-                  <BiSolidCarousel
-                    fill='white'
-                size={32}
-                className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
-              />
-            </>
+          {story.type === 'video' && (
+            <FaPlay size={36} className="absolute right-[44%] top-[50%]" />
           )}
         </div>
       ))}
@@ -168,11 +121,106 @@ const Posts: React.FC = () => {
   );
 };
 
-const Highlights: React.FC<SharedProps> = ({ onHandleSelect }) => {
+const Posts: React.FC = () => {
+  const [showMediaPlayer, setShowMediaPlayer] = useState(false);
+  const [slides, setSlides] = useState<LightboxSlide[]>([]);
+  const [postData, setPostData] = useState({
+    createdAt: 0,
+    likeCount: 0,
+    commentCount: 0,
+    caption: '',
+  });
+  const { igProfile, posts } = useContext(InstagramContext);
+
+  const onHandleSelect = (idx: number) => {
+    const post = posts!.items[idx];
+    const formattedSlides: LightboxSlide[] = post.media.map((media) => ({
+      type: media.type,
+      autoPlay: media.type === 'video',
+      src: media.url,
+      sources: [{ src: media.url, type: 'video/mp4' }],
+    }));
+    setPostData({
+      createdAt: post.created_at,
+      likeCount: post.like_count,
+      commentCount: post.comment_count,
+      caption: post.caption,
+    });
+    setSlides(formattedSlides);
+    setShowMediaPlayer(true);
+  };
+
+  return (
+    <div className="flex flex-wrap justify-evenly gap-4">
+      {showMediaPlayer && (
+        <MediaPlayer
+          onShowMediaPlayer={setShowMediaPlayer}
+          selectedIndex={0}
+          slides={slides}
+          sidePanelData={postData}
+        />
+      )}
+      {posts &&
+        posts.items.slice(0, 9).map((post, i) => (
+          <div
+            key={i}
+            className="relative h-auto w-[32%] bg-base-300 bg-opacity-25"
+          >
+            {post.type === 'image' ? (
+              <Image
+                key={i}
+                src={post.thumbnail}
+                alt={`${igProfile!.username} post #${i + 1}`}
+                height={640}
+                width={360}
+                className="h-full max-h-[420px] w-full rounded-xl object-cover object-center"
+                onClick={() => onHandleSelect(i)}
+              />
+            ) : post.type === 'video' ? (
+              <>
+                <Image
+                  key={i}
+                  src={post.thumbnail}
+                  alt={`${igProfile!.username} post #${i + 1}`}
+                  height={640}
+                  width={360}
+                  className="h-full max-h-[420px] w-full rounded-xl object-cover object-center"
+                  onClick={() => onHandleSelect(i)}
+                />
+                <FaVideo
+                  size={32}
+                  className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
+                />
+              </>
+            ) : (
+              <>
+                <Image
+                  key={i}
+                  src={post.thumbnail}
+                  alt={`${igProfile!.username} post #${i + 1}`}
+                  height={1080}
+                  width={1920}
+                  className="h-full max-h-[420px] w-full rounded-xl object-cover object-center"
+                  onClick={() => onHandleSelect(i)}
+                />
+                <BiSolidCarousel
+                  fill="white"
+                  size={32}
+                  className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
+                />
+              </>
+            )}
+          </div>
+        ))}
+    </div>
+  );
+};
+
+const Highlights: React.FC = () => {
   return <div></div>;
 };
 
-const Reels: React.FC<SharedProps> = ({ onHandleSelect }) => {
+const Reels: React.FC = () => {
   return <div></div>;
 };
 
