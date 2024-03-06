@@ -10,6 +10,6 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(highlights);
   } catch (error) {
     console.error({ error });
-    return NextResponse.json({error: 'API Error'})
+    return NextResponse.json({ error: 'API Error' });
   }
 };

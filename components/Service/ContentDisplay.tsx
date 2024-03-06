@@ -173,7 +173,7 @@ const Posts: React.FC = () => {
                 alt={`${igProfile!.username} post #${i + 1}`}
                 height={640}
                 width={360}
-                className="h-full max-h-[420px] w-full rounded-xl object-cover object-center"
+                className="cursor-pointer h-full max-h-[420px] w-full rounded-xl object-cover object-center"
                 onClick={() => onHandleSelect(i)}
               />
             ) : post.type === 'video' ? (
@@ -184,7 +184,7 @@ const Posts: React.FC = () => {
                   alt={`${igProfile!.username} post #${i + 1}`}
                   height={640}
                   width={360}
-                  className="h-full max-h-[420px] w-full rounded-xl object-cover object-center"
+                  className="cursor-pointer h-full max-h-[420px] w-full rounded-xl object-cover object-center"
                   onClick={() => onHandleSelect(i)}
                 />
                 <FaVideo
@@ -200,7 +200,7 @@ const Posts: React.FC = () => {
                   alt={`${igProfile!.username} post #${i + 1}`}
                   height={1080}
                   width={1920}
-                  className="h-full max-h-[420px] w-full rounded-xl object-cover object-center"
+                  className="cursor-pointer h-full max-h-[420px] w-full rounded-xl object-cover object-center"
                   onClick={() => onHandleSelect(i)}
                 />
                 <BiSolidCarousel
@@ -219,22 +219,24 @@ const Posts: React.FC = () => {
 const Highlights: React.FC = () => {
   const { igProfile, highlights } = useContext(InstagramContext);
 
-  console.log(highlights);
+  const handleSelect = (idx: number) => {
+    
+  }
 
   return (
     <div className="overflow-x-autp flex flex-wrap justify-evenly gap-4 py-8">
       {highlights?.map((highlight, i) => (
-        <div key={i} className="relative h-[150px] w-[150px] bg-opacity-25">
+        <div key={i} className="cursor-pointer relative h-[150px] w-[150px] bg-opacity-25">
           <Image
             key={i}
             src={highlight.imageUrl}
             alt={`${igProfile!.username} highlight #${i + 1}`}
             height={150}
             width={150}
-            className="h-full max-h-[150px] w-full rounded-full object-cover object-center"
+            className=" h-full max-h-[150px] w-full rounded-full object-cover object-center"
             // onClick={() => onHandleSelect(i)}
           />
-          <div className="mt-2 text-center text-xs font-semibold">
+          <div className="mt-2 text-center text-sm font-semibold">
             <p>{highlight.title}</p>
           </div>
         </div>

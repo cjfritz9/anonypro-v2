@@ -126,6 +126,19 @@ interface IGHighlightsResponse extends IGAPIResponse {
   };
 }
 
+interface IGHighlightByIdResponse extends IGAPIResponse {
+  data: {
+    title: string;
+    media_count: number;
+    cover_media: string;
+    created_at: number;
+    items: {
+      image_hd: string;
+      video_hd: string | null;
+    }[];
+  };
+}
+
 /**
  * API Client used for automatically formatting requests
  * for Rapid API.
@@ -249,6 +262,22 @@ export class IGClient {
     }));
   };
 
+  private formatHighlighMedia = (rawHighlightData: IGHighlightByIdResponse) => {
+    const { data } = rawHighlightData;
+
+    return {
+      title: data.title,
+      media_count: data.media_count,
+      coverImage: data.cover_media,
+      created_at: data.created_at,
+      items: data.items.map((item) => ({
+        type: item.video_hd ? 'video' : 'image',
+        imageUrl: item.image_hd,
+        videoUrl: item.video_hd,
+      })),
+    };
+  };
+
   // API FETCHERS
   public getProfile = async (username: string) => {
     try {
@@ -329,7 +358,7 @@ export class IGClient {
   public getHighlights = async (username: string) => {
     try {
       const response = await fetch(
-        `https://instagram-bulk-scraper-latest.p.rapidapi.com/user_highlights/${username}`,
+        `${this.baseUrl}/user_highlights/${username}`,
         {
           headers: this.headers,
         }
@@ -353,5 +382,31 @@ export class IGClient {
       console.error({ error });
       return error;
     }
+  };
+
+  public getHighlightById = async (id: string) => {
+    const hlId = id.replace('highlight:', '');
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/download_highlights/${hlId}`,
+        {
+          headers: this.headers,
+        }
+      );
+      const result: IGHighlightByIdResponse = await response.json();
+
+      if (result && result.message) {
+        if (result.message.includes('rate limit')) {
+          return { error: 'Rate Limit Exceeded' };
+        } else {
+          console.error(result.message, hlId);
+          return { error: 'Check logs' };
+        }
+      }
+
+      if (result && result.data) {
+        return this.formatHighlighMedia(result);
+      }
+    } catch (error) {}
   };
 }

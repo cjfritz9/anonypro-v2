@@ -70,6 +70,20 @@ export const fetchHighlights = cache(async (username: string) => {
   try {
     const result = await response.json();
 
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+export const fetchHighlightById = cache(async (highlightId: string) => {
+  const response = await fetch(`/api/highlights/${highlightId}`);
+
+  if (!response) return;
+
+  try {
+    const result = await response.json();
+
     console.log({result})
 
     return result;
