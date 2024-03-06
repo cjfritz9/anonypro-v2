@@ -15,7 +15,7 @@ export default async function UsernamePage({ params }: Metadata) {
   const { t } = await initTranslations(locale, ['user-profile']);
 
   return (
-    <main className="mt-12 flex min-h-[6000px] w-full max-w-[1280px] flex-col items-center lg:mt-24">
+    <main className="flex min-h-[6000px] w-full max-w-[1280px] flex-col items-center">
       <section className="flex w-full flex-col items-center">
         <Service
           username={username}

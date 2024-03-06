@@ -1,7 +1,6 @@
 import SearchBar from '@/components/Service/SearchBar';
 import ServiceSelector from '@/components/Service/ServiceSelector';
 import initTranslations from '../i18n';
-import Service from '@/components/Service/Service';
 
 interface Metadata {
   params: {
@@ -12,7 +11,7 @@ interface Metadata {
 export default async function Home({ params: { locale } }: Metadata) {
   const { t } = await initTranslations(locale, ['home', 'common']);
   return (
-    <main className="mt-12 flex min-h-[6000px] w-full max-w-[1280px] flex-col items-center lg:mt-24">
+    <main className="mt-12 flex w-full max-w-[1280px] flex-col items-center lg:mt-24">
       <section className="flex w-full max-w-[668px] flex-col items-center">
         <div className="flex w-full max-w-[576px] flex-col items-center gap-10">
           <div className="flex max-w-[576px] flex-col gap-10 text-center">

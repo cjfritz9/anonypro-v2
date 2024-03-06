@@ -22,8 +22,8 @@ interface Props {
 const Header: React.FC<Props> = ({ headerData }) => {
   const { company, resources, contact_button_text } = headerData;
   return (
-    <div className="flex w-full justify-center pt-5">
-      <div className="flex w-full max-w-[1280px] flex-col justify-between gap-4 rounded-btn bg-base-200 bg-opacity-25 px-8 py-6 lg:h-[84px] lg:flex-row lg:rounded-[90px]">
+    <div className="flex w-full justify-center lg:px-5 lg:pt-5">
+      <div className="flex w-full max-w-[1280px] flex-col justify-between gap-4 bg-base-200 bg-opacity-25 px-8 lg:h-[84px] lg:flex-row lg:rounded-btn lg:py-6">
         <Link href="/" className="flex items-center justify-center gap-4">
           <Image
             src={BRAND.logoSm}

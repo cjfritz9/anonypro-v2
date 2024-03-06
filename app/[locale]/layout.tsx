@@ -43,15 +43,13 @@ export default async function RootLayout({
       namespaces={i18nNamespaces}
     >
       <html lang={locale}>
-        <body
-          className={
-            poppins.className +
-            ' ' +
-            'flex min-h-[6000px] flex-col items-center px-4 lg:px-24'
-          }
-        >
+        <body className={poppins.className}>
           <Header headerData={t('header', { returnObjects: true })} />
-          <InstagramProvider>{children}</InstagramProvider>
+          <InstagramProvider>
+            <div className="flex min-h-[100dvh] flex-col items-center px-4 py-4 lg:px-24 lg:py-12">
+              {children}
+            </div>
+          </InstagramProvider>
         </body>
       </html>
     </TranslationsProvider>

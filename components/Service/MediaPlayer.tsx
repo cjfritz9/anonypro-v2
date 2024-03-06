@@ -100,7 +100,7 @@ const SidePanel: React.FC<SidePanelProps> = ({ type, data }) => {
   };
 
   return (
-    <div className="flex h-full w-full max-w-md flex-col border-l border-gray-700 bg-black">
+    <div className="flex w-full max-w-md flex-col overflow-y-scroll border-t border-gray-700 bg-black lg:h-full lg:border-l lg:border-t-0">
       <header className="flex items-center border-b border-gray-700 p-4">
         <figure className="flex h-[44px] w-[44px] items-center justify-center rounded-full bg-gradient-to-b from-[#E09B3D] via-[#C21975] to-[#7024C4]">
           <Image
@@ -125,18 +125,19 @@ const SidePanel: React.FC<SidePanelProps> = ({ type, data }) => {
           {type === 'video' && <p className="text-xs">Original Audio</p>}
         </div>
       </header>
-      <div className="h-full p-4">
+      <div className="h-fit p-4">
         <p className="mb-2 font-semibold">{getFormattedDate()}</p>
         <p>{data.caption}</p>
       </div>
-      <div className="flex items-center gap-4 p-4 text-xl">
+      <div className="flex min-h-min items-center gap-4 p-4">
         <FaRegHeart />
         <p>{data.likeCount.toLocaleString(locale)}</p>
         <FaRegComment />
         <p>{data.commentCount.toLocaleString(locale)}</p>
       </div>
-      <footer className="border-t border-gray-700 p-4">
-        <button className="btn rounded-none">Download</button>
+      <footer className="flex gap-4 border-t border-gray-700 p-4">
+        <button className="btn w-28 rounded-none">Download</button>
+        <button className="btn btn-success w-28 rounded-none">Boost</button>
       </footer>
     </div>
   );

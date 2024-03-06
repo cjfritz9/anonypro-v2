@@ -4,15 +4,18 @@ import React, { useContext } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
 import Link from 'next/link';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
+import { useTranslation } from 'react-i18next';
 
 const Profile: React.FC = () => {
   const { igProfile } = useContext(InstagramContext);
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
 
   const formatNumber = (baseNumber: number) => {
     const stringNum = baseNumber.toString();
 
     if (stringNum.length < 4) {
-      return baseNumber.toLocaleString();
+      return baseNumber.toLocaleString(locale);
     } else if (stringNum.length < 7) {
       return stringNum.slice(0, stringNum.length - 3) + 'k';
     } else if (stringNum.length < 10) {
@@ -42,9 +45,9 @@ const Profile: React.FC = () => {
   if (!igProfile) return null;
 
   return (
-    <div className="flex !w-full max-w-[720px] items-center justify-between gap-10">
-      <div className="h-[246px] w-[246px]">
-        <figure className="flex h-[246px] w-[246px] items-center justify-center rounded-full bg-gradient-to-b from-[#E09B3D] via-[#C21975] to-[#7024C4]">
+    <div className="flex !w-full flex-col items-center justify-between gap-10 lg:max-w-[720px] lg:flex-row">
+      <div className="h-[250px] w-[250px]">
+        <figure className="flex h-[250px] w-[250px] items-center justify-center rounded-full bg-gradient-to-b from-[#E09B3D] via-[#C21975] to-[#7024C4]">
           <Image
             priority
             src={igProfile.profilePictureUrl}
@@ -55,17 +58,19 @@ const Profile: React.FC = () => {
           />
         </figure>
       </div>
-      <div className="w-fit min-w-[400px]">
+      <div className="w-fit text-center lg:min-w-[400px] lg:text-start">
         <p className="text-2xl font-[500]">{igProfile.displayName}</p>
-        <div className="mt-2 flex items-center gap-2">
+        <div className="mt-2 flex items-center justify-center gap-2 lg:justify-start">
           <p>@{igProfile.username}</p>
           {igProfile.isVerified && (
             <Image src={verifiedBadge} alt="verified badge" />
           )}
         </div>
-        <div className="mt-4 flex gap-6">
+        <div className="mt-4 flex justify-center gap-6 lg:justify-start">
           <div className="flex flex-col items-center gap-1">
-            <p className="text-xl font-semibold">{igProfile.postCount}</p>
+            <p className="text-xl font-semibold">
+              {formatNumber(igProfile.postCount)}
+            </p>
             <p>Posts</p>
           </div>
           <div className="flex flex-col items-center gap-1">
@@ -75,17 +80,19 @@ const Profile: React.FC = () => {
             <p>Followers</p>
           </div>
           <div className="flex flex-col items-center gap-1">
-            <p className="text-xl font-semibold">{igProfile.followingCount}</p>
+            <p className="text-xl font-semibold">
+              {formatNumber(igProfile.followingCount)}
+            </p>
             <p>Following</p>
           </div>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 text-start">
           {igProfile.biography.split('\n').map((line, i) => (
             <p key={i}>{line}</p>
           ))}
         </div>
         {igProfile.externalLink && (
-          <div className="mt-4">
+          <div className="mt-4 text-start">
             <Link
               href={igProfile.externalLink}
               target="_blank"

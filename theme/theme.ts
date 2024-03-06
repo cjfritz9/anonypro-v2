@@ -7,6 +7,7 @@ const theme = {
   'base-100': '#8353C2',
   'base-200': '#783DC3',
   'base-300': '#3F3F7F',
+  success: '#04E762',
 
   '--rounded-box': '1rem', // border radius rounded-box utility class, used in card and other large boxes
   '--rounded-btn': '5.25rem', // border radius rounded-btn utility class, used in buttons and similar element

@@ -102,7 +102,7 @@ const Stories: React.FC = () => {
       {stories.map((story, i) => (
         <div
           key={i}
-          className="relative h-auto w-[23%] object-cover object-center"
+          className={`${stories.length > 2 ? 'lg:w-[23%]' : stories.length === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full object-cover object-center`}
         >
           <Image
             src={story.thumbnailUrl}
@@ -164,7 +164,7 @@ const Posts: React.FC = () => {
         posts.items.slice(0, 9).map((post, i) => (
           <div
             key={i}
-            className="relative h-auto w-[32%] bg-base-300 bg-opacity-25"
+            className="relative h-[420px] w-full bg-opacity-25 lg:w-[32%]"
           >
             {post.type === 'image' ? (
               <Image
@@ -217,7 +217,30 @@ const Posts: React.FC = () => {
 };
 
 const Highlights: React.FC = () => {
-  return <div></div>;
+  const { igProfile, highlights } = useContext(InstagramContext);
+
+  console.log(highlights);
+
+  return (
+    <div className="overflow-x-autp flex flex-wrap justify-evenly gap-4 py-8">
+      {highlights?.map((highlight, i) => (
+        <div key={i} className="relative h-[150px] w-[150px] bg-opacity-25">
+          <Image
+            key={i}
+            src={highlight.imageUrl}
+            alt={`${igProfile!.username} highlight #${i + 1}`}
+            height={150}
+            width={150}
+            className="h-full max-h-[150px] w-full rounded-full object-cover object-center"
+            // onClick={() => onHandleSelect(i)}
+          />
+          <div className="mt-2 text-center text-xs font-semibold">
+            <p>{highlight.title}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 const Reels: React.FC = () => {

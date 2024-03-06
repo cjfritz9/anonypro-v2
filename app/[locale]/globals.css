@@ -33,3 +33,12 @@ body {
   width: fit-content !important;
   background: black;
 }
+
+@media screen and (max-width: 1024px) {
+  .yarl__flex_center {
+    flex-direction: column !important;
+  }
+  .yarl__video_container {
+    max-height: 80%;
+  }
+}

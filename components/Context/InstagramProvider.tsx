@@ -44,7 +44,7 @@ interface Context {
     }[];
   } | null;
   setPosts: React.Dispatch<React.SetStateAction<Context['posts']>>;
-  highlights: { type: 'image' | 'video'; mediaUrl: string }[];
+  highlights: { id: string; title: string; imageUrl: string }[] | null;
   setHighlights: React.Dispatch<React.SetStateAction<Context['highlights']>>;
   reels: { type: 'image' | 'video'; mediaUrl: string }[];
   setReels: React.Dispatch<React.SetStateAction<Context['reels']>>;
@@ -68,7 +68,7 @@ const baseContext: Context = {
   setStories: (stories) => undefined,
   posts: null,
   setPosts: (posts) => undefined,
-  highlights: [],
+  highlights: null,
   setHighlights: (highlights) => undefined,
   reels: [],
   setReels: (reels) => undefined,

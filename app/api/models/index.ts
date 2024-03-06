@@ -1,3 +1,4 @@
+import { Tracing } from 'trace_events';
 import config from '../config';
 
 // INTERFACES
@@ -108,6 +109,20 @@ interface IGPostsResponse extends IGAPIResponse {
     user: {};
     auto_load_more_enabled: boolean;
     status: string;
+  };
+}
+
+interface IGHighlightsResponse extends IGAPIResponse {
+  data: {
+    highlights: {
+      id: string;
+      title: string;
+      cover_media: {
+        cropped_image_version: {
+          url: string;
+        };
+      };
+    }[];
   };
 }
 
@@ -224,6 +239,16 @@ export class IGClient {
     };
   };
 
+  private formatHighlights = (rawHighlights: IGHighlightsResponse) => {
+    const { data } = rawHighlights;
+
+    return data.highlights.map((hl) => ({
+      id: hl.id,
+      title: hl.title,
+      imageUrl: hl.cover_media.cropped_image_version.url,
+    }));
+  };
+
   // API FETCHERS
   public getProfile = async (username: string) => {
     try {
@@ -287,13 +312,42 @@ export class IGClient {
         if (result.message.includes('rate limit')) {
           return { error: 'Rate Limit Exceeded' };
         } else {
-          console.log(result.message, id);
+          console.error(result.message, id);
           return { error: 'Check logs' };
         }
       }
 
       if (result && result.data) {
         return this.formatPosts(result);
+      }
+    } catch (error) {
+      console.error({ error });
+      return error;
+    }
+  };
+
+  public getHighlights = async (username: string) => {
+    try {
+      const response = await fetch(
+        `https://instagram-bulk-scraper-latest.p.rapidapi.com/user_highlights/${username}`,
+        {
+          headers: this.headers,
+        }
+      );
+
+      const result: IGHighlightsResponse = await response.json();
+
+      if (result && result.message) {
+        if (result.message.includes('rate limit')) {
+          return { error: 'Rate Limit Exceeded' };
+        } else {
+          console.error(result.message, username);
+          return { error: 'Check logs' };
+        }
+      }
+
+      if (result && result.data) {
+        return this.formatHighlights(result);
       }
     } catch (error) {
       console.error({ error });

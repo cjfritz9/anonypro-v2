@@ -5,7 +5,12 @@ import Profile from '../Profile/Profile';
 import { InstagramContext } from '../Context/InstagramProvider';
 import ContentDisplay from './ContentDisplay';
 import ServiceSelector from './ServiceSelector';
-import { fetchPosts, fetchProfile, fetchStories } from '@/utils/requests';
+import {
+  fetchHighlights,
+  fetchPosts,
+  fetchProfile,
+  fetchStories,
+} from '@/utils/requests';
 
 interface Props {
   username: string;
@@ -28,9 +33,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
   } = useContext(InstagramContext);
 
   useEffect(() => {
-    console.log('use effect');
     (async () => {
-      let contentEndpoint = '/api/stories';
       let setFunction: any = setStories;
       let fetchFunction: any = fetchStories.bind(this, username);
 
@@ -47,27 +50,23 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
       if (mode === 1) {
         if (posts) return;
 
-        contentEndpoint = '/api/posts';
         setFunction = setPosts;
         fetchFunction = fetchPosts.bind(this, igProfile.id);
       }
 
       if (mode === 2) {
-        if (highlights.length > 0) return;
+        if (highlights) return;
 
-        contentEndpoint = '/api/highlights';
         setFunction = setHighlights;
+        fetchFunction = fetchHighlights.bind(this, username);
       }
 
       if (mode === 3) {
         if (reels.length > 0) return;
-        contentEndpoint = '/api/reels';
         setFunction = setReels;
       }
 
       const contentRes = await fetchFunction();
-
-      console.log(contentRes)
 
       if (contentRes && !contentRes.error) {
         setFunction(contentRes);
@@ -89,7 +88,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
   ]);
 
   return (
-    <div className="mt-20 flex w-full flex-col items-center gap-20">
+    <div className="flex w-full flex-col items-center gap-20">
       <Profile />
       <ServiceSelector displayNames={serviceButtonsText} />
       <ContentDisplay />

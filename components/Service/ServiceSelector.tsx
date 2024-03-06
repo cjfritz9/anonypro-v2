@@ -22,15 +22,18 @@ const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
   }));
 
   return (
-    <div className="join join-vertical w-full max-w-[668px] lg:join-horizontal">
+    <div className="join w-full max-w-[668px]">
       {buttonsData.map((data, i) => (
         <button
           key={data.displayName}
-          className={`btn ${mode === i ? '!bg-accent hover:!bg-accent' : ''} join-item h-[72px] w-full bg-base-100 font-normal text-primary hover:bg-base-100 hover:brightness-110 lg:w-[25%]`}
+          className={`btn ${mode === i ? '!bg-accent hover:!bg-accent' : ''} join-item h-[72px] w-[25%] bg-base-100 py-3 font-normal text-primary hover:bg-base-100 hover:brightness-110`}
           onClick={() => setMode(i)}
         >
-          <Image src={data.icon} alt="Instagram Stories Icon" />
-          {data.displayName}
+          <Image
+            src={data.icon}
+            alt={`Instagram ${data.displayName} Icon`}
+          />
+          <p>{data.displayName}</p>
         </button>
       ))}
     </div>
