@@ -1,5 +1,17 @@
 import { cache } from 'react';
 
+interface Highlight {
+  title: string;
+  media_count: number;
+  coverImage: string;
+  created_at: number;
+  items: {
+    type: 'image' | 'video';
+    imageUrl: string;
+    videoUrl: string | null;
+  }[];
+}
+
 export const fetchProfile = cache(async (username: string) => {
   const response = await fetch('/api/profile', {
     method: 'POST',
@@ -76,18 +88,20 @@ export const fetchHighlights = cache(async (username: string) => {
   }
 });
 
-export const fetchHighlightById = cache(async (highlightId: string) => {
-  const response = await fetch(`/api/highlights/${highlightId}`);
+export const fetchHighlightById = cache(
+  async (highlightId: string): Promise<Highlight | undefined> => {
+    const response = await fetch(`/api/highlights/${highlightId}`);
 
-  if (!response) return;
+    if (!response) return;
 
-  try {
-    const result = await response.json();
+    try {
+      const result = await response.json();
 
-    console.log({result})
+      console.log({ result });
 
-    return result;
-  } catch (error) {
-    console.error(error);
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
   }
-});
+);

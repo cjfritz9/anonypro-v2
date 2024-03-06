@@ -1,14 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import storiesIcon from '@/public/assets/stories-icon.svg';
 import postsIcon from '@/public/assets/posts-icon.svg';
 import highlightsIcon from '@/public/assets/highlights-icon.svg';
-import ppIcon from '@/public/assets/pp-icon.svg';
+import reelsIcon from '@/public/assets/reels-icon.svg';
 import { InstagramContext } from '../Context/InstagramProvider';
 
-const buttonIcons = [storiesIcon, postsIcon, highlightsIcon, ppIcon];
+const buttonIcons = [storiesIcon, postsIcon, highlightsIcon, reelsIcon];
 
 interface Props {
   displayNames: string[];
@@ -31,6 +31,9 @@ const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
         >
           <Image
             src={data.icon}
+            height={24}
+            width={24}
+            // className="h-6 w-6"
             alt={`Instagram ${data.displayName} Icon`}
           />
           <p>{data.displayName}</p>

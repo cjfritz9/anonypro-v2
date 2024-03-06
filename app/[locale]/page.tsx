@@ -30,7 +30,7 @@ export default async function Home({ params: { locale } }: Metadata) {
         </div>
         <div className="mt-16 w-full max-w-[668px]">
           <ServiceSelector
-            displayNames={t('section_one.service_buttons', {
+            displayNames={t('common:service_selector.button_names', {
               returnObjects: true,
             })}
           />

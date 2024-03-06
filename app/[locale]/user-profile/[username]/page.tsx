@@ -12,14 +12,14 @@ interface Metadata {
 
 export default async function UsernamePage({ params }: Metadata) {
   const { locale, username } = params;
-  const { t } = await initTranslations(locale, ['user-profile']);
+  const { t } = await initTranslations(locale, ['user-profile', 'common']);
 
   return (
     <main className="flex min-h-[6000px] w-full max-w-[1280px] flex-col items-center">
       <section className="flex w-full flex-col items-center">
         <Service
           username={username}
-          serviceButtonsText={t('section_one.service_buttons', {
+          serviceButtonsText={t('common:service_selector.button_names', {
             returnObjects: true,
           })}
         />
