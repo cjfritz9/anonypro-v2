@@ -38,7 +38,8 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
       let setFunction: any = setStories;
       let fetchFunction: any = fetchStories.bind(this, username);
 
-      if (!igProfile) {
+      if (!igProfile || igProfile.username !== username) {
+        setIgProfile(null);
         const profile = await fetchProfile(username);
 
         setIgProfile(profile);

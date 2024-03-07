@@ -23,9 +23,7 @@ export default async function Home({ params: { locale } }: Metadata) {
               <br />
               {t('section_one.heading_two.part_two')}
             </h2>
-            <SearchBar
-              placeholderText={t('section_one.search_bar.placeholder')}
-            />
+            <SearchBar />
           </div>
         </div>
         <div className="mt-16 w-full max-w-[668px]">

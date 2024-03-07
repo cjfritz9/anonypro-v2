@@ -4,6 +4,7 @@ import React from 'react';
 import LinkMenu from './LinkMenu';
 import LanguagePicker from './LanguagePicker';
 import Link from 'next/link';
+import { HeaderSearchBar } from '../Service/SearchBar';
 
 interface Props {
   headerData: {
@@ -23,7 +24,7 @@ const Header: React.FC<Props> = ({ headerData }) => {
   const { company, resources, contact_button_text } = headerData;
   return (
     <div className="flex w-full justify-center lg:px-5 lg:pt-5">
-      <div className="flex w-full max-w-[1280px] flex-col justify-between gap-4 bg-base-200 bg-opacity-25 px-8 lg:h-[84px] lg:flex-row lg:rounded-btn lg:py-6">
+      <div className="flex w-full max-w-[1280px] flex-col justify-between gap-4 bg-base-200 bg-opacity-25 px-8 pt-4 lg:h-[84px] lg:flex-row lg:rounded-btn lg:py-6">
         <Link href="/" className="flex items-center justify-center gap-4">
           <Image
             src={BRAND.logoSm}
@@ -34,6 +35,7 @@ const Header: React.FC<Props> = ({ headerData }) => {
           />
           <p className="text-[32px] font-semibold">anonypro</p>
         </Link>
+        <HeaderSearchBar />
         <div className="flex flex-col-reverse lg:flex-row">
           <div className="flex items-center justify-center gap-4">
             <LinkMenu

@@ -52,7 +52,10 @@ const MediaPlayer: React.FC<Props> = ({
       index={selectedIndex}
       plugins={[Video]}
       close={() => onShowMediaPlayer(false)}
-      carousel={{ preload: 1, finite: true }}
+      carousel={{ preload: 1 }}
+      animation={{
+        swipe: 0,
+      }}
       controller={{
         touchAction: 'pan-y',
         closeOnPullDown: true,
@@ -101,8 +104,6 @@ const SidePanel: React.FC<SidePanelProps> = ({
   const locale = i18n.language;
   const { currentIndex: i } = useLightboxState();
 
-  console.log(data);
-
   if (multiSlideData) {
     data = multiSlideData[i];
   }
@@ -111,7 +112,7 @@ const SidePanel: React.FC<SidePanelProps> = ({
     if (!data) return null;
     const date = new Date(0);
     date.setSeconds(data.createdAt);
-    
+
     return date.toLocaleDateString(locale, {
       month: 'long',
       day: 'numeric',

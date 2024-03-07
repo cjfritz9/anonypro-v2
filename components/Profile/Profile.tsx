@@ -1,16 +1,25 @@
 'use client';
 import Image from 'next/image';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
 import Link from 'next/link';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
-import { useTranslation } from 'react-i18next';
 import { formatNumber } from '@/utils/tools';
+import { useParams } from 'next/navigation';
 
 const Profile: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const { igProfile } = useContext(InstagramContext);
-  const { i18n } = useTranslation();
-  const locale = i18n.language;
+
+  useEffect(() => {
+    if (igProfile) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [igProfile]);
+
+  if (isLoading) return <LoadingProfile />;
 
   if (!igProfile) return null;
 
@@ -74,6 +83,48 @@ const Profile: React.FC = () => {
             </Link>
           </div>
         )}
+      </div>
+    </div>
+  );
+};
+
+const LoadingProfile: React.FC = () => {
+  const { username } = useParams();
+
+  return (
+    <div className="flex !w-full animate-pulse flex-col items-center justify-between gap-10 opacity-25 lg:max-w-[720px] lg:flex-row">
+      <div className="h-[250px] w-[250px]">
+        <figure className="flex h-[250px] w-[250px] items-center justify-center rounded-full bg-gradient-to-b from-[#E09B3D] via-[#C21975] to-[#7024C4]">
+          <div className="h-[240px] w-[240px] rounded-full" />
+        </figure>
+      </div>
+      <div className="w-fit text-center lg:min-w-[400px] lg:text-start">
+        <p className="h-8 w-[60%] rounded-md bg-white"></p>
+        <div className="mt-2 flex items-center justify-center gap-2 lg:justify-start">
+          {username && <p>@{username}</p>}
+        </div>
+        <div className="mt-4 flex justify-center gap-6 lg:justify-start">
+          <div className="flex w-16 flex-col items-center gap-1">
+            <p className="h-8 w-12 rounded-md bg-white"></p>
+            <p>Posts</p>
+          </div>
+          <div className="flex w-20 flex-col items-center gap-1">
+            <p className="h-8 w-16 rounded-md bg-white"></p>
+            <p>Followers</p>
+          </div>
+          <div className="flex w-12 flex-col items-center gap-1">
+            <p className="h-8 w-12 rounded-md bg-white"></p>
+            <p>Following</p>
+          </div>
+        </div>
+        <div className="mt-4 flex w-full flex-col gap-2 text-start">
+          <p className="h-5 w-[75%] rounded-md bg-white"></p>
+          <p className="h-5 w-[83%] rounded-md bg-white"></p>
+          <p className="h-5 w-[69%] rounded-md bg-white"></p>
+          <p className="h-5 w-[90%] rounded-md bg-white"></p>
+          <p className="h-5 w-[35%] rounded-md bg-white"></p>
+        </div>
+        <p className="mt-4 h-5 w-[60%] rounded-md bg-white"></p>
       </div>
     </div>
   );
