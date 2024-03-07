@@ -9,6 +9,7 @@ import { TbBoxMultiple } from 'react-icons/tb';
 import { LuGalleryHorizontalEnd } from 'react-icons/lu';
 import { BiSolidCarousel } from 'react-icons/bi';
 import { fetchHighlightById } from '@/utils/requests';
+import { formatNumber } from '@/utils/tools';
 
 interface NoContentProps {
   message: string;
@@ -59,7 +60,7 @@ const ContentDisplay: React.FC = () => {
         )
       ) : null}
       {mode === 3 ? (
-        reels && reels.length > 0 ? (
+        reels && reels.items.length > 0 ? (
           <Reels />
         ) : (
           <NoContent message={`${igProfile.username} has no reels`} />
@@ -162,7 +163,7 @@ const Posts: React.FC = () => {
         />
       )}
       {posts &&
-        posts.items.slice(0, 9).map((post, i) => (
+        posts.items.slice(0, 6).map((post, i) => (
           <div
             key={i}
             className="relative h-[420px] w-full bg-opacity-25 lg:w-[32%]"
@@ -238,7 +239,7 @@ const Highlights: React.FC = () => {
                 },
               ]
             : undefined,
-          autoPlay: true
+          autoPlay: true,
         })
       );
       setSlides(slidesFromHighlight);
@@ -279,7 +280,69 @@ const Highlights: React.FC = () => {
 };
 
 const Reels: React.FC = () => {
-  return <div></div>;
+  const [showMediaPlayer, setShowMediaPlayer] = useState(false);
+  const [selection, setSelection] = useState(0);
+  const [slides, setSlides] = useState<LightboxSlide[]>([]);
+  const { igProfile, reels } = useContext(InstagramContext);
+
+  if (!reels) return;
+
+  const multiSlideData = reels.items.map((reel) => ({
+    createdAt: reel.created_at,
+    caption: reel.caption,
+    likeCount: reel.like_count,
+    commentCount: reel.comment_count,
+  }));
+
+  const handleSelect = async (idx: number) => {
+    setSelection(idx);
+
+    const formattedSlides: LightboxSlide[] = reels.items.map((reel) => ({
+      type: reel.type,
+      src: reel.thumbnail,
+      autoPlay: true,
+      sources: [
+        {
+          src: reel.mediaUrl,
+          type: 'video/mp4',
+        },
+      ],
+    }));
+    setSlides(formattedSlides);
+    setShowMediaPlayer(true);
+  };
+
+  return (
+    <div className="flex flex-wrap justify-evenly gap-4">
+      {showMediaPlayer && (
+        <MediaPlayer
+          onShowMediaPlayer={setShowMediaPlayer}
+          selectedIndex={selection}
+          slides={slides}
+          multiSidePanelData={multiSlideData}
+        />
+      )}
+      {reels.items.slice(0, 12).map((reel, i) => (
+        <div
+          key={i}
+          className={`${reels.items.length > 2 ? 'lg:w-[23%]' : reels.items.length === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full object-cover object-center duration-150 hover:-translate-y-2`}
+        >
+          <Image
+            src={reel.thumbnail}
+            alt={`${igProfile!.username} reel #${i + 1}`}
+            height={640}
+            width={360}
+            className="h-auto w-full cursor-pointer rounded-xl"
+            onClick={() => handleSelect(i)}
+          />
+          <div className="backdrop absolute bottom-4 left-4 flex items-center gap-2 drop-shadow-lg">
+            <FaPlay size={30} />
+            <p className="font-semibold">{formatNumber(reel.play_count)}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 const NoContent: React.FC<NoContentProps> = ({ message }) => {

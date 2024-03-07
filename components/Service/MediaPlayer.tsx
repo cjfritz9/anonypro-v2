@@ -2,7 +2,10 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import Lightbox, { LightboxDefaultProps } from 'yet-another-react-lightbox';
+import Lightbox, {
+  LightboxDefaultProps,
+  useLightboxState,
+} from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import { InstagramContext } from '../Context/InstagramProvider';
 import { Video } from 'yet-another-react-lightbox/plugins';
@@ -33,6 +36,7 @@ interface Props {
     likeCount: number;
     commentCount: number;
   };
+  multiSidePanelData?: Props['sidePanelData'][];
 }
 
 const MediaPlayer: React.FC<Props> = ({
@@ -40,6 +44,7 @@ const MediaPlayer: React.FC<Props> = ({
   slides,
   sidePanelData,
   selectedIndex,
+  multiSidePanelData,
 }) => {
   return (
     <Lightbox
@@ -62,7 +67,11 @@ const MediaPlayer: React.FC<Props> = ({
       }}
       render={{
         slideFooter: ({ slide }) => (
-          <SidePanel data={sidePanelData} type={slide.type!} />
+          <SidePanel
+            data={sidePanelData}
+            multiSlideData={multiSidePanelData}
+            type={slide.type!}
+          />
         ),
         buttonPrev: slides.length <= 1 ? () => null : undefined,
         buttonNext: slides.length <= 1 ? () => null : undefined,
@@ -79,25 +88,38 @@ interface SidePanelProps {
     likeCount: number;
     commentCount: number;
   };
+  multiSlideData?: SidePanelProps['data'][];
 }
 
-const SidePanel: React.FC<SidePanelProps> = ({ type, data }) => {
+const SidePanel: React.FC<SidePanelProps> = ({
+  type,
+  data,
+  multiSlideData,
+}) => {
   const { igProfile } = useContext(InstagramContext);
   const { i18n } = useTranslation();
   const locale = i18n.language;
+  const { currentIndex: i } = useLightboxState();
 
-  if (!data) return null;
+  console.log(data);
+
+  if (multiSlideData) {
+    data = multiSlideData[i];
+  }
 
   const getFormattedDate = () => {
+    if (!data) return null;
     const date = new Date(0);
     date.setSeconds(data.createdAt);
-
+    
     return date.toLocaleDateString(locale, {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
     });
   };
+
+  if (!data) return null;
 
   return (
     <div className="flex w-full max-w-md flex-col overflow-y-scroll border-t border-gray-700 bg-black lg:h-full lg:border-l lg:border-t-0">

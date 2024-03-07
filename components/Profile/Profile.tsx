@@ -5,42 +5,12 @@ import { InstagramContext } from '../Context/InstagramProvider';
 import Link from 'next/link';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
 import { useTranslation } from 'react-i18next';
+import { formatNumber } from '@/utils/tools';
 
 const Profile: React.FC = () => {
   const { igProfile } = useContext(InstagramContext);
   const { i18n } = useTranslation();
   const locale = i18n.language;
-
-  const formatNumber = (baseNumber: number) => {
-    const stringNum = baseNumber.toString();
-
-    if (stringNum.length < 4) {
-      return baseNumber.toLocaleString(locale);
-    } else if (stringNum.length < 7) {
-      return stringNum.slice(0, stringNum.length - 3) + 'k';
-    } else if (stringNum.length < 10) {
-      return (
-        stringNum.slice(0, stringNum.length - 6) +
-        '.' +
-        stringNum.charAt(1) +
-        'M'
-      );
-    } else if (stringNum.length < 13) {
-      return (
-        stringNum.slice(0, stringNum.length - 9) +
-        '.' +
-        stringNum.charAt(1) +
-        'B'
-      );
-    } else {
-      return (
-        stringNum.slice(0, stringNum.length - 12) +
-        '.' +
-        stringNum.charAt(1) +
-        'T'
-      );
-    }
-  };
 
   if (!igProfile) return null;
 

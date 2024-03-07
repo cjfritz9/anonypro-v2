@@ -46,7 +46,22 @@ interface Context {
   setPosts: React.Dispatch<React.SetStateAction<Context['posts']>>;
   highlights: { id: string; title: string; imageUrl: string }[] | null;
   setHighlights: React.Dispatch<React.SetStateAction<Context['highlights']>>;
-  reels: { type: 'image' | 'video'; mediaUrl: string }[];
+  reels: {
+    more_available: boolean;
+    next_max_id: 'string' | null;
+    items: {
+      id: string;
+      created_at: number;
+      like_count: number;
+      comment_count: number;
+      play_count: number;
+      type: 'image' | 'video';
+      thumbnail: string;
+      mediaUrl: string;
+      caption: string;
+      shortcode: string;
+    }[];
+  } | null;
   setReels: React.Dispatch<React.SetStateAction<Context['reels']>>;
   /**
    * 0: Stories
@@ -70,7 +85,7 @@ const baseContext: Context = {
   setPosts: (posts) => undefined,
   highlights: null,
   setHighlights: (highlights) => undefined,
-  reels: [],
+  reels: null,
   setReels: (reels) => undefined,
   mode: 0,
   setMode: (mode) => undefined,

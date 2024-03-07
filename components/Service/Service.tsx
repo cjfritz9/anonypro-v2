@@ -9,6 +9,7 @@ import {
   fetchHighlights,
   fetchPosts,
   fetchProfile,
+  fetchReels,
   fetchStories,
 } from '@/utils/requests';
 
@@ -62,8 +63,10 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
       }
 
       if (mode === 3) {
-        if (reels.length > 0) return;
+        if (reels) return;
+        
         setFunction = setReels;
+        fetchFunction = fetchReels.bind(this, igProfile.id);
       }
 
       const contentRes = await fetchFunction();

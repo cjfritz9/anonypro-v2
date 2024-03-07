@@ -139,6 +139,41 @@ interface IGHighlightByIdResponse extends IGAPIResponse {
   };
 }
 
+interface IGReelsResponse extends IGAPIResponse {
+  data: {
+    items: {
+      media: {
+        id: string;
+        code: string;
+        taken_at: number;
+        like_count: number;
+        comment_count: number;
+        play_count: number;
+        product_type: 'carousel_container' | 'clips' | 'feed';
+        caption: {
+          text: string;
+        };
+        image_versions2: {
+          candidates: {
+            url: string;
+            height: number;
+            width: number;
+          }[];
+        };
+        video_versions?: {
+          height: number;
+          width: number;
+          url: string;
+        }[];
+      };
+    }[];
+    paging_info: {
+      max_id: string;
+      more_available: boolean;
+    };
+  };
+}
+
 /**
  * API Client used for automatically formatting requests
  * for Rapid API.
@@ -262,7 +297,9 @@ export class IGClient {
     }));
   };
 
-  private formatHighlighMedia = (rawHighlightData: IGHighlightByIdResponse) => {
+  private formatHighlightMedia = (
+    rawHighlightData: IGHighlightByIdResponse
+  ) => {
     const { data } = rawHighlightData;
 
     return {
@@ -274,6 +311,27 @@ export class IGClient {
         type: item.video_hd ? 'video' : 'image',
         imageUrl: item.image_hd,
         videoUrl: item.video_hd,
+      })),
+    };
+  };
+
+  private formatReels = (rawReels: IGReelsResponse) => {
+    const { data } = rawReels;
+
+    return {
+      more_available: data.paging_info.more_available,
+      next_max_id: data.paging_info.max_id,
+      items: data.items.map(({ media: item }) => ({
+        id: item.id,
+        created_at: item.taken_at,
+        like_count: item.like_count,
+        comment_count: item.comment_count,
+        play_count: item.play_count,
+        type: item.product_type === 'clips' ? 'video' : 'image',
+        thumbnail: item.image_versions2.candidates[0].url,
+        mediaUrl: item.video_versions ? item.video_versions[0].url : item.image_versions2.candidates[0].url,
+        caption: item.caption.text,
+        shortcode: item.code,
       })),
     };
   };
@@ -329,7 +387,7 @@ export class IGClient {
   public getPosts = async (id: string) => {
     try {
       const response = await fetch(
-        `${this.baseUrl}/webuser_posts_v2/${id}?count=9&nocors=true`,
+        `${this.baseUrl}/webuser_posts_v2/${id}?count=6&nocors=true`,
         {
           headers: this.headers,
         }
@@ -405,8 +463,37 @@ export class IGClient {
       }
 
       if (result && result.data) {
-        return this.formatHighlighMedia(result);
+        return this.formatHighlightMedia(result);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  public getReels = async (id: string) => {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/webuser_reels/${id}?count=6&nocors=true`,
+        {
+          headers: this.headers,
+        }
+      );
+      const result: IGReelsResponse = await response.json();
+
+      if (result && result.message) {
+        if (result.message.includes('rate limit')) {
+          return { error: 'Rate Limit Exceeded' };
+        } else {
+          console.error(result.message, id);
+          return { error: 'Check logs' };
+        }
+      }
+
+      if (result && result.data) {
+        return this.formatReels(result);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 }

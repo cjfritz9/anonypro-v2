@@ -105,3 +105,22 @@ export const fetchHighlightById = cache(
     }
   }
 );
+
+export const fetchReels = cache(async (id: string) => {
+  const response = await fetch('/api/reels', {
+    method: 'POST',
+    body: JSON.stringify({
+      id,
+    }),
+  });
+
+  if (!response) return;
+
+  try {
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+});
