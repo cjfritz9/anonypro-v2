@@ -74,6 +74,7 @@ interface Context {
    */
   mode: number;
   setMode: React.Dispatch<React.SetStateAction<Context['mode']>>;
+  resetUser: () => void;
 }
 
 const baseContext: Context = {
@@ -89,6 +90,7 @@ const baseContext: Context = {
   setReels: (reels) => undefined,
   mode: 0,
   setMode: (mode) => undefined,
+  resetUser: () => undefined,
 };
 
 export const InstagramContext = React.createContext<Context>(baseContext);
@@ -100,6 +102,14 @@ const InstagramProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [highlights, setHighlights] = useState(baseContext.highlights);
   const [reels, setReels] = useState(baseContext.reels);
   const [mode, setMode] = useState(baseContext.mode);
+
+  const resetUser = () => {
+    setIgProfile(null);
+    setStories([]);
+    setPosts(null);
+    setHighlights(null);
+    setReels(null);
+  };
 
   return (
     <InstagramContext.Provider
@@ -116,6 +126,7 @@ const InstagramProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         setReels,
         mode,
         setMode,
+        resetUser,
       }}
     >
       {children}

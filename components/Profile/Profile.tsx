@@ -89,7 +89,7 @@ const Profile: React.FC = () => {
 };
 
 const LoadingProfile: React.FC = () => {
-  const { username } = useParams();
+  const { username }: { username: string } = useParams();
 
   return (
     <div className="flex !w-full animate-pulse flex-col items-center justify-between gap-10 opacity-25 lg:max-w-[720px] lg:flex-row">
@@ -101,7 +101,7 @@ const LoadingProfile: React.FC = () => {
       <div className="w-fit text-center lg:min-w-[400px] lg:text-start">
         <p className="h-8 w-[60%] rounded-md bg-white"></p>
         <div className="mt-2 flex items-center justify-center gap-2 lg:justify-start">
-          {username && <p>@{username}</p>}
+          {username && <p>@{username.replace('%002E', '.')}</p>}
         </div>
         <div className="mt-4 flex justify-center gap-6 lg:justify-start">
           <div className="flex w-16 flex-col items-center gap-1">

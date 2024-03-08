@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
 import Image from 'next/image';
 import MediaPlayer from './MediaPlayer';
-import { FaClone, FaPlay, FaVideo } from 'react-icons/fa6';
+import { FaClone, FaComment, FaHeart, FaPlay, FaVideo } from 'react-icons/fa6';
 import { TbBoxMultiple } from 'react-icons/tb';
 import { LuGalleryHorizontalEnd } from 'react-icons/lu';
 import { BiSolidCarousel } from 'react-icons/bi';
@@ -323,24 +323,82 @@ const Reels: React.FC = () => {
         />
       )}
       {reels.items.slice(0, 12).map((reel, i) => (
-        <div
+        <Reel
           key={i}
-          className={`${reels.items.length > 2 ? 'lg:w-[23%]' : reels.items.length === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full object-cover object-center duration-150 hover:-translate-y-2`}
-        >
-          <Image
-            src={reel.thumbnail}
-            alt={`${igProfile!.username} reel #${i + 1}`}
-            height={640}
-            width={360}
-            className="h-auto w-full cursor-pointer rounded-xl"
-            onClick={() => handleSelect(i)}
-          />
-          <div className="backdrop absolute bottom-4 left-4 flex items-center gap-2 drop-shadow-lg">
-            <FaPlay size={30} />
-            <p className="font-semibold">{formatNumber(reel.play_count)}</p>
-          </div>
-        </div>
+          reelData={{
+            reelCount: reels.items.length,
+            thumbnail: reel.thumbnail,
+            playCount: reel.play_count,
+            commentCount: reel.comment_count,
+            likeCount: reel.like_count,
+          }}
+          onHandleSelect={handleSelect}
+          username={igProfile!.username}
+          index={i}
+        />
       ))}
+    </div>
+  );
+};
+
+interface ReelProps {
+  reelData: {
+    reelCount: number;
+    thumbnail: string;
+    playCount: number;
+    commentCount: number;
+    likeCount: number;
+  };
+  username: string;
+  index: number;
+  onHandleSelect: (i: number) => void;
+}
+
+const Reel: React.FC<ReelProps> = ({
+  reelData,
+  username,
+  index,
+  onHandleSelect,
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const { reelCount, thumbnail, playCount, commentCount, likeCount } = reelData;
+
+  return (
+    <div
+      key={index}
+      className={`${reelCount > 2 ? 'lg:w-[23%]' : reelCount === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full cursor-pointer object-cover object-center`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onHandleSelect(index)}
+    >
+      <Image
+        src={thumbnail}
+        alt={`${username} reel #${index + 1}`}
+        height={640}
+        width={360}
+        className="h-full w-full cursor-pointer rounded-xl object-cover object-center"
+      />
+      <div
+        className={`${isHovered ? 'items-center justify-center bg-gray-950' : 'items-end bg-gradient-to-t from-gray-950 to-transparent to-35%'} absolute top-0 flex h-full w-full rounded-xl bg-opacity-50 p-4 duration-200`}
+      >
+        {isHovered ? (
+          <div className="flex w-full items-center justify-center gap-6">
+            <div className="flex gap-2">
+              <FaHeart size={30} />
+              <p className="font-semibold">{formatNumber(likeCount)}</p>
+            </div>
+            <div className="flex gap-2">
+              <FaComment size={30} />
+              <p className="font-semibold">{formatNumber(commentCount)}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <FaPlay size={30} />
+            <p className="font-semibold">{formatNumber(playCount)}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

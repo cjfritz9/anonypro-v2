@@ -22,7 +22,7 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    router.push(`/user-profile/${username}`);
+    router.push(`/user-profile/${username.replace('.', '%002E')}`);
   };
 
   return (
@@ -68,7 +68,7 @@ export const HeaderSearchBar: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    router.push(`/user-profile/${username}`);
+    router.push(`/user-profile/${username.replace('.', '%002E')}`);
   };
 
   if (pathname === '/') return null;
@@ -77,7 +77,7 @@ export const HeaderSearchBar: React.FC = () => {
     <label className="input input-bordered flex h-12 min-w-0 grow items-center gap-2 overflow-x-clip border-white bg-white focus-within:outline-accent lg:ml-4 lg:h-full">
       <input
         type="text"
-        className="grow truncate placeholder-gray-400 text-black"
+        className="grow truncate text-black placeholder-gray-400"
         placeholder={t('search_bar.placeholder_text')}
         onKeyDown={(e) => handleKeyPress(e)}
         onChange={(e) => handleChange(e)}

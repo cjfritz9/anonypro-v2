@@ -25,6 +25,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
     setPosts,
     setHighlights,
     setReels,
+    resetUser,
     igProfile,
     stories,
     posts,
@@ -33,13 +34,17 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
     mode,
   } = useContext(InstagramContext);
 
+  username = username.replace('%002E', '.');
+
   useEffect(() => {
     (async () => {
       let setFunction: any = setStories;
       let fetchFunction: any = fetchStories.bind(this, username);
 
       if (!igProfile || igProfile.username !== username) {
-        setIgProfile(null);
+        if (igProfile && igProfile.username !== username) {
+          resetUser();
+        }
         const profile = await fetchProfile(username);
 
         setIgProfile(profile);
@@ -50,7 +55,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
       if (mode === 0 && stories.length > 0) return;
 
       if (mode === 1) {
-        if (posts) return;
+        if (posts && igProfile.username === username) return;
 
         setFunction = setPosts;
         fetchFunction = fetchPosts.bind(this, igProfile.id);
@@ -65,7 +70,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
 
       if (mode === 3) {
         if (reels) return;
-        
+
         setFunction = setReels;
         fetchFunction = fetchReels.bind(this, igProfile.id);
       }
@@ -89,6 +94,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
     setStories,
     setPosts,
     setReels,
+    resetUser,
   ]);
 
   return (
