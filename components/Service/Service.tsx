@@ -52,7 +52,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
         return;
       }
 
-      if (mode === 0 && stories.length > 0) return;
+      if (mode === 0 && stories) return;
 
       if (mode === 1) {
         if (posts && igProfile.username === username) return;

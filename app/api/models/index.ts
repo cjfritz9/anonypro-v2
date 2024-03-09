@@ -68,14 +68,15 @@ interface IGPostsResponse extends IGAPIResponse {
     num_results: number;
     more_available: boolean;
     items: {
+      id: string;
       taken_at: number;
       like_count: number;
       comment_count: number;
       product_type: 'carousel_container' | 'clips' | 'feed';
       code: string;
-      caption: {
+      caption?: {
         text: string;
-        media_id: string;
+        media_id?: string;
       };
       image_versions2: {
         candidates: {
@@ -148,9 +149,10 @@ interface IGReelsResponse extends IGAPIResponse {
         taken_at: number;
         like_count: number;
         comment_count: number;
-        play_count: number;
-        product_type: 'carousel_container' | 'clips' | 'feed';
-        caption: {
+        play_count?: number;
+        view_count?: number;
+        product_type: 'igtv' | 'clips' | 'feed';
+        caption?: {
           text: string;
         };
         image_versions2: {
@@ -236,7 +238,7 @@ export class IGClient {
       num_results: data.num_results,
       next_max_id: data.next_max_id,
       items: data.items.map((post) => ({
-        id: post.caption.media_id,
+        id: post.id,
         created_at: post.taken_at,
         like_count: post.like_count,
         comment_count: post.comment_count,
@@ -281,7 +283,7 @@ export class IGClient {
                     url: post.image_versions2.candidates[0].url,
                   },
                 ],
-        caption: post.caption.text,
+        caption: post.caption ? post.caption.text : '',
         shortcode: post.code,
       })),
     };
@@ -326,11 +328,21 @@ export class IGClient {
         created_at: item.taken_at,
         like_count: item.like_count,
         comment_count: item.comment_count,
-        play_count: item.play_count,
-        type: item.product_type === 'clips' ? 'video' : 'image',
+        play_count:
+          item.product_type === 'feed'
+            ? null
+            : item.product_type === 'clips'
+              ? item.play_count
+              : item.view_count,
+        type:
+          item.product_type === 'clips' || item.product_type === 'feed'
+            ? 'video'
+            : 'image',
         thumbnail: item.image_versions2.candidates[0].url,
-        mediaUrl: item.video_versions ? item.video_versions[0].url : item.image_versions2.candidates[0].url,
-        caption: item.caption.text,
+        mediaUrl: item.video_versions
+          ? item.video_versions[0].url
+          : item.image_versions2.candidates[0].url,
+        caption: item.caption ? item.caption.text : '',
         shortcode: item.code,
       })),
     };
@@ -371,8 +383,14 @@ export class IGClient {
 
       const result: IGStoryResponse = await response.json();
 
-      if (result && result.message && result.message.includes('rate limit')) {
-        return { error: 'Rate Limit Exceeded' };
+      if (result && result.message) {
+        if (result.message.includes('rate limit')) {
+          return { error: 'Rate Limit Exceeded' };
+        }
+
+        if (result.message.includes('no active stories')) {
+          return [];
+        }
       }
 
       if (result && result.data) {

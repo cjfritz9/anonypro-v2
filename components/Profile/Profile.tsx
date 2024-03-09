@@ -26,7 +26,7 @@ const Profile: React.FC = () => {
   return (
     <div className="flex !w-full flex-col items-center justify-between gap-10 lg:max-w-[720px] lg:flex-row">
       <div className="h-[250px] w-[250px]">
-        <figure className="flex h-[250px] w-[250px] items-center justify-center rounded-full bg-gradient-to-b from-[#E09B3D] via-[#C21975] to-[#7024C4]">
+        <figure className="flex h-[250px] w-[250px] items-center justify-center rounded-full bg-gradient-to-b from-[#E09B3D] via-[#C21975] via-80% to-[#7024C4]">
           <Image
             priority
             src={igProfile.profilePictureUrl}

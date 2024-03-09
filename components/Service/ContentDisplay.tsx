@@ -29,43 +29,14 @@ interface LightboxSlide {
 }
 
 const ContentDisplay: React.FC = () => {
-  const { igProfile, stories, posts, highlights, reels, mode } =
-    useContext(InstagramContext);
-
-  if (!igProfile) return null;
+  const { mode } = useContext(InstagramContext);
 
   return (
     <div>
-      {mode === 0 ? (
-        stories && stories.length > 0 ? (
-          <Stories />
-        ) : (
-          <NoContent
-            message={`${igProfile.username} has no stories right now`}
-          />
-        )
-      ) : null}
-      {mode === 1 ? (
-        posts && posts.items.length > 0 ? (
-          <Posts />
-        ) : (
-          <NoContent message={`${igProfile.username} has no posts`} />
-        )
-      ) : null}
-      {mode === 2 ? (
-        highlights && highlights.length > 0 ? (
-          <Highlights />
-        ) : (
-          <NoContent message={`${igProfile.username} has no highlights`} />
-        )
-      ) : null}
-      {mode === 3 ? (
-        reels && reels.items.length > 0 ? (
-          <Reels />
-        ) : (
-          <NoContent message={`${igProfile.username} has no reels`} />
-        )
-      ) : null}
+      {mode === 0 && <Stories />}
+      {mode === 1 && <Posts />}
+      {mode === 2 && <Highlights />}
+      {mode === 3 && <Reels />}
     </div>
   );
 };
@@ -74,6 +45,10 @@ const Stories: React.FC = () => {
   const [showMediaPlayer, setShowMediaPlayer] = useState(false);
   const [selection, setSelection] = useState(0);
   const { igProfile, stories } = useContext(InstagramContext);
+
+  if (!stories) {
+    return <LoadingContent />;
+  }
 
   const onHandleSelect = (idx: number) => {
     setSelection(idx);
@@ -101,7 +76,7 @@ const Stories: React.FC = () => {
           slides={slides}
         />
       )}
-      {stories.map((story, i) => (
+      {stories[0] ? stories.map((story, i) => (
         <div
           key={i}
           className={`${stories.length > 2 ? 'lg:w-[23%]' : stories.length === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full object-cover object-center`}
@@ -118,7 +93,9 @@ const Stories: React.FC = () => {
             <FaPlay size={36} className="absolute right-[44%] top-[50%]" />
           )}
         </div>
-      ))}
+      )) : igProfile && (
+        <NoContent message={`${igProfile.username} has no active stories`} />
+      )}
     </div>
   );
 };
@@ -134,8 +111,12 @@ const Posts: React.FC = () => {
   });
   const { igProfile, posts } = useContext(InstagramContext);
 
+  if (!posts) {
+    return <LoadingContent />;
+  }
+
   const onHandleSelect = (idx: number) => {
-    const post = posts!.items[idx];
+    const post = posts.items[idx];
     const formattedSlides: LightboxSlide[] = post.media.map((media) => ({
       type: media.type,
       autoPlay: media.type === 'video',
@@ -162,24 +143,13 @@ const Posts: React.FC = () => {
           sidePanelData={postData}
         />
       )}
-      {posts &&
-        posts.items.slice(0, 6).map((post, i) => (
-          <div
-            key={i}
-            className="relative h-[420px] w-full bg-opacity-25 lg:w-[32%]"
-          >
-            {post.type === 'image' ? (
-              <Image
-                key={i}
-                src={post.thumbnail}
-                alt={`${igProfile!.username} post #${i + 1}`}
-                height={640}
-                width={360}
-                className="h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center"
-                onClick={() => onHandleSelect(i)}
-              />
-            ) : post.type === 'video' ? (
-              <>
+      {posts.items[0]
+        ? posts.items.slice(0, 6).map((post, i) => (
+            <div
+              key={i}
+              className="relative h-[420px] w-full bg-opacity-25 lg:w-[32%]"
+            >
+              {post.type === 'image' ? (
                 <Image
                   key={i}
                   src={post.thumbnail}
@@ -189,31 +159,45 @@ const Posts: React.FC = () => {
                   className="h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center"
                   onClick={() => onHandleSelect(i)}
                 />
-                <FaVideo
-                  size={32}
-                  className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
-                />
-              </>
-            ) : (
-              <>
-                <Image
-                  key={i}
-                  src={post.thumbnail}
-                  alt={`${igProfile!.username} post #${i + 1}`}
-                  height={1080}
-                  width={1920}
-                  className="h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center"
-                  onClick={() => onHandleSelect(i)}
-                />
-                <BiSolidCarousel
-                  fill="white"
-                  size={32}
-                  className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
-                />
-              </>
-            )}
-          </div>
-        ))}
+              ) : post.type === 'video' ? (
+                <>
+                  <Image
+                    key={i}
+                    src={post.thumbnail}
+                    alt={`${igProfile!.username} post #${i + 1}`}
+                    height={640}
+                    width={360}
+                    className="h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center"
+                    onClick={() => onHandleSelect(i)}
+                  />
+                  <FaVideo
+                    size={32}
+                    className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
+                  />
+                </>
+              ) : (
+                <>
+                  <Image
+                    key={i}
+                    src={post.thumbnail}
+                    alt={`${igProfile!.username} post #${i + 1}`}
+                    height={1080}
+                    width={1920}
+                    className="h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center"
+                    onClick={() => onHandleSelect(i)}
+                  />
+                  <BiSolidCarousel
+                    fill="white"
+                    size={32}
+                    className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
+                  />
+                </>
+              )}
+            </div>
+          ))
+        : igProfile && (
+            <NoContent message={`${igProfile.username} has no posts`} />
+          )}
     </div>
   );
 };
@@ -222,6 +206,10 @@ const Highlights: React.FC = () => {
   const [showMediaPlayer, setShowMediaPlayer] = useState(false);
   const { igProfile, highlights } = useContext(InstagramContext);
   const [slides, setSlides] = useState<LightboxSlide[]>([]);
+
+  if (!highlights) {
+    return <LoadingContent />;
+  }
 
   const handleSelect = async (id: string) => {
     const highlight = await fetchHighlightById(id);
@@ -256,25 +244,29 @@ const Highlights: React.FC = () => {
           slides={slides}
         />
       )}
-      {highlights?.map((highlight, i) => (
-        <div
-          key={i}
-          className="relative h-[150px] w-[150px] cursor-pointer bg-opacity-25"
-        >
-          <Image
-            key={i}
-            src={highlight.imageUrl}
-            alt={`${igProfile!.username} highlight #${i + 1}`}
-            height={150}
-            width={150}
-            className=" h-full max-h-[150px] w-full rounded-full object-cover object-center"
-            onClick={() => handleSelect(highlight.id)}
-          />
-          <div className="mt-2 text-center text-sm font-semibold">
-            <p>{highlight.title}</p>
-          </div>
-        </div>
-      ))}
+      {highlights.length > 0
+        ? highlights.map((highlight, i) => (
+            <div
+              key={i}
+              className="relative h-[150px] w-[150px] cursor-pointer bg-opacity-25"
+            >
+              <Image
+                key={i}
+                src={highlight.imageUrl}
+                alt={`${igProfile!.username} highlight #${i + 1}`}
+                height={150}
+                width={150}
+                className=" h-full max-h-[150px] w-full rounded-full object-cover object-center"
+                onClick={() => handleSelect(highlight.id)}
+              />
+              <div className="mt-2 text-center text-sm font-semibold">
+                <p>{highlight.title}</p>
+              </div>
+            </div>
+          ))
+        : igProfile && (
+            <NoContent message={`${igProfile.username} has no highlights`} />
+          )}
     </div>
   );
 };
@@ -285,14 +277,9 @@ const Reels: React.FC = () => {
   const [slides, setSlides] = useState<LightboxSlide[]>([]);
   const { igProfile, reels } = useContext(InstagramContext);
 
-  if (!reels) return;
-
-  const multiSlideData = reels.items.map((reel) => ({
-    createdAt: reel.created_at,
-    caption: reel.caption,
-    likeCount: reel.like_count,
-    commentCount: reel.comment_count,
-  }));
+  if (!reels) {
+    return <LoadingContent />;
+  }
 
   const handleSelect = async (idx: number) => {
     setSelection(idx);
@@ -312,6 +299,13 @@ const Reels: React.FC = () => {
     setShowMediaPlayer(true);
   };
 
+  const multiSlideData = reels.items.map((reel) => ({
+    createdAt: reel.created_at,
+    caption: reel.caption,
+    likeCount: reel.like_count,
+    commentCount: reel.comment_count,
+  }));
+
   return (
     <div className="flex flex-wrap justify-evenly gap-4">
       {showMediaPlayer && (
@@ -322,21 +316,25 @@ const Reels: React.FC = () => {
           multiSidePanelData={multiSlideData}
         />
       )}
-      {reels.items.slice(0, 12).map((reel, i) => (
-        <Reel
-          key={i}
-          reelData={{
-            reelCount: reels.items.length,
-            thumbnail: reel.thumbnail,
-            playCount: reel.play_count,
-            commentCount: reel.comment_count,
-            likeCount: reel.like_count,
-          }}
-          onHandleSelect={handleSelect}
-          username={igProfile!.username}
-          index={i}
-        />
-      ))}
+      {reels.items[0]
+        ? reels.items.slice(0, 12).map((reel, i) => (
+            <Reel
+              key={i}
+              reelData={{
+                reelCount: reels.items.length,
+                thumbnail: reel.thumbnail,
+                playCount: reel.play_count,
+                commentCount: reel.comment_count,
+                likeCount: reel.like_count,
+              }}
+              onHandleSelect={handleSelect}
+              username={igProfile!.username}
+              index={i}
+            />
+          ))
+        : igProfile && (
+            <NoContent message={`${igProfile.username} has no reels`} />
+          )}
     </div>
   );
 };
@@ -366,7 +364,7 @@ const Reel: React.FC<ReelProps> = ({
   return (
     <div
       key={index}
-      className={`${reelCount > 2 ? 'lg:w-[23%]' : reelCount === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full cursor-pointer object-cover object-center`}
+      className={`${reelCount > 2 ? 'lg:w-[300px]' : reelCount === 2 ? 'lg:w-[300px]' : ''} relative h-auto w-full cursor-pointer object-cover object-center`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onHandleSelect(index)}
@@ -382,25 +380,31 @@ const Reel: React.FC<ReelProps> = ({
         className={`${isHovered ? 'items-center justify-center bg-gray-950' : 'items-end bg-gradient-to-t from-gray-950 to-transparent to-35%'} absolute top-0 flex h-full w-full rounded-xl bg-opacity-50 p-4 duration-200`}
       >
         {isHovered ? (
-          <div className="flex w-full items-center justify-center gap-6">
-            <div className="flex gap-2">
+          <div className="flex w-full items-center justify-center gap-8">
+            <div className="flex items-center gap-2">
               <FaHeart size={30} />
               <p className="font-semibold">{formatNumber(likeCount)}</p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <FaComment size={30} />
               <p className="font-semibold">{formatNumber(commentCount)}</p>
             </div>
           </div>
         ) : (
-          <div className="flex items-center gap-2">
-            <FaPlay size={30} />
-            <p className="font-semibold">{formatNumber(playCount)}</p>
-          </div>
+          playCount && (
+            <div className="flex items-center gap-2">
+              <FaPlay size={30} />
+              <p className="font-semibold">{formatNumber(playCount)}</p>
+            </div>
+          )
         )}
       </div>
     </div>
   );
+};
+
+const LoadingContent: React.FC = () => {
+  return <span className="loading loading-bars w-40 text-accent"></span>;
 };
 
 const NoContent: React.FC<NoContentProps> = ({ message }) => {

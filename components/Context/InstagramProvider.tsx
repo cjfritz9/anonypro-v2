@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 interface Context {
   igProfile: {
@@ -20,7 +20,7 @@ interface Context {
     type: 'image' | 'video';
     thumbnailUrl: string;
     mediaUrl: string;
-  }[];
+  }[] | null;
   setStories: React.Dispatch<React.SetStateAction<Context['stories']>>;
   posts: {
     more_available: boolean;
@@ -80,7 +80,7 @@ interface Context {
 const baseContext: Context = {
   igProfile: null,
   setIgProfile: (profile) => undefined,
-  stories: [],
+  stories: null,
   setStories: (stories) => undefined,
   posts: null,
   setPosts: (posts) => undefined,
@@ -105,7 +105,7 @@ const InstagramProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const resetUser = () => {
     setIgProfile(null);
-    setStories([]);
+    setStories(null);
     setPosts(null);
     setHighlights(null);
     setReels(null);
