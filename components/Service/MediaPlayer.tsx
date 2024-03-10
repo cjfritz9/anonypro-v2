@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Lightbox, {
-  LightboxDefaultProps,
+
   useLightboxState,
 } from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
@@ -85,6 +85,7 @@ const MediaPlayer: React.FC<Props> = ({
 
 interface SidePanelProps {
   type: 'image' | 'video';
+  // mediaUrl: string;
   data?: {
     createdAt: number;
     caption: string;
@@ -96,13 +97,16 @@ interface SidePanelProps {
 
 const SidePanel: React.FC<SidePanelProps> = ({
   type,
+  // mediaUrl,
   data,
   multiSlideData,
 }) => {
   const { igProfile } = useContext(InstagramContext);
   const { i18n } = useTranslation();
   const locale = i18n.language;
-  const { currentIndex: i } = useLightboxState();
+  const { currentIndex: i, currentSlide } = useLightboxState();
+
+  console.log(currentSlide);
 
   if (multiSlideData) {
     data = multiSlideData[i];
@@ -120,7 +124,25 @@ const SidePanel: React.FC<SidePanelProps> = ({
     });
   };
 
-  if (!data) return null;
+  if (!data || !currentSlide) return null;
+
+  const handleDownload = async () => {
+    const originResponse = await fetch(
+      (currentSlide.type === 'video'
+        ? currentSlide.sources[0].src
+        : currentSlide.src) + '?nocors=true'
+    );
+
+    if (originResponse && originResponse.ok) {
+      const link = document.createElement('a');
+      link.href = `/api/download?url=${currentSlide.type === 'video' ? currentSlide.sources[0].src : currentSlide.src}`;
+      link.setAttribute('download', '');
+
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+    }
+  };
 
   return (
     <div className="flex w-full max-w-md flex-col overflow-y-scroll border-t border-gray-700 bg-black lg:h-full lg:border-l lg:border-t-0">
@@ -159,7 +181,11 @@ const SidePanel: React.FC<SidePanelProps> = ({
         <p>{data.commentCount.toLocaleString(locale)}</p>
       </div>
       <footer className="flex gap-4 border-t border-gray-700 p-4">
-        <button className="btn w-28 rounded-none">Download</button>
+        {/* <a download href={`/api/download?url=${currentSlide.type === 'video' ? currentSlide.sources[0].src : currentSlide.src}`}> */}
+        <button className="btn w-28 rounded-none" onClick={handleDownload}>
+          Download
+        </button>
+        {/* </a> */}
         <button className="btn btn-success w-28 rounded-none">Boost</button>
       </footer>
     </div>

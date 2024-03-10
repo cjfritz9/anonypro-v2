@@ -285,6 +285,7 @@ const Reels: React.FC = () => {
     setSelection(idx);
 
     const formattedSlides: LightboxSlide[] = reels.items.map((reel) => ({
+      code: reel.shortcode,
       type: reel.type,
       src: reel.thumbnail,
       autoPlay: true,
