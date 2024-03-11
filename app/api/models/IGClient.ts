@@ -1,4 +1,3 @@
-import { Tracing } from 'trace_events';
 import config from '../config';
 
 // INTERFACES
@@ -509,6 +508,45 @@ export class IGClient {
 
       if (result && result.data) {
         return this.formatReels(result);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  public getDownloadableMediaByShortcode = async (
+    code: string,
+    index?: number
+  ) => {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/media_download_by_shortcode/${code}`,
+        {
+          headers: this.headers,
+        }
+      );
+      const result = await response.json();
+
+      if (result && result.data) {
+        const { data } = result;
+
+        if (data.child_medias_hd && index) {
+          const mediaResponse = await fetch(data.child_medias_hd[index].url, {
+            cache: 'no-cache',
+          });
+
+          if (mediaResponse && mediaResponse.ok) {
+            return mediaResponse;
+          }
+        } else if (data.main_media_hd) {
+          const mediaResponse = await fetch(data.main_media_hd, {
+            cache: 'no-cache',
+          });
+
+          if (mediaResponse && mediaResponse.ok) {
+            return mediaResponse;
+          }
+        }
       }
     } catch (error) {
       console.error(error);

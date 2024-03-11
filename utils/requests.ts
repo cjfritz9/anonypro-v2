@@ -97,8 +97,6 @@ export const fetchHighlightById = cache(
     try {
       const result = await response.json();
 
-      console.log({ result });
-
       return result;
     } catch (error) {
       console.error(error);

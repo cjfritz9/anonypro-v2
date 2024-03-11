@@ -2,10 +2,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import Lightbox, {
-
-  useLightboxState,
-} from 'yet-another-react-lightbox';
+import Lightbox, { useLightboxState } from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import { InstagramContext } from '../Context/InstagramProvider';
 import { Video } from 'yet-another-react-lightbox/plugins';
@@ -13,6 +10,7 @@ import Image from 'next/image';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
 import { FaRegComment, FaRegHeart } from 'react-icons/fa6';
 import { useTranslation } from 'react-i18next';
+import { IoCheckmarkCircle } from 'react-icons/io5';
 
 interface LightboxSlide {
   type: 'image' | 'video';
@@ -24,6 +22,7 @@ interface LightboxSlide {
     src: string;
     type: 'video/mp4';
   }[];
+  code?: string;
 }
 
 interface Props {
@@ -52,7 +51,10 @@ const MediaPlayer: React.FC<Props> = ({
       index={selectedIndex}
       plugins={[Video]}
       close={() => onShowMediaPlayer(false)}
-      carousel={{ preload: 1 }}
+      carousel={{
+        finite: slides.length === 1,
+        preload: 1,
+      }}
       animation={{
         swipe: 0,
       }}
@@ -101,12 +103,12 @@ const SidePanel: React.FC<SidePanelProps> = ({
   data,
   multiSlideData,
 }) => {
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const { igProfile } = useContext(InstagramContext);
   const { i18n } = useTranslation();
   const locale = i18n.language;
   const { currentIndex: i, currentSlide } = useLightboxState();
-
-  console.log(currentSlide);
 
   if (multiSlideData) {
     data = multiSlideData[i];
@@ -126,17 +128,30 @@ const SidePanel: React.FC<SidePanelProps> = ({
 
   if (!data || !currentSlide) return null;
 
-  const handleDownload = async () => {
-    const originResponse = await fetch(
-      (currentSlide.type === 'video'
-        ? currentSlide.sources[0].src
-        : currentSlide.src) + '?nocors=true'
-    );
+  const hideDownloadingMessage = () => {
+    setIsDownloading(false);
+  };
 
-    if (originResponse && originResponse.ok) {
+  const handleToast = () => {
+    setShowToast(true);
+
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+  };
+
+  const handleDownload = async () => {
+    //@ts-ignore
+    if (currentSlide?.code) {
+      setIsDownloading(true);
       const link = document.createElement('a');
-      link.href = `/api/download?url=${currentSlide.type === 'video' ? currentSlide.sources[0].src : currentSlide.src}`;
-      link.setAttribute('download', '');
+      //@ts-ignorev
+      link.href = `/api/download/${currentSlide.code}${i > 0 ? `?index=${i}` : ''}`;
+      link.setAttribute('style', 'display: none;');
+      //@ts-ignore
+      link.setAttribute('download', `${currentSlide.code}_${i + 1}`);
+      window.onblur = hideDownloadingMessage;
+      handleToast();
 
       document.body.appendChild(link);
       link.click();
@@ -180,13 +195,27 @@ const SidePanel: React.FC<SidePanelProps> = ({
         <FaRegComment />
         <p>{data.commentCount.toLocaleString(locale)}</p>
       </div>
-      <footer className="flex gap-4 border-t border-gray-700 p-4">
-        {/* <a download href={`/api/download?url=${currentSlide.type === 'video' ? currentSlide.sources[0].src : currentSlide.src}`}> */}
-        <button className="btn w-28 rounded-none" onClick={handleDownload}>
-          Download
-        </button>
-        {/* </a> */}
-        <button className="btn btn-success w-28 rounded-none">Boost</button>
+      <footer className="border-t border-gray-700 p-4">
+        <div className="flex gap-4">
+          <button className="btn w-28 rounded-none" onClick={handleDownload}>
+            {isDownloading ? (
+              <span className="loading loading-spinner" />
+            ) : (
+              <p>Download</p>
+            )}
+          </button>
+          <button className="btn btn-success w-28 rounded-none">Boost</button>
+        </div>
+        {showToast && (
+          <div className="toast toast-center toast-top lg:toast-bottom">
+            <div className="alert alert-info">
+              <div>
+                <p className="py-2">Getting the highest available quality</p>
+                <p className="py-2">Your download will begin shortly</p>
+              </div>
+            </div>
+          </div>
+        )}
       </footer>
     </div>
   );

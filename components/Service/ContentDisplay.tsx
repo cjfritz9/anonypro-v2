@@ -26,6 +26,7 @@ interface LightboxSlide {
     type: 'video/mp4';
   }[];
   caption?: string;
+  code?: string;
 }
 
 const ContentDisplay: React.FC = () => {
@@ -76,26 +77,30 @@ const Stories: React.FC = () => {
           slides={slides}
         />
       )}
-      {stories[0] ? stories.map((story, i) => (
-        <div
-          key={i}
-          className={`${stories.length > 2 ? 'lg:w-[23%]' : stories.length === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full object-cover object-center`}
-        >
-          <Image
-            src={story.thumbnailUrl}
-            alt={`${igProfile!.username} story #${i + 1}`}
-            height={640}
-            width={360}
-            className="h-auto w-full cursor-pointer rounded-xl duration-150 hover:-translate-y-2"
-            onClick={() => onHandleSelect(i)}
-          />
-          {story.type === 'video' && (
-            <FaPlay size={36} className="absolute right-[44%] top-[50%]" />
+      {stories[0]
+        ? stories.map((story, i) => (
+            <div
+              key={i}
+              className={`${stories.length > 2 ? 'lg:w-[23%]' : stories.length === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full object-cover object-center`}
+            >
+              <Image
+                src={story.thumbnailUrl}
+                alt={`${igProfile!.username} story #${i + 1}`}
+                height={640}
+                width={360}
+                className="h-auto w-full cursor-pointer rounded-xl duration-150 hover:-translate-y-2"
+                onClick={() => onHandleSelect(i)}
+              />
+              {story.type === 'video' && (
+                <FaPlay size={36} className="absolute right-[44%] top-[50%]" />
+              )}
+            </div>
+          ))
+        : igProfile && (
+            <NoContent
+              message={`${igProfile.username} has no active stories`}
+            />
           )}
-        </div>
-      )) : igProfile && (
-        <NoContent message={`${igProfile.username} has no active stories`} />
-      )}
     </div>
   );
 };
@@ -118,6 +123,7 @@ const Posts: React.FC = () => {
   const onHandleSelect = (idx: number) => {
     const post = posts.items[idx];
     const formattedSlides: LightboxSlide[] = post.media.map((media) => ({
+      code: post.shortcode,
       type: media.type,
       autoPlay: media.type === 'video',
       src: media.url,
@@ -246,19 +252,18 @@ const Highlights: React.FC = () => {
       )}
       {highlights.length > 0
         ? highlights.map((highlight, i) => (
-            <div
-              key={i}
-              className="relative h-[150px] w-[150px] cursor-pointer bg-opacity-25"
-            >
-              <Image
-                key={i}
-                src={highlight.imageUrl}
-                alt={`${igProfile!.username} highlight #${i + 1}`}
-                height={150}
-                width={150}
-                className=" h-full max-h-[150px] w-full rounded-full object-cover object-center"
-                onClick={() => handleSelect(highlight.id)}
-              />
+            <div key={i}>
+              <div className="relative h-[150px] w-[150px] cursor-pointer bg-opacity-25">
+                <Image
+                  key={i}
+                  src={highlight.imageUrl}
+                  alt={`${igProfile!.username} highlight #${i + 1}`}
+                  height={150}
+                  width={150}
+                  className=" h-full max-h-[150px] w-full rounded-full object-cover object-center"
+                  onClick={() => handleSelect(highlight.id)}
+                />
+              </div>
               <div className="mt-2 text-center text-sm font-semibold">
                 <p>{highlight.title}</p>
               </div>
