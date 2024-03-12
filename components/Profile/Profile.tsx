@@ -101,7 +101,7 @@ const LoadingProfile: React.FC = () => {
       <div className="w-fit text-center lg:min-w-[400px] lg:text-start">
         <p className="h-8 w-[60%] rounded-md bg-white"></p>
         <div className="mt-2 flex items-center justify-center gap-2 lg:justify-start">
-          {username && <p>@{username.replaceAll('*', '.')}</p>}
+          {username && <p>@{username.replaceAll('.', '.')}</p>}
         </div>
         <div className="mt-4 flex justify-center gap-6 lg:justify-start">
           <div className="flex w-16 flex-col items-center gap-1">

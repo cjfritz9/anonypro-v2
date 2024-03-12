@@ -145,6 +145,7 @@ interface IGReelsResponse extends IGAPIResponse {
   data: {
     items: {
       media: {
+        pk: string;
         id: string;
         code: string;
         taken_at: number;
@@ -342,7 +343,7 @@ export class IGClient {
       more_available: data.paging_info.more_available,
       next_max_id: data.paging_info.max_id,
       items: data.items.map(({ media: item }) => ({
-        id: item.id,
+        id: item.pk,
         created_at: item.taken_at,
         like_count: item.like_count,
         comment_count: item.comment_count,
