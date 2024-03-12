@@ -34,7 +34,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
     mode,
   } = useContext(InstagramContext);
 
-  username = username.replace('%002E', '.');
+  username = username.replaceAll('%002E', '.');
 
   useEffect(() => {
     (async () => {

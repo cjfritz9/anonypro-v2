@@ -16,6 +16,7 @@ interface NoContentProps {
 }
 
 interface LightboxSlide {
+  id: string;
   type: 'image' | 'video';
   height?: number;
   width?: number;
@@ -58,6 +59,7 @@ const Stories: React.FC = () => {
   };
 
   const slides: LightboxSlide[] = stories.map((story) => ({
+    id: story.id,
     type: story.type,
     src: story.thumbnailUrl,
     autoPlay: true,
@@ -68,9 +70,12 @@ const Stories: React.FC = () => {
       },
     ],
     download: {
-      url: `/api/download/proxy?url=${story.mediaUrl}`,
+      url: `/api/download/proxy?origin=${story.mediaUrl ?? story.thumbnailUrl}`,
+      filename: story.id,
     },
   }));
+
+  console.log(slides);
 
   return (
     <div className="flex flex-wrap justify-evenly gap-4">
@@ -127,7 +132,7 @@ const Posts: React.FC = () => {
   const onHandleSelect = (idx: number) => {
     const post = posts.items[idx];
     const formattedSlides: LightboxSlide[] = post.media.map((media) => ({
-      code: post.shortcode,
+      id: media.id,
       type: media.type,
       autoPlay: media.type === 'video',
       src: media.url,
@@ -228,6 +233,7 @@ const Highlights: React.FC = () => {
     if (highlight) {
       const slidesFromHighlight: LightboxSlide[] = highlight.items.map(
         (item) => ({
+          id: item.id,
           type: item.type,
           src: item.imageUrl,
           sources: item.videoUrl
@@ -239,6 +245,10 @@ const Highlights: React.FC = () => {
               ]
             : undefined,
           autoPlay: true,
+          download: {
+            url: `/api/download/proxy?origin=${item.videoUrl ?? item.imageUrl}`,
+            filename: item.id,
+          },
         })
       );
       setSlides(slidesFromHighlight);
@@ -295,6 +305,7 @@ const Reels: React.FC = () => {
     setSelection(idx);
 
     const formattedSlides: LightboxSlide[] = reels.items.map((reel) => ({
+      id: reel.id,
       download: false,
       code: reel.shortcode,
       type: reel.type,

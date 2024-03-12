@@ -12,6 +12,7 @@ import { FaRegComment, FaRegHeart } from 'react-icons/fa6';
 import { useTranslation } from 'react-i18next';
 
 interface LightboxSlide {
+  id: string;
   type: 'image' | 'video';
   height?: number;
   width?: number;
@@ -46,7 +47,7 @@ const MediaPlayer: React.FC<Props> = ({
   selectedIndex,
   multiSidePanelData,
 }) => {
-  console.log(slides)
+  console.log(slides);
   return (
     <Lightbox
       open
@@ -73,7 +74,10 @@ const MediaPlayer: React.FC<Props> = ({
         },
       }}
       render={{
-        iconDownload: sidePanelData ? () => null : undefined,       
+        iconDownload:
+          sidePanelData || multiSidePanelData
+            ? () => null
+            : () => <DownloadButton />,
         slideFooter: ({ slide }) => (
           <SidePanel
             data={sidePanelData}
@@ -106,8 +110,6 @@ const SidePanel: React.FC<SidePanelProps> = ({
   data,
   multiSlideData,
 }) => {
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [showToast, setShowToast] = useState(false);
   const { igProfile } = useContext(InstagramContext);
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -131,39 +133,8 @@ const SidePanel: React.FC<SidePanelProps> = ({
 
   if (!data || !currentSlide) return null;
 
-  const hideDownloadingMessage = () => {
-    setIsDownloading(false);
-  };
-
-  const handleToast = () => {
-    setShowToast(true);
-
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000);
-  };
-
-  const handleDownload = async () => {
-    //@ts-ignore
-    if (currentSlide?.code) {
-      setIsDownloading(true);
-      const link = document.createElement('a');
-      //@ts-ignorev
-      link.href = `/api/download/${currentSlide.code}${i > 0 ? `?index=${i}` : ''}`;
-      link.setAttribute('style', 'display: none;');
-      //@ts-ignore
-      link.setAttribute('download', `${currentSlide.code}_${i + 1}`);
-      window.onblur = hideDownloadingMessage;
-      handleToast();
-
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode?.removeChild(link);
-    }
-  };
-
   return (
-    <div className="flex w-full max-w-md flex-col overflow-y-scroll border-t border-gray-700 bg-black lg:h-full lg:border-l lg:border-t-0">
+    <div className="flex w-full max-w-md flex-col overflow-y-auto border-t border-gray-700 bg-black lg:h-full lg:border-l lg:border-t-0">
       <header className="flex items-center border-b border-gray-700 p-4">
         <figure className="flex h-[44px] w-[44px] items-center justify-center rounded-full bg-gradient-to-b from-[#E09B3D] via-[#C21975] to-[#7024C4]">
           <Image
@@ -200,27 +171,88 @@ const SidePanel: React.FC<SidePanelProps> = ({
       </div>
       <footer className="border-t border-gray-700 p-4">
         <div className="flex gap-4">
-          <button className="btn w-28 rounded-none" onClick={handleDownload}>
-            {isDownloading ? (
-              <span className="loading loading-spinner" />
-            ) : (
-              <p>Download</p>
-            )}
-          </button>
+          <DownloadButton multiStepDownload />
           <button className="btn btn-success w-28 rounded-none">Boost</button>
         </div>
-        {showToast && (
-          <div className="toast toast-center toast-top lg:toast-bottom">
-            <div className="alert alert-info">
-              <div>
-                <p className="py-2">Getting the highest available quality</p>
-                <p className="py-2">Your download will begin shortly</p>
-              </div>
-            </div>
-          </div>
-        )}
       </footer>
     </div>
+  );
+};
+
+interface DownloadButtonProps {
+  multiStepDownload?: boolean;
+}
+
+const DownloadButton: React.FC<DownloadButtonProps> = ({
+  multiStepDownload,
+}) => {
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const { currentIndex: i, currentSlide } = useLightboxState();
+
+  const hideDownloadingMessage = () => {
+    setIsDownloading(false);
+  };
+
+  const handleToast = () => {
+    setShowToast(true);
+
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+  };
+
+  const handleDownload = async () => {
+    //@ts-ignore
+    if (currentSlide?.id) {
+      setIsDownloading(true);
+      window.onblur = hideDownloadingMessage;
+      if (!multiStepDownload) return;
+      // const link = document.createElement('a');
+      //@ts-ignore
+      // link.href = `/api/download/${currentSlide.id}`;
+      // link.setAttribute('style', 'display: none;');
+      // link.setAttribute('download', '');
+      // handleToast();
+
+      // document.body.appendChild(link);
+      // link.click();
+      // link.parentNode?.removeChild(link);
+      fetch(`/api/download/${currentSlide.id}`)
+        .then((response) => response.blob())
+        .then((blob) => {
+          setIsDownloading(false);
+          const blobURL = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = blobURL;
+          a.style.cssText = 'display: none';
+          //@ts-ignore
+          a.download = currentSlide.id;
+          document.body.appendChild(a);
+          a.click();
+        });
+    }
+  };
+  return (
+    <>
+      <button className="btn w-28 rounded-none" onClick={handleDownload}>
+        {isDownloading ? (
+          <span className="loading loading-spinner" />
+        ) : (
+          <p>Download</p>
+        )}
+      </button>
+      {showToast && (
+        <div className="toast toast-center toast-top lg:toast-bottom">
+          <div className="alert alert-info">
+            <div>
+              <p className="py-2">Getting the highest available quality</p>
+              <p className="py-2">Your download will begin shortly</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

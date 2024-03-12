@@ -6,6 +6,7 @@ interface Highlight {
   coverImage: string;
   created_at: number;
   items: {
+    id: string;
     type: 'image' | 'video';
     imageUrl: string;
     videoUrl: string | null;

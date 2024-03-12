@@ -1,19 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { APIResponse } from '../../utils';
+import { igClient } from '../../clients';
 
 export const GET = async (req: NextRequest) => {
   try {
-    const url = req.nextUrl.searchParams.get('url');
+    const origin = req.nextUrl.searchParams.get('origin');
+    if (origin) {
+      const formattedOrigin = origin.slice(origin.indexOf('/?url=') + 6);
+      const mediaResponse = await fetch(formattedOrigin, {
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+        },
+      });
 
-    if (url) {
-      const originResponse = await fetch(url);
-
-      if (originResponse && originResponse.ok) {
-        return originResponse;
+      if (mediaResponse && mediaResponse.ok) {
+        return mediaResponse;
       } else {
-        console.error(originResponse)
-        console.error(await originResponse.text())
+        console.log(await mediaResponse?.text());
       }
     }
+
+    // return NextResponse.json(new APIResponse('ok', null, null));
   } catch (error) {
     console.error(error);
   }

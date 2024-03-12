@@ -67,7 +67,7 @@ interface IGPostsResponse extends IGAPIResponse {
     num_results: number;
     more_available: boolean;
     items: {
-      id: string;
+      pk: string;
       taken_at: number;
       like_count: number;
       comment_count: number;
@@ -86,6 +86,7 @@ interface IGPostsResponse extends IGAPIResponse {
       };
       carousel_media_count?: number;
       carousel_media?: {
+        pk: string;
         image_versions2: {
           candidates: {
             height: number;
@@ -133,6 +134,7 @@ interface IGHighlightByIdResponse extends IGAPIResponse {
     cover_media: string;
     created_at: number;
     items: {
+      media_id: string;
       image_hd: string;
       video_hd: string | null;
     }[];
@@ -172,6 +174,17 @@ interface IGReelsResponse extends IGAPIResponse {
       max_id: string;
       more_available: boolean;
     };
+  };
+}
+
+interface IGDownloadResponse extends IGAPIResponse {
+  data: {
+    main_media_hd: string;
+    main_media_type: string;
+    child_medias_hd?: {
+      url: string;
+      type: string;
+    }[];
   };
 }
 
@@ -221,6 +234,7 @@ export class IGClient {
   private formatStories = (rawStories: IGStoryResponse) => {
     const { data } = rawStories;
     return data.stories.map((story) => ({
+      id: story.pk,
       type: story.video_versions ? 'video' : 'image',
       thumbnailUrl: story.image_versions2.candidates[0].url,
       mediaUrl: story.video_versions
@@ -237,7 +251,7 @@ export class IGClient {
       num_results: data.num_results,
       next_max_id: data.next_max_id,
       items: data.items.map((post) => ({
-        id: post.id,
+        id: post.pk,
         created_at: post.taken_at,
         like_count: post.like_count,
         comment_count: post.comment_count,
@@ -252,6 +266,7 @@ export class IGClient {
           post.product_type === 'clips'
             ? [
                 {
+                  id: post.pk,
                   type: 'video',
                   height: post.video_versions![0].height,
                   width: post.video_versions![0].width,
@@ -262,12 +277,14 @@ export class IGClient {
               ? post.carousel_media!.map((media) =>
                   media.video_versions
                     ? {
+                        id: media.pk,
                         type: 'video',
                         height: media.video_versions[0].height,
                         width: media.video_versions[0].width,
                         url: media.video_versions[0].url,
                       }
                     : {
+                        id: media.pk,
                         type: 'image',
                         height: media.image_versions2.candidates[0].height,
                         width: media.image_versions2.candidates[0].width,
@@ -276,6 +293,7 @@ export class IGClient {
                 )
               : [
                   {
+                    id: post.pk,
                     type: 'image',
                     height: post.image_versions2.candidates[0].height,
                     width: post.image_versions2.candidates[0].width,
@@ -309,6 +327,7 @@ export class IGClient {
       coverImage: data.cover_media,
       created_at: data.created_at,
       items: data.items.map((item) => ({
+        id: item.media_id,
         type: item.video_hd ? 'video' : 'image',
         imageUrl: item.image_hd,
         videoUrl: item.video_hd,
@@ -381,8 +400,6 @@ export class IGClient {
       );
 
       const result: IGStoryResponse = await response.json();
-
-      console.log(result.data)
 
       if (result && result.message) {
         if (result.message.includes('rate limit')) {
@@ -516,38 +533,21 @@ export class IGClient {
     }
   };
 
-  public getDownloadableMediaByShortcode = async (
-    code: string,
-    index?: number
-  ) => {
+  public getDownloadableMediaById = async (id: string) => {
     try {
-      const response = await fetch(
-        `${this.baseUrl}/media_download_by_shortcode/${code}`,
-        {
-          headers: this.headers,
-        }
-      );
+      const response = await fetch(`${this.baseUrl}/media_download/${id}`, {
+        headers: this.headers,
+      });
       const result = await response.json();
 
       if (result && result.data) {
-        const { data } = result;
+        const { data }: IGDownloadResponse = result;
+        const originResponse = await fetch(data.main_media_hd, {
+          cache: 'no-cache',
+        });
 
-        if (data.child_medias_hd && index) {
-          const mediaResponse = await fetch(data.child_medias_hd[index].url, {
-            cache: 'no-cache',
-          });
-
-          if (mediaResponse && mediaResponse.ok) {
-            return mediaResponse;
-          }
-        } else if (data.main_media_hd) {
-          const mediaResponse = await fetch(data.main_media_hd, {
-            cache: 'no-cache',
-          });
-
-          if (mediaResponse && mediaResponse.ok) {
-            return mediaResponse;
-          }
+        if (originResponse && originResponse.ok) {
+          return originResponse;
         }
       }
     } catch (error) {

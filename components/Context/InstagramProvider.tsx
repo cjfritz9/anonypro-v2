@@ -17,6 +17,7 @@ interface Context {
   } | null;
   setIgProfile: React.Dispatch<React.SetStateAction<Context['igProfile']>>;
   stories: {
+    id: string;
     type: 'image' | 'video';
     thumbnailUrl: string;
     mediaUrl: string;
@@ -27,7 +28,6 @@ interface Context {
     num_results: number;
     next_max_id: string;
     items: {
-      id: string;
       shortcode: string;
       thumbnail: string;
       created_at: number;
@@ -35,6 +35,7 @@ interface Context {
       comment_count: number;
       type: 'image' | 'video' | 'album';
       media: {
+        id: string;
         type: 'image' | 'video';
         height: number;
         width: number;
