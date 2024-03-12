@@ -5,12 +5,11 @@ import { createPortal } from 'react-dom';
 import Lightbox, { useLightboxState } from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import { InstagramContext } from '../Context/InstagramProvider';
-import { Video } from 'yet-another-react-lightbox/plugins';
+import { Download, Video } from 'yet-another-react-lightbox/plugins';
 import Image from 'next/image';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
 import { FaRegComment, FaRegHeart } from 'react-icons/fa6';
 import { useTranslation } from 'react-i18next';
-import { IoCheckmarkCircle } from 'react-icons/io5';
 
 interface LightboxSlide {
   type: 'image' | 'video';
@@ -22,7 +21,9 @@ interface LightboxSlide {
     src: string;
     type: 'video/mp4';
   }[];
+  caption?: string;
   code?: string;
+  download?: boolean | string | { url: string; filename?: string };
 }
 
 interface Props {
@@ -45,11 +46,12 @@ const MediaPlayer: React.FC<Props> = ({
   selectedIndex,
   multiSidePanelData,
 }) => {
+  console.log(slides)
   return (
     <Lightbox
       open
       index={selectedIndex}
-      plugins={[Video]}
+      plugins={[Video, Download]}
       close={() => onShowMediaPlayer(false)}
       carousel={{
         finite: slides.length === 1,
@@ -71,6 +73,7 @@ const MediaPlayer: React.FC<Props> = ({
         },
       }}
       render={{
+        iconDownload: sidePanelData ? () => null : undefined,       
         slideFooter: ({ slide }) => (
           <SidePanel
             data={sidePanelData}

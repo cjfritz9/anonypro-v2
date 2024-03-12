@@ -27,6 +27,7 @@ interface LightboxSlide {
   }[];
   caption?: string;
   code?: string;
+  download?: boolean | string | { url: string; filename?: string };
 }
 
 const ContentDisplay: React.FC = () => {
@@ -66,6 +67,9 @@ const Stories: React.FC = () => {
         type: 'video/mp4',
       },
     ],
+    download: {
+      url: `/api/download/proxy?url=${story.mediaUrl}`,
+    },
   }));
 
   return (
@@ -128,6 +132,7 @@ const Posts: React.FC = () => {
       autoPlay: media.type === 'video',
       src: media.url,
       sources: [{ src: media.url, type: 'video/mp4' }],
+      download: false,
     }));
     setPostData({
       createdAt: post.created_at,
@@ -290,6 +295,7 @@ const Reels: React.FC = () => {
     setSelection(idx);
 
     const formattedSlides: LightboxSlide[] = reels.items.map((reel) => ({
+      download: false,
       code: reel.shortcode,
       type: reel.type,
       src: reel.thumbnail,

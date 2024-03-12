@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { APIResponse } from '../../utils';
-import { igClient } from '../../clients';
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -11,6 +9,9 @@ export const GET = async (req: NextRequest) => {
 
       if (originResponse && originResponse.ok) {
         return originResponse;
+      } else {
+        console.error(originResponse)
+        console.error(await originResponse.text())
       }
     }
   } catch (error) {

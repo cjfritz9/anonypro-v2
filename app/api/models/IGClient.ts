@@ -382,6 +382,8 @@ export class IGClient {
 
       const result: IGStoryResponse = await response.json();
 
+      console.log(result.data)
+
       if (result && result.message) {
         if (result.message.includes('rate limit')) {
           return { error: 'Rate Limit Exceeded' };
