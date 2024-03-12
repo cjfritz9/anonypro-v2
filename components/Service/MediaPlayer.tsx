@@ -218,6 +218,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
       // link.click();
       // link.parentNode?.removeChild(link);
       handleToast();
+      //@ts-ignore
       fetch(`/api/download/${currentSlide.id}`)
         .then((response) => response.blob())
         .then((blob) => {
