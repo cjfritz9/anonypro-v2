@@ -22,7 +22,7 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    router.push(`/user-profile/${username.replaceAll('.', '.')}`);
+    router.push(`/user-profile/${username.replaceAll('.', ',')}`);
   };
 
   return (
@@ -71,7 +71,7 @@ export const HeaderSearchBar: React.FC = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
     setUsername('');
-    router.push(`/user-profile/${username.replaceAll('.', '.')}`);
+    router.push(`/user-profile/${username.replaceAll('.', ',')}`);
 
     setTimeout(() => {
       setIsLoading(false);

@@ -213,11 +213,11 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
       // link.href = `/api/download/${currentSlide.id}`;
       // link.setAttribute('style', 'display: none;');
       // link.setAttribute('download', '');
-      // handleToast();
 
       // document.body.appendChild(link);
       // link.click();
       // link.parentNode?.removeChild(link);
+      handleToast();
       fetch(`/api/download/${currentSlide.id}`)
         .then((response) => response.blob())
         .then((blob) => {
