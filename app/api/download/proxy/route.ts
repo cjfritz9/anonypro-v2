@@ -21,8 +21,11 @@ export const GET = async (req: NextRequest) => {
       }
     }
 
-    // return NextResponse.json(new APIResponse('ok', null, null));
+    return NextResponse.json(new APIResponse('ok', null, null));
   } catch (error) {
+    return NextResponse.json(
+      new APIResponse('error', 'Internal server error', null)
+    );
     console.error(error);
   }
 };
