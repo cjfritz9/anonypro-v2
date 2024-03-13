@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { APIResponse } from '../../utils';
+import { APIResponse } from '../../models/APIResponse';
 import { igClient } from '../../clients';
 
 export const GET = async (req: NextRequest) => {
   const origin = req.nextUrl.searchParams.get('origin');
-  console.log(origin);
   if (origin) {
     const formattedOrigin = origin.slice(origin.indexOf('/?url=') + 6);
     const mediaResponse = await fetch(formattedOrigin, {
@@ -14,7 +13,7 @@ export const GET = async (req: NextRequest) => {
     if (mediaResponse && mediaResponse.ok) {
       return mediaResponse;
     } else {
-      console.log(await mediaResponse?.text());
+      console.error(await mediaResponse?.text());
     }
   } else {
     return NextResponse.json(

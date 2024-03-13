@@ -123,3 +123,22 @@ export const fetchReels = cache(async (id: string) => {
     console.error(error);
   }
 });
+
+export const postBoost = cache(async (username: string) => {
+  try {
+    const response = await fetch('/api/boost/story', {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+      }),
+    });
+
+    if (!response) return;
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+});

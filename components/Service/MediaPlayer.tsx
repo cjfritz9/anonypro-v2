@@ -47,7 +47,6 @@ const MediaPlayer: React.FC<Props> = ({
   selectedIndex,
   multiSidePanelData,
 }) => {
-  console.log(slides);
   return (
     <Lightbox
       open

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { APIResponse } from '../../utils';
+import { APIResponse } from '../../models/APIResponse';
 import { igClient } from '../../clients';
 
 export const GET = async (
@@ -7,13 +7,12 @@ export const GET = async (
   { params: { id } }: { params: { id: string } }
 ) => {
   try {
-    console.log(id)
     const mediaResponse = await igClient.getDownloadableMediaById(id);
 
     if (mediaResponse && mediaResponse.ok) {
       return mediaResponse;
     } else {
-      console.log(await mediaResponse?.text());
+      console.error(await mediaResponse?.text());
     }
 
     // return NextResponse.json(new APIResponse('ok', null, null));

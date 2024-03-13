@@ -4,12 +4,12 @@ import React, { useContext, useState } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
 import Image from 'next/image';
 import MediaPlayer from './MediaPlayer';
-import { FaClone, FaComment, FaHeart, FaPlay, FaVideo } from 'react-icons/fa6';
-import { TbBoxMultiple } from 'react-icons/tb';
-import { LuGalleryHorizontalEnd } from 'react-icons/lu';
-import { BiSolidCarousel } from 'react-icons/bi';
-import { fetchHighlightById } from '@/utils/requests';
+import { FaComment, FaHeart, FaPlay, FaVideo } from 'react-icons/fa6';
+import { BiSolidCarousel, BiSolidErrorCircle } from 'react-icons/bi';
+import { fetchHighlightById, postBoost } from '@/utils/requests';
 import { formatNumber } from '@/utils/tools';
+import { BsLightningFill } from 'react-icons/bs';
+import { IoCheckmarkCircle } from 'react-icons/io5';
 
 interface NoContentProps {
   message: string;
@@ -75,8 +75,6 @@ const Stories: React.FC = () => {
     },
   }));
 
-  console.log(slides);
-
   return (
     <div className="flex flex-wrap justify-evenly gap-4">
       {showMediaPlayer && (
@@ -88,28 +86,105 @@ const Stories: React.FC = () => {
       )}
       {stories[0]
         ? stories.map((story, i) => (
-            <div
+            <Story
+              onHandleSelect={onHandleSelect}
+              storiesCount={stories.length}
+              username={igProfile!.username}
+              story={story}
               key={i}
-              className={`${stories.length > 2 ? 'lg:w-[23%]' : stories.length === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full object-cover object-center`}
-            >
-              <Image
-                src={story.thumbnailUrl}
-                alt={`${igProfile!.username} story #${i + 1}`}
-                height={640}
-                width={360}
-                className="h-auto w-full cursor-pointer rounded-xl duration-150 hover:-translate-y-2"
-                onClick={() => onHandleSelect(i)}
-              />
-              {story.type === 'video' && (
-                <FaPlay size={36} className="absolute right-[44%] top-[50%]" />
-              )}
-            </div>
+              index={i}
+            />
           ))
         : igProfile && (
             <NoContent
               message={`${igProfile.username} has no active stories`}
             />
           )}
+    </div>
+  );
+};
+
+interface StoryProps {
+  onHandleSelect: (i: number) => void;
+  storiesCount: number;
+  index: number;
+  username: string;
+  story: {
+    thumbnailUrl: string;
+    type: 'image' | 'video';
+  };
+}
+
+const Story: React.FC<StoryProps> = ({
+  onHandleSelect,
+  storiesCount,
+  username,
+  index,
+  story,
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [boostStatus, setBoostStatus] = useState<'success' | 'error' | null>(
+    null
+  );
+
+  const resetStatus = () => {
+    setTimeout(() => {
+      setBoostStatus(null);
+    }, 5000);
+  };
+
+  const handleBoost = async () => {
+    setIsLoading(true);
+
+    const response = await postBoost(username);
+    setIsLoading(false);
+
+    if (response && response.status === 'ok') {
+      setBoostStatus('success');
+    } else {
+      setBoostStatus('error');
+    }
+    resetStatus();
+  };
+
+  return (
+    <div
+      className={`${storiesCount > 2 ? 'lg:w-[23%]' : storiesCount === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full object-cover object-center duration-150 hover:-translate-y-2`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <Image
+        src={story.thumbnailUrl}
+        alt={`${username} story #${index + 1}`}
+        height={640}
+        width={360}
+        className="h-auto w-full cursor-pointer rounded-xl"
+        onClick={() => onHandleSelect(index)}
+      />
+      {story.type === 'video' && (
+        <FaPlay
+          size={36}
+          className="absolute right-[44%] top-[50%] drop-shadow-lg"
+        />
+      )}
+      {isHovered && (
+        <button
+          className="btn btn-success absolute right-4 top-4 flex items-center rounded-lg"
+          onClick={handleBoost}
+        >
+          {isLoading ? (
+            <span className="loading loading-spinner" />
+          ) : boostStatus === 'error' ? (
+            <BiSolidErrorCircle size={20} className="text-error" />
+          ) : boostStatus === 'success' ? (
+            <IoCheckmarkCircle size={20} />
+          ) : (
+            <BsLightningFill size={20} className="" />
+          )}
+          <p>Boost Viewers</p>
+        </button>
+      )}
     </div>
   );
 };

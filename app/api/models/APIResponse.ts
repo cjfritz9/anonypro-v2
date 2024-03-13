@@ -1,15 +1,12 @@
 export class APIResponse {
-  private status;
-  private message;
-  private data;
+  public status;
+  public message;
+  public data;
 
   constructor(status: 'ok' | 'error', message: string | null, data: any) {
     this.status = status;
     this.message = message;
     this.data = data;
-
-    console.log(data)
-    console.log(this)
 
     return this;
   }
