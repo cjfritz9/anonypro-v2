@@ -91,7 +91,7 @@ const SearchBar: React.FC = () => {
       {rateLimit.show && (
         <div className="toast toast-end">
           <div className="alert alert-error">
-            <span>{`Please wait ${rateLimit.remainder} seconds and try again.`}</span>
+            <span>{`Please wait ${rateLimit.remainder} seconds and try again`}</span>
           </div>
         </div>
       )}
@@ -188,7 +188,7 @@ export const HeaderSearchBar: React.FC = () => {
       {rateLimit.show && (
         <div className="toast toast-end">
           <div className="alert alert-error">
-            <span>{`Please wait ${rateLimit.remainder} seconds and try again.`}</span>
+            <span>{`Please wait ${rateLimit.remainder} seconds and try again`}</span>
           </div>
         </div>
       )}

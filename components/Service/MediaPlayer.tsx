@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import Lightbox, { useLightboxState } from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import { InstagramContext } from '../Context/InstagramProvider';
@@ -11,6 +10,7 @@ import verifiedBadge from '@/public/assets/verified-badge.svg';
 import { FaRegComment, FaRegHeart } from 'react-icons/fa6';
 import { useTranslation } from 'react-i18next';
 import { getBoostLikes } from '@/utils/requests';
+import { isBoostLimited } from '@/utils/tools';
 
 export interface LightboxSlide {
   id: string;
@@ -252,6 +252,10 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
 const BoostButton: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<'error' | 'success' | null>(null);
+  const [boostLimited, setBoostLimited] = useState({
+    isLimited: false,
+    remainder: 0,
+  });
   const { currentSlide } = useLightboxState();
 
   const resetStatus = () => {
@@ -260,6 +264,18 @@ const BoostButton: React.FC = () => {
     }, 5000);
   };
   const handleBoost = async () => {
+    if (boostLimited.isLimited) return;
+    const { isLimited, remainder } = isBoostLimited();
+
+    if (isLimited) {
+      setBoostLimited({
+        isLimited: true,
+        remainder,
+      });
+      return;
+    }
+
+    console.log(isLimited, remainder);
     setIsLoading(true);
     //@ts-ignore
     if (!currentSlide?.shortcode) return;
@@ -274,18 +290,42 @@ const BoostButton: React.FC = () => {
     }
     resetStatus();
   };
+
+  useEffect(() => {
+    if (boostLimited.remainder < 1) {
+      setBoostLimited({ isLimited: false, remainder: 0 });
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setBoostLimited((prev) => ({
+        ...prev,
+        remainder: prev.remainder - 1,
+      }));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [boostLimited.remainder]);
   return (
     <>
-      <button
-        onClick={handleBoost}
-        className="btn btn-success w-28 rounded-none"
-      >
-        {isLoading ? (
-          <span className="loading loading-spinner" />
-        ) : (
-          <p>Boost</p>
-        )}
-      </button>
+      <div className={boostLimited.isLimited ? 'tooltip' : ''} data-tip="Next boost in:">
+        <button
+          onClick={handleBoost}
+          className={`${boostLimited.isLimited ? 'pointer-events-none' : ''} btn btn-success w-28 rounded-none`}
+        >
+          {isLoading ? (
+            <span className="loading loading-spinner" />
+          ) : boostLimited.isLimited ? (
+            <p>
+              {Math.floor(boostLimited.remainder / 3600)}:
+              {Math.floor((boostLimited.remainder % 3600) / 60)}:
+              {Math.floor(boostLimited.remainder % 60)}
+            </p>
+          ) : (
+            <p>Boost</p>
+          )}
+        </button>
+      </div>
       {status && (
         <div className="toast toast-center toast-top lg:toast-bottom">
           <div

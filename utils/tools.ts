@@ -29,7 +29,7 @@ export const isRateLimited = () => {
 
   if (!lastReq) {
     localStorage.setItem(key, JSON.stringify(new Date()));
-    return { isLimited: false, remainder: 60 };
+    return { isLimited: false, remainder: 0 };
   }
 
   const currentTime = new Date().getTime();
@@ -38,7 +38,28 @@ export const isRateLimited = () => {
 
   if (currentTime - 60000 >= lastReqTime) {
     localStorage.setItem(key, JSON.stringify(new Date()));
-    return { isLimited: false, remainder: 60 };
+    return { isLimited: false, remainder: 0 };
+  }
+
+  return { isLimited: true, remainder: diff };
+};
+
+export const isBoostLimited = () => {
+  const key = 'last-req-boost';
+  const lastReq = localStorage.getItem(key);
+
+  if (!lastReq) {
+    localStorage.setItem(key, JSON.stringify(new Date()));
+    return { isLimited: false, remainder: 0 }
+  }
+
+  const currentTime = new Date().getTime();
+  const lastReqTime = new Date(JSON.parse(lastReq)).getTime();
+  const diff = 86400 - Math.ceil(currentTime / 1000 - lastReqTime / 1000);
+
+  if (currentTime - 86400000 >= lastReqTime) {
+    localStorage.setItem(key, JSON.stringify(new Date()));
+    return { isLimited: false, remainder: 0 };
   }
 
   return { isLimited: true, remainder: diff };

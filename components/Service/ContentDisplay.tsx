@@ -7,7 +7,7 @@ import MediaPlayer, { LightboxSlide } from './MediaPlayer';
 import { FaComment, FaHeart, FaPlay, FaVideo } from 'react-icons/fa6';
 import { BiSolidCarousel, BiSolidErrorCircle } from 'react-icons/bi';
 import { fetchHighlightById, getBoostViews } from '@/utils/requests';
-import { formatNumber } from '@/utils/tools';
+import { formatNumber, isBoostLimited } from '@/utils/tools';
 import { BsLightningFill } from 'react-icons/bs';
 import { IoCheckmarkCircle } from 'react-icons/io5';
 import Pagination from './Pagination';
@@ -148,6 +148,10 @@ const Story: React.FC<StoryProps> = ({
   const [boostStatus, setBoostStatus] = useState<'success' | 'error' | null>(
     null
   );
+  const [boostLimited, setBoostLimited] = useState({
+    isLimited: false,
+    remainder: 0,
+  });
   const windowSize = useWindowSize();
 
   const resetStatus = () => {
@@ -157,8 +161,18 @@ const Story: React.FC<StoryProps> = ({
   };
 
   const handleBoost = async () => {
-    setIsLoading(true);
+    if (boostLimited.isLimited) return;
+    const { isLimited, remainder } = isBoostLimited();
 
+    if (isLimited) {
+      setBoostLimited({
+        isLimited: true,
+        remainder,
+      });
+      return;
+    }
+
+    setIsLoading(true);
     const response = await getBoostViews(username);
     setIsLoading(false);
 
@@ -169,6 +183,22 @@ const Story: React.FC<StoryProps> = ({
     }
     resetStatus();
   };
+
+  useEffect(() => {
+    if (boostLimited.remainder < 1) {
+      setBoostLimited({ isLimited: false, remainder: 0 });
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setBoostLimited((prev) => ({
+        ...prev,
+        remainder: prev.remainder - 1,
+      }));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [boostLimited.remainder]);
 
   return (
     <div
@@ -193,19 +223,27 @@ const Story: React.FC<StoryProps> = ({
       )}
       {(isHovered || (windowSize.width && windowSize.width < 1424)) && (
         <button
-          className="btn btn-success absolute right-4 top-4 flex items-center rounded-lg"
+          className={`${boostLimited.isLimited ? 'pointer-events-none' : ''} btn btn-success absolute right-4 top-4 flex items-center rounded-lg`}
           onClick={handleBoost}
         >
           {isLoading ? (
             <span className="loading loading-spinner" />
+          ) : boostLimited.isLimited ? (
+            <p>
+              {Math.floor(boostLimited.remainder / 3600)}:
+              {Math.floor((boostLimited.remainder % 3600) / 60)}:
+              {Math.floor(boostLimited.remainder % 60)}
+            </p>
           ) : boostStatus === 'error' ? (
             <BiSolidErrorCircle size={20} className="text-error" />
           ) : boostStatus === 'success' ? (
             <IoCheckmarkCircle size={20} />
           ) : (
-            <BsLightningFill size={20} className="" />
+            <>
+              <BsLightningFill size={20} className="" />
+              <p>Boost Viewers</p>
+            </>
           )}
-          <p>Boost Viewers</p>
         </button>
       )}
     </div>
