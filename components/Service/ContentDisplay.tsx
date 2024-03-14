@@ -136,7 +136,7 @@ const Story: React.FC<StoryProps> = ({
 
   return (
     <div
-      className={`h-[654px] w-[368px] rounded-xl ${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} relative h-auto w-full object-cover object-center duration-150 hover:-translate-y-2`}
+      className={`h-[654px] w-[368px] rounded-xl ${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} relative object-cover object-center duration-150 hover:-translate-y-2`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
