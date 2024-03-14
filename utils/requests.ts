@@ -45,7 +45,9 @@ export const fetchStories = cache(async (username: string) => {
   try {
     const result = await response.json();
 
-    return result;
+    if (result && result.status === 'ok') {
+      return result.data;
+    }
   } catch (error) {
     console.error(error);
   }

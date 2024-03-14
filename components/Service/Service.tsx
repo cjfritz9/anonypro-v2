@@ -103,6 +103,8 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
 
       if (contentRes && !contentRes.error) {
         setFunction(contentRes);
+      } else if (contentRes.error === 'RATE_LIMITED') {
+        console.log(contentRes.error);
       }
     })();
   }, [

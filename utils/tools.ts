@@ -7,17 +7,11 @@ export const formatNumber = (baseNumber: number) => {
     return stringNum.slice(0, stringNum.length - 3) + 'k';
   } else if (stringNum.length < 10) {
     return (
-      stringNum.slice(0, stringNum.length - 6) +
-      '.' +
-      stringNum.charAt(1) +
-      'M'
+      stringNum.slice(0, stringNum.length - 6) + '.' + stringNum.charAt(1) + 'M'
     );
   } else if (stringNum.length < 13) {
     return (
-      stringNum.slice(0, stringNum.length - 9) +
-      '.' +
-      stringNum.charAt(1) +
-      'B'
+      stringNum.slice(0, stringNum.length - 9) + '.' + stringNum.charAt(1) + 'B'
     );
   } else {
     return (
@@ -27,4 +21,25 @@ export const formatNumber = (baseNumber: number) => {
       'T'
     );
   }
+};
+
+export const isRateLimited = () => {
+  const key = 'last-req';
+  const lastReq = localStorage.getItem(key);
+
+  if (!lastReq) {
+    localStorage.setItem(key, JSON.stringify(new Date()));
+    return { isLimited: false, remainder: 60 };
+  }
+
+  const currentTime = new Date().getTime();
+  const lastReqTime = new Date(JSON.parse(lastReq)).getTime();
+  const diff = 60 - Math.ceil(currentTime / 1000 - lastReqTime / 1000);
+
+  if (currentTime - 60000 >= lastReqTime) {
+    localStorage.setItem(key, JSON.stringify(new Date()));
+    return { isLimited: false, remainder: 60 };
+  }
+
+  return { isLimited: true, remainder: diff };
 };
