@@ -5,8 +5,6 @@ export const POST = async (req: NextRequest) => {
   try {
     const { id, next_cursor } = await req.json();
 
-    console.log(next_cursor)
-
     const posts = await igClient.getPosts(id, next_cursor);
 
     return NextResponse.json(posts);

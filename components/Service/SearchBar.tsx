@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
-import { fetchProfile, fetchStories } from '@/utils/requests';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 
 const SearchBar: React.FC = () => {
   const [username, setUsername] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation('common');
   const router = useRouter();
 
@@ -22,7 +22,12 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    router.push(`/user-profile/${username.replaceAll('.', ',')}`);
+    setIsLoading(true);
+    router.push(`/user-profile/${username.replaceAll('.', ',').toLowerCase()}`);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
   };
 
   return (
@@ -34,19 +39,23 @@ const SearchBar: React.FC = () => {
         onKeyDown={(e) => handleKeyPress(e)}
         onChange={(e) => handleChange(e)}
       />
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 16 16"
-        fill="currentColor"
-        className="h-8 w-8 cursor-pointer transition duration-200 ease-in-out hover:scale-110"
-        onClick={handleSubmit}
-      >
-        <path
-          fillRule="evenodd"
-          d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-          clipRule="evenodd"
-        />
-      </svg>
+      {isLoading ? (
+        <span className="loading loading-spinner h-6 w-6 min-w-6 text-base-200" />
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          className="h-8 w-8 cursor-pointer transition duration-200 ease-in-out hover:scale-110"
+          onClick={handleSubmit}
+        >
+          <path
+            fillRule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      )}
     </label>
   );
 };
@@ -71,7 +80,7 @@ export const HeaderSearchBar: React.FC = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
     setUsername('');
-    router.push(`/user-profile/${username.replaceAll('.', ',')}`);
+    router.push(`/user-profile/${username.replaceAll('.', ',').toLowerCase()}`);
 
     setTimeout(() => {
       setIsLoading(false);

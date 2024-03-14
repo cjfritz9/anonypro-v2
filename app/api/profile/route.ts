@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { igClient } from '../clients';
+import { APIResponse } from '../models/APIResponse';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -10,7 +11,9 @@ export const POST = async (req: NextRequest) => {
     if (profile && profile.id) {
       return NextResponse.json(profile);
     } else {
-      return NextResponse.json(null);
+      return NextResponse.json(
+        new APIResponse('error', 'INVALID_USERNAME', null)
+      );
     }
   } catch (error) {
     console.error({ error });

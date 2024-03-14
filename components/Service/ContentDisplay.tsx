@@ -17,14 +17,48 @@ interface NoContentProps {
 }
 
 const ContentDisplay: React.FC = () => {
-  const { mode } = useContext(InstagramContext);
+  const { igProfile, mode } = useContext(InstagramContext);
+
+  if (!igProfile) return;
 
   return (
     <div>
-      {mode === 0 && <Stories />}
-      {mode === 1 && <Posts />}
-      {mode === 2 && <Highlights />}
-      {mode === 3 && <Reels />}
+      {igProfile.isPrivate ? (
+        <PrivateProfile />
+      ) : mode === 0 ? (
+        <Stories />
+      ) : mode === 1 ? (
+        <Posts />
+      ) : mode === 2 ? (
+        <Highlights />
+      ) : (
+        <Reels />
+      )}
+    </div>
+  );
+};
+
+const PrivateProfile: React.FC = () => {
+  const { igProfile } = useContext(InstagramContext);
+
+  if (!igProfile) return;
+
+  return (
+    <div role="alert" className="alert alert-error">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6 shrink-0 stroke-current"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span className="font-semibold">{`@${igProfile.username}'s profile is private.`}</span>
     </div>
   );
 };
@@ -136,7 +170,7 @@ const Story: React.FC<StoryProps> = ({
 
   return (
     <div
-      className={`h-[654px] w-[368px] rounded-xl ${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} relative object-cover object-center duration-150 hover:-translate-y-2`}
+      className={`${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} relative h-[654px] w-[368px] rounded-xl object-cover object-center duration-150 hover:-translate-y-2`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -147,7 +181,7 @@ const Story: React.FC<StoryProps> = ({
         width={360}
         className="h-[654px] w-[368px] cursor-pointer rounded-xl"
         onClick={() => onHandleSelect(index)}
-        onLoadingComplete={() => setIsImageLoading(false)}
+        onLoad={() => setIsImageLoading(false)}
       />
       {story.type === 'video' && (
         <FaPlay
@@ -226,7 +260,7 @@ const Posts: React.FC = () => {
           sidePanelData={postData}
         />
       )}
-      {posts.items[0]
+      {posts.items && posts.items[0]
         ? posts.items
             .slice((page - 1) * 6, page * 6)
             .map((post, i) => (
@@ -269,7 +303,7 @@ const Post: React.FC<PostProps> = ({ onHandleSelect, index: i, post }) => {
           width={360}
           className={`${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center`}
           onClick={() => onHandleSelect(i)}
-          onLoadingComplete={() => setIsImageLoading(false)}
+          onLoad={() => setIsImageLoading(false)}
         />
       ) : post.type === 'video' ? (
         <>
@@ -281,7 +315,7 @@ const Post: React.FC<PostProps> = ({ onHandleSelect, index: i, post }) => {
             width={360}
             className={`${isImageLoading ? 'animate-pulse opacity-75' : 'animate-none'} h-full max-h-[420px] w-full cursor-pointer rounded-xl bg-slate-700 object-cover object-center`}
             onClick={() => onHandleSelect(i)}
-            onLoadingComplete={() => setIsImageLoading(false)}
+            onLoad={() => setIsImageLoading(false)}
           />
           <FaVideo
             size={32}
@@ -298,7 +332,7 @@ const Post: React.FC<PostProps> = ({ onHandleSelect, index: i, post }) => {
             width={1920}
             className={`${isImageLoading ? 'animate-pulse opacity-75' : 'animate-none'} h-full max-h-[420px] w-full cursor-pointer rounded-xl bg-slate-700 object-cover object-center`}
             onClick={() => onHandleSelect(i)}
-            onLoadingComplete={() => setIsImageLoading(false)}
+            onLoad={() => setIsImageLoading(false)}
           />
           <BiSolidCarousel
             fill="white"
@@ -426,8 +460,6 @@ const Reels: React.FC = () => {
     commentCount: reel.comment_count,
   }));
 
-  console.log((page - 1) * 12, page * 12);
-
   return (
     <div className="flex flex-wrap justify-evenly gap-4">
       {showMediaPlayer && (
@@ -498,7 +530,7 @@ const Reel: React.FC<ReelProps> = ({
         alt={`${username} reel #${index + 1}`}
         height={640}
         width={360}
-        onLoadingComplete={() => setIsImageLoading(false)}
+        onLoad={() => setIsImageLoading(false)}
         className="h-full w-full cursor-pointer rounded-xl object-cover object-center"
       />
       <div

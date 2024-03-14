@@ -133,8 +133,6 @@ const SidePanel: React.FC<SidePanelProps> = ({
 
   if (!data || !currentSlide) return null;
 
-  console.log(data);
-
   return (
     <div className="flex w-full max-w-md flex-col overflow-y-auto border-t border-gray-700 bg-black lg:h-full lg:border-l lg:border-t-0">
       <header className="flex items-center border-b border-gray-700 p-4">

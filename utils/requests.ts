@@ -13,7 +13,7 @@ interface Highlight {
   }[];
 }
 
-export const fetchProfile = cache(async (username: string) => {
+export const fetchProfile = async (username: string) => {
   const response = await fetch('/api/profile', {
     method: 'POST',
     body: JSON.stringify({
@@ -30,7 +30,7 @@ export const fetchProfile = cache(async (username: string) => {
   } catch (error) {
     console.error(error);
   }
-});
+};
 
 export const fetchStories = cache(async (username: string) => {
   const response = await fetch('/api/stories', {

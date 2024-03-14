@@ -14,6 +14,7 @@ interface Context {
     followingCount: number;
     biography: string;
     externalLink: string;
+    isPrivate: boolean;
   } | null;
   setIgProfile: React.Dispatch<React.SetStateAction<Context['igProfile']>>;
   stories:

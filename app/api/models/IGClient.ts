@@ -230,6 +230,7 @@ export class IGClient {
       followingCount: data.followings,
       biography: data.biography,
       externalLink: data.external_url,
+      isPrivate: data.is_private,
     };
   };
 
@@ -379,8 +380,13 @@ export class IGClient {
       );
       const result: IGProfileResponse = await response.json();
 
-      if (result && result.message && result.message.includes('rate limit')) {
-        return { error: 'Rate Limit Exceeded' };
+      if (result && result.status === 'error' && result.message) {
+        if (result.message.includes('rate limit')) {
+          return { error: 'Rate Limit Exceeded' };
+        }
+        if (result.message === 'Username is not valid') {
+          return { error: 'Invalid username' };
+        }
       }
 
       if (result && result.data) {
