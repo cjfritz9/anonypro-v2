@@ -145,7 +145,7 @@ const Story: React.FC<StoryProps> = ({
         alt={`${username} story #${index + 1}`}
         height={640}
         width={360}
-        className="h-auto w-full cursor-pointer rounded-xl"
+        className="h-[654px] w-[368px] cursor-pointer rounded-xl"
         onClick={() => onHandleSelect(index)}
         onLoadingComplete={() => setIsImageLoading(false)}
       />
