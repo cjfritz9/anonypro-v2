@@ -191,24 +191,23 @@ const Story: React.FC<StoryProps> = ({
           className="absolute right-[44%] top-[50%] drop-shadow-lg"
         />
       )}
-      {isHovered ||
-        (windowSize.width && windowSize.width < 960 && (
-          <button
-            className="btn btn-success absolute right-4 top-4 flex items-center rounded-lg"
-            onClick={handleBoost}
-          >
-            {isLoading ? (
-              <span className="loading loading-spinner" />
-            ) : boostStatus === 'error' ? (
-              <BiSolidErrorCircle size={20} className="text-error" />
-            ) : boostStatus === 'success' ? (
-              <IoCheckmarkCircle size={20} />
-            ) : (
-              <BsLightningFill size={20} className="" />
-            )}
-            <p>Boost Viewers</p>
-          </button>
-        ))}
+      {(isHovered || (windowSize.width && windowSize.width < 1424)) && (
+        <button
+          className="btn btn-success absolute right-4 top-4 flex items-center rounded-lg"
+          onClick={handleBoost}
+        >
+          {isLoading ? (
+            <span className="loading loading-spinner" />
+          ) : boostStatus === 'error' ? (
+            <BiSolidErrorCircle size={20} className="text-error" />
+          ) : boostStatus === 'success' ? (
+            <IoCheckmarkCircle size={20} />
+          ) : (
+            <BsLightningFill size={20} className="" />
+          )}
+          <p>Boost Viewers</p>
+        </button>
+      )}
     </div>
   );
 };
