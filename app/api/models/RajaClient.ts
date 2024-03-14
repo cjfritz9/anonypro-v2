@@ -54,6 +54,30 @@ export class RajaClient {
     }
   };
 
+  public boostLikes = async (shortcode: string): Promise<APIResponse> => {
+    const params = {
+      service: this.likesId,
+      link: `https://www.instagram.com/p/${shortcode}`,
+      quantity: '10',
+    };
+    this.updateRequest(params);
+
+    const response = await fetch(this.request);
+
+    if (response && response.ok) {
+      const result = await response.json();
+
+      if (result.error) {
+        return new APIResponse('error', result.error, null);
+      } else {
+        return new APIResponse('ok', null, null);
+      }
+    } else {
+      console.error(await response.text());
+      return new APIResponse('error', 'External API error', null);
+    }
+  };
+
   public test = () => {
     return {
       url: this.baseUrl,

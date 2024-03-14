@@ -5,10 +5,14 @@ export const POST = async (req: NextRequest) => {
   try {
     const { username } = await req.json();
 
-    const profile = await igClient.getProfile(username);
+    const profile: any = await igClient.getProfile(username);
 
-    return NextResponse.json(profile);
+    if (profile && profile.id) {
+      return NextResponse.json(profile);
+    } else {
+      return NextResponse.json(null);
+    }
   } catch (error) {
-    console.error({error})
+    console.error({ error });
   }
 };

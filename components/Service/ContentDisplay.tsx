@@ -1,34 +1,19 @@
 'use client';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
 import Image from 'next/image';
-import MediaPlayer from './MediaPlayer';
+import MediaPlayer, { LightboxSlide } from './MediaPlayer';
 import { FaComment, FaHeart, FaPlay, FaVideo } from 'react-icons/fa6';
 import { BiSolidCarousel, BiSolidErrorCircle } from 'react-icons/bi';
-import { fetchHighlightById, postBoost } from '@/utils/requests';
+import { fetchHighlightById, getBoostViews } from '@/utils/requests';
 import { formatNumber } from '@/utils/tools';
 import { BsLightningFill } from 'react-icons/bs';
 import { IoCheckmarkCircle } from 'react-icons/io5';
+import Pagination from './Pagination';
 
 interface NoContentProps {
   message: string;
-}
-
-interface LightboxSlide {
-  id: string;
-  type: 'image' | 'video';
-  height?: number;
-  width?: number;
-  src?: string;
-  autoPlay?: boolean;
-  sources?: {
-    src: string;
-    type: 'video/mp4';
-  }[];
-  caption?: string;
-  code?: string;
-  download?: boolean | string | { url: string; filename?: string };
 }
 
 const ContentDisplay: React.FC = () => {
@@ -124,6 +109,7 @@ const Story: React.FC<StoryProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const [boostStatus, setBoostStatus] = useState<'success' | 'error' | null>(
     null
   );
@@ -137,7 +123,7 @@ const Story: React.FC<StoryProps> = ({
   const handleBoost = async () => {
     setIsLoading(true);
 
-    const response = await postBoost(username);
+    const response = await getBoostViews(username);
     setIsLoading(false);
 
     if (response && response.status === 'ok') {
@@ -150,7 +136,7 @@ const Story: React.FC<StoryProps> = ({
 
   return (
     <div
-      className={`${storiesCount > 2 ? 'lg:w-[23%]' : storiesCount === 2 ? 'lg:w-[48%]' : ''} relative h-auto w-full object-cover object-center duration-150 hover:-translate-y-2`}
+      className={`h-[654px] w-[368px] rounded-xl ${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} relative h-auto w-full object-cover object-center duration-150 hover:-translate-y-2`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -161,6 +147,7 @@ const Story: React.FC<StoryProps> = ({
         width={360}
         className="h-auto w-full cursor-pointer rounded-xl"
         onClick={() => onHandleSelect(index)}
+        onLoadingComplete={() => setIsImageLoading(false)}
       />
       {story.type === 'video' && (
         <FaPlay
@@ -198,7 +185,11 @@ const Posts: React.FC = () => {
     commentCount: 0,
     caption: '',
   });
-  const { igProfile, posts } = useContext(InstagramContext);
+  const {
+    igProfile,
+    posts,
+    pagination: { page },
+  } = useContext(InstagramContext);
 
   if (!posts) {
     return <LoadingContent />;
@@ -208,6 +199,7 @@ const Posts: React.FC = () => {
     const post = posts.items[idx];
     const formattedSlides: LightboxSlide[] = post.media.map((media) => ({
       id: media.id,
+      shortcode: post.shortcode,
       type: media.type,
       autoPlay: media.type === 'video',
       src: media.url,
@@ -235,60 +227,86 @@ const Posts: React.FC = () => {
         />
       )}
       {posts.items[0]
-        ? posts.items.slice(0, 6).map((post, i) => (
-            <div
-              key={i}
-              className="relative h-[420px] w-full bg-opacity-25 lg:w-[32%]"
-            >
-              {post.type === 'image' ? (
-                <Image
-                  key={i}
-                  src={post.thumbnail}
-                  alt={`${igProfile!.username} post #${i + 1}`}
-                  height={640}
-                  width={360}
-                  className="h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center"
-                  onClick={() => onHandleSelect(i)}
-                />
-              ) : post.type === 'video' ? (
-                <>
-                  <Image
-                    key={i}
-                    src={post.thumbnail}
-                    alt={`${igProfile!.username} post #${i + 1}`}
-                    height={640}
-                    width={360}
-                    className="h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center"
-                    onClick={() => onHandleSelect(i)}
-                  />
-                  <FaVideo
-                    size={32}
-                    className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
-                  />
-                </>
-              ) : (
-                <>
-                  <Image
-                    key={i}
-                    src={post.thumbnail}
-                    alt={`${igProfile!.username} post #${i + 1}`}
-                    height={1080}
-                    width={1920}
-                    className="h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center"
-                    onClick={() => onHandleSelect(i)}
-                  />
-                  <BiSolidCarousel
-                    fill="white"
-                    size={32}
-                    className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
-                  />
-                </>
-              )}
-            </div>
-          ))
+        ? posts.items
+            .slice((page - 1) * 6, page * 6)
+            .map((post, i) => (
+              <Post
+                key={i}
+                index={i}
+                onHandleSelect={onHandleSelect}
+                post={post}
+              />
+            ))
         : igProfile && (
             <NoContent message={`${igProfile.username} has no posts`} />
           )}
+      <Pagination />
+    </div>
+  );
+};
+
+interface PostProps {
+  onHandleSelect: (i: number) => void;
+  index: number;
+  post: {
+    thumbnail: string;
+    type: 'image' | 'video' | 'album';
+  };
+}
+
+const Post: React.FC<PostProps> = ({ onHandleSelect, index: i, post }) => {
+  const [isImageLoading, setIsImageLoading] = useState(true);
+  const { igProfile } = useContext(InstagramContext);
+
+  return (
+    <div className="relative h-[420px] w-full bg-opacity-25 lg:w-[32%]">
+      {post.type === 'image' ? (
+        <Image
+          key={i}
+          src={post.thumbnail}
+          alt={`${igProfile!.username} post #${i + 1}`}
+          height={640}
+          width={360}
+          className={`${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center`}
+          onClick={() => onHandleSelect(i)}
+          onLoadingComplete={() => setIsImageLoading(false)}
+        />
+      ) : post.type === 'video' ? (
+        <>
+          <Image
+            key={i}
+            src={post.thumbnail}
+            alt={`${igProfile!.username} post #${i + 1}`}
+            height={640}
+            width={360}
+            className={`${isImageLoading ? 'animate-pulse opacity-75' : 'animate-none'} h-full max-h-[420px] w-full cursor-pointer rounded-xl bg-slate-700 object-cover object-center`}
+            onClick={() => onHandleSelect(i)}
+            onLoadingComplete={() => setIsImageLoading(false)}
+          />
+          <FaVideo
+            size={32}
+            className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
+          />
+        </>
+      ) : (
+        <>
+          <Image
+            key={i}
+            src={post.thumbnail}
+            alt={`${igProfile!.username} post #${i + 1}`}
+            height={1080}
+            width={1920}
+            className={`${isImageLoading ? 'animate-pulse opacity-75' : 'animate-none'} h-full max-h-[420px] w-full cursor-pointer rounded-xl bg-slate-700 object-cover object-center`}
+            onClick={() => onHandleSelect(i)}
+            onLoadingComplete={() => setIsImageLoading(false)}
+          />
+          <BiSolidCarousel
+            fill="white"
+            size={32}
+            className="absolute right-4 top-2 text-white opacity-90 drop-shadow-md"
+          />
+        </>
+      )}
     </div>
   );
 };
@@ -370,7 +388,11 @@ const Reels: React.FC = () => {
   const [showMediaPlayer, setShowMediaPlayer] = useState(false);
   const [selection, setSelection] = useState(0);
   const [slides, setSlides] = useState<LightboxSlide[]>([]);
-  const { igProfile, reels } = useContext(InstagramContext);
+  const {
+    igProfile,
+    reels,
+    pagination: { page },
+  } = useContext(InstagramContext);
 
   if (!reels) {
     return <LoadingContent />;
@@ -382,7 +404,7 @@ const Reels: React.FC = () => {
     const formattedSlides: LightboxSlide[] = reels.items.map((reel) => ({
       id: reel.id,
       download: false,
-      code: reel.shortcode,
+      shortcode: reel.shortcode,
       type: reel.type,
       src: reel.thumbnail,
       autoPlay: true,
@@ -404,6 +426,8 @@ const Reels: React.FC = () => {
     commentCount: reel.comment_count,
   }));
 
+  console.log((page - 1) * 12, page * 12);
+
   return (
     <div className="flex flex-wrap justify-evenly gap-4">
       {showMediaPlayer && (
@@ -415,7 +439,7 @@ const Reels: React.FC = () => {
         />
       )}
       {reels.items[0]
-        ? reels.items.slice(0, 12).map((reel, i) => (
+        ? reels.items.slice((page - 1) * 12, page * 12).map((reel, i) => (
             <Reel
               key={i}
               reelData={{
@@ -433,6 +457,7 @@ const Reels: React.FC = () => {
         : igProfile && (
             <NoContent message={`${igProfile.username} has no reels`} />
           )}
+      <Pagination />
     </div>
   );
 };
@@ -457,12 +482,13 @@ const Reel: React.FC<ReelProps> = ({
   onHandleSelect,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const { reelCount, thumbnail, playCount, commentCount, likeCount } = reelData;
 
   return (
     <div
       key={index}
-      className={`${reelCount > 2 ? 'lg:w-[300px]' : reelCount === 2 ? 'lg:w-[300px]' : ''} relative h-auto w-full cursor-pointer object-cover object-center`}
+      className={`${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} relative h-[534px] w-full cursor-pointer object-cover object-center lg:w-[300px]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onHandleSelect(index)}
@@ -472,6 +498,7 @@ const Reel: React.FC<ReelProps> = ({
         alt={`${username} reel #${index + 1}`}
         height={640}
         width={360}
+        onLoadingComplete={() => setIsImageLoading(false)}
         className="h-full w-full cursor-pointer rounded-xl object-cover object-center"
       />
       <div

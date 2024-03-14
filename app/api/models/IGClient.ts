@@ -67,6 +67,7 @@ interface IGPostsResponse extends IGAPIResponse {
     num_results: number;
     more_available: boolean;
     items: {
+      id: string;
       pk: string;
       taken_at: number;
       like_count: number;
@@ -250,60 +251,65 @@ export class IGClient {
     return {
       more_available: data.more_available,
       num_results: data.num_results,
-      next_max_id: data.next_max_id,
-      items: data.items.map((post) => ({
-        id: post.pk,
-        created_at: post.taken_at,
-        like_count: post.like_count,
-        comment_count: post.comment_count,
-        type:
-          post.product_type === 'clips'
-            ? 'video'
-            : post.product_type === 'carousel_container'
-              ? 'album'
-              : 'image',
-        thumbnail: post.image_versions2.candidates[0].url,
-        media:
-          post.product_type === 'clips'
-            ? [
-                {
-                  id: post.pk,
-                  type: 'video',
-                  height: post.video_versions![0].height,
-                  width: post.video_versions![0].width,
-                  url: post.video_versions![0].url,
-                },
-              ]
-            : post.product_type === 'carousel_container'
-              ? post.carousel_media!.map((media) =>
-                  media.video_versions
-                    ? {
-                        id: media.pk,
-                        type: 'video',
-                        height: media.video_versions[0].height,
-                        width: media.video_versions[0].width,
-                        url: media.video_versions[0].url,
-                      }
-                    : {
-                        id: media.pk,
-                        type: 'image',
-                        height: media.image_versions2.candidates[0].height,
-                        width: media.image_versions2.candidates[0].width,
-                        url: media.image_versions2.candidates[0].url,
-                      }
-                )
-              : [
+      next_max_id:
+        data.items.length > 5
+          ? data.items[5].id
+          : data.items[data.items.length - 1].id,
+      items: data.items
+        .map((post) => ({
+          id: post.pk,
+          created_at: post.taken_at,
+          like_count: post.like_count,
+          comment_count: post.comment_count,
+          type:
+            post.product_type === 'clips'
+              ? 'video'
+              : post.product_type === 'carousel_container'
+                ? 'album'
+                : 'image',
+          thumbnail: post.image_versions2.candidates[0].url,
+          media:
+            post.product_type === 'clips'
+              ? [
                   {
                     id: post.pk,
-                    type: 'image',
-                    height: post.image_versions2.candidates[0].height,
-                    width: post.image_versions2.candidates[0].width,
-                    url: post.image_versions2.candidates[0].url,
+                    type: 'video',
+                    height: post.video_versions![0].height,
+                    width: post.video_versions![0].width,
+                    url: post.video_versions![0].url,
                   },
-                ],
-        caption: post.caption ? post.caption.text : '',
-        shortcode: post.code,
-      })),
+                ]
+              : post.product_type === 'carousel_container'
+                ? post.carousel_media!.map((media) =>
+                    media.video_versions
+                      ? {
+                          id: media.pk,
+                          type: 'video',
+                          height: media.video_versions[0].height,
+                          width: media.video_versions[0].width,
+                          url: media.video_versions[0].url,
+                        }
+                      : {
+                          id: media.pk,
+                          type: 'image',
+                          height: media.image_versions2.candidates[0].height,
+                          width: media.image_versions2.candidates[0].width,
+                          url: media.image_versions2.candidates[0].url,
+                        }
+                  )
+                : [
+                    {
+                      id: post.pk,
+                      type: 'image',
+                      height: post.image_versions2.candidates[0].height,
+                      width: post.image_versions2.candidates[0].width,
+                      url: post.image_versions2.candidates[0].url,
+                    },
+                  ],
+          caption: post.caption ? post.caption.text : '',
+          shortcode: post.code,
+        }))
+        .slice(0, 6),
     };
   };
 
@@ -347,12 +353,7 @@ export class IGClient {
         created_at: item.taken_at,
         like_count: item.like_count,
         comment_count: item.comment_count,
-        play_count:
-          item.product_type === 'feed'
-            ? null
-            : item.product_type === 'clips'
-              ? item.play_count
-              : item.view_count,
+        play_count: item.play_count ?? item.view_count,
         type:
           item.product_type === 'clips' || item.product_type === 'feed'
             ? 'video'
@@ -421,10 +422,10 @@ export class IGClient {
     }
   };
 
-  public getPosts = async (id: string) => {
+  public getPosts = async (id: string, nextCursor?: string) => {
     try {
       const response = await fetch(
-        `${this.baseUrl}/webuser_posts_v2/${id}?count=6&nocors=true`,
+        `${this.baseUrl}/webuser_posts_v2/${id}?count=6&nocors=true${nextCursor ? `&max_id=${nextCursor}` : ''}`,
         {
           headers: this.headers,
         }
@@ -507,10 +508,10 @@ export class IGClient {
     }
   };
 
-  public getReels = async (id: string) => {
+  public getReels = async (id: string, nextCursor?: string) => {
     try {
       const response = await fetch(
-        `${this.baseUrl}/webuser_reels/${id}?count=6&nocors=true`,
+        `${this.baseUrl}/webuser_reels/${id}?nocors=true${nextCursor ? `&max_id=${nextCursor}` : ''}`,
         {
           headers: this.headers,
         }

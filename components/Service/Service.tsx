@@ -20,23 +20,26 @@ interface Props {
 
 const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
   const {
+    resetUser,
     setIgProfile,
     setStories,
     setPosts,
     setHighlights,
     setReels,
-    resetUser,
+    setPagination,
     igProfile,
     stories,
     posts,
     highlights,
     reels,
     mode,
+    pagination,
   } = useContext(InstagramContext);
 
   username = username.replaceAll('%2C', '.');
 
   useEffect(() => {
+    if (pagination.isLoading) return;
     (async () => {
       let setFunction: any = setStories;
       let fetchFunction: any = fetchStories.bind(this, username);
@@ -89,6 +92,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
     posts,
     highlights,
     reels,
+    pagination,
     setIgProfile,
     setHighlights,
     setStories,

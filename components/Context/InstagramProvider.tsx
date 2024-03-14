@@ -16,12 +16,14 @@ interface Context {
     externalLink: string;
   } | null;
   setIgProfile: React.Dispatch<React.SetStateAction<Context['igProfile']>>;
-  stories: {
-    id: string;
-    type: 'image' | 'video';
-    thumbnailUrl: string;
-    mediaUrl: string;
-  }[] | null;
+  stories:
+    | {
+        id: string;
+        type: 'image' | 'video';
+        thumbnailUrl: string;
+        mediaUrl: string;
+      }[]
+    | null;
   setStories: React.Dispatch<React.SetStateAction<Context['stories']>>;
   posts: {
     more_available: boolean;
@@ -75,6 +77,11 @@ interface Context {
    */
   mode: number;
   setMode: React.Dispatch<React.SetStateAction<Context['mode']>>;
+  pagination: {
+    page: number;
+    isLoading: boolean;
+  };
+  setPagination: React.Dispatch<React.SetStateAction<Context['pagination']>>;
   resetUser: () => void;
 }
 
@@ -91,6 +98,11 @@ const baseContext: Context = {
   setReels: (reels) => undefined,
   mode: 0,
   setMode: (mode) => undefined,
+  pagination: {
+    page: 1,
+    isLoading: false,
+  },
+  setPagination: (pagination) => undefined,
   resetUser: () => undefined,
 };
 
@@ -103,6 +115,7 @@ const InstagramProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [highlights, setHighlights] = useState(baseContext.highlights);
   const [reels, setReels] = useState(baseContext.reels);
   const [mode, setMode] = useState(baseContext.mode);
+  const [pagination, setPagination] = useState(baseContext.pagination);
 
   const resetUser = () => {
     setIgProfile(null);
@@ -110,6 +123,7 @@ const InstagramProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setPosts(null);
     setHighlights(null);
     setReels(null);
+    setPagination(baseContext.pagination);
   };
 
   return (
@@ -127,6 +141,8 @@ const InstagramProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         setReels,
         mode,
         setMode,
+        pagination,
+        setPagination,
         resetUser,
       }}
     >

@@ -10,8 +10,9 @@ import Image from 'next/image';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
 import { FaRegComment, FaRegHeart } from 'react-icons/fa6';
 import { useTranslation } from 'react-i18next';
+import { getBoostLikes } from '@/utils/requests';
 
-interface LightboxSlide {
+export interface LightboxSlide {
   id: string;
   type: 'image' | 'video';
   height?: number;
@@ -23,7 +24,7 @@ interface LightboxSlide {
     type: 'video/mp4';
   }[];
   caption?: string;
-  code?: string;
+  shortcode?: string;
   download?: boolean | string | { url: string; filename?: string };
 }
 
@@ -132,6 +133,8 @@ const SidePanel: React.FC<SidePanelProps> = ({
 
   if (!data || !currentSlide) return null;
 
+  console.log(data);
+
   return (
     <div className="flex w-full max-w-md flex-col overflow-y-auto border-t border-gray-700 bg-black lg:h-full lg:border-l lg:border-t-0">
       <header className="flex items-center border-b border-gray-700 p-4">
@@ -171,7 +174,7 @@ const SidePanel: React.FC<SidePanelProps> = ({
       <footer className="border-t border-gray-700 p-4">
         <div className="flex gap-4">
           <DownloadButton multiStepDownload />
-          <button className="btn btn-success w-28 rounded-none">Boost</button>
+          <BoostButton />
         </div>
       </footer>
     </div>
@@ -207,15 +210,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
       setIsDownloading(true);
       window.onblur = hideDownloadingMessage;
       if (!multiStepDownload) return;
-      // const link = document.createElement('a');
-      //@ts-ignore
-      // link.href = `/api/download/${currentSlide.id}`;
-      // link.setAttribute('style', 'display: none;');
-      // link.setAttribute('download', '');
 
-      // document.body.appendChild(link);
-      // link.click();
-      // link.parentNode?.removeChild(link);
       handleToast();
       //@ts-ignore
       fetch(`/api/download/${currentSlide.id}`)
@@ -248,6 +243,62 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
             <div>
               <p className="py-2">Getting the highest available quality</p>
               <p className="py-2">Your download will begin shortly</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+const BoostButton: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<'error' | 'success' | null>(null);
+  const { currentSlide } = useLightboxState();
+
+  const resetStatus = () => {
+    setTimeout(() => {
+      setStatus(null);
+    }, 5000);
+  };
+  const handleBoost = async () => {
+    setIsLoading(true);
+    //@ts-ignore
+    if (!currentSlide?.shortcode) return;
+    //@ts-ignore
+    const response = await getBoostLikes(currentSlide.shortcode);
+    setIsLoading(false);
+
+    if (response && response.status === 'ok') {
+      setStatus('success');
+    } else {
+      setStatus('error');
+    }
+    resetStatus();
+  };
+  return (
+    <>
+      <button
+        onClick={handleBoost}
+        className="btn btn-success w-28 rounded-none"
+      >
+        {isLoading ? (
+          <span className="loading loading-spinner" />
+        ) : (
+          <p>Boost</p>
+        )}
+      </button>
+      {status && (
+        <div className="toast toast-center toast-top lg:toast-bottom">
+          <div
+            className={`alert ${status === 'error' ? 'alert-error' : 'alert-success'}`}
+          >
+            <div>
+              <p className="py-2">
+                {status === 'error'
+                  ? 'Something went wrong'
+                  : 'Your likes have been boosted!'}
+              </p>
             </div>
           </div>
         </div>

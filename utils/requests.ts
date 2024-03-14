@@ -51,11 +51,12 @@ export const fetchStories = cache(async (username: string) => {
   }
 });
 
-export const fetchPosts = cache(async (id: string) => {
+export const fetchPosts = cache(async (id: string, nextCursor?: string) => {
   const response = await fetch('/api/posts', {
     method: 'POST',
     body: JSON.stringify({
       id,
+      next_cursor: nextCursor,
     }),
   });
 
@@ -105,11 +106,12 @@ export const fetchHighlightById = cache(
   }
 );
 
-export const fetchReels = cache(async (id: string) => {
+export const fetchReels = cache(async (id: string, nextCursor?: string) => {
   const response = await fetch('/api/reels', {
     method: 'POST',
     body: JSON.stringify({
       id,
+      next_cursor: nextCursor,
     }),
   });
 
@@ -124,12 +126,31 @@ export const fetchReels = cache(async (id: string) => {
   }
 });
 
-export const postBoost = cache(async (username: string) => {
+export const getBoostViews = cache(async (username: string) => {
   try {
     const response = await fetch('/api/boost/story', {
       method: 'POST',
       body: JSON.stringify({
         username,
+      }),
+    });
+
+    if (!response) return;
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+export const getBoostLikes = cache(async (shortcode: string) => {
+  try {
+    const response = await fetch('/api/boost/likes', {
+      method: 'POST',
+      body: JSON.stringify({
+        shortcode,
       }),
     });
 

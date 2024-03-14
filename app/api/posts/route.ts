@@ -3,9 +3,11 @@ import { igClient } from '../clients';
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { id } = await req.json();
+    const { id, next_cursor } = await req.json();
 
-    const posts = await igClient.getPosts(id);
+    console.log(next_cursor)
+
+    const posts = await igClient.getPosts(id, next_cursor);
 
     return NextResponse.json(posts);
   } catch (error) {
