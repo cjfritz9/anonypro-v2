@@ -3,6 +3,7 @@ import ServiceSelector from '@/components/Service/ServiceSelector';
 import initTranslations from '../i18n';
 import WelcomeBlock from '@/components/WelcomeBlock/WelcomeBlock';
 import HowToBegin from '@/components/HowTo/HowToBegin';
+import HowToUse from '@/components/HowTo/HowToUse';
 
 interface Metadata {
   params: {
@@ -36,16 +37,27 @@ export default async function Home({ params: { locale } }: Metadata) {
           />
         </div>
       </section>
-      <section className="w-full mt-32">
-        <WelcomeBlock translations={t('section_two', {
-          returnObjects: true,
-        })} />
+      <section className="mt-32 w-full">
+        <WelcomeBlock
+          translations={t('section_two', {
+            returnObjects: true,
+          })}
+        />
       </section>
-      <section className="w-full mt-32">
-        <HowToBegin translations={t('section_three', {
-          returnObjects: true,
-        })} />
-</section>
+      <section className="mt-32 w-full">
+        <HowToBegin
+          translations={t('section_three', {
+            returnObjects: true,
+          })}
+        />
+      </section>
+      <section className="mt-32 w-full">
+      <HowToUse
+          translations={t('section_four', {
+            returnObjects: true,
+          })}
+        />
+      </section>
     </main>
   );
 }
