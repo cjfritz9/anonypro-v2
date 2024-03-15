@@ -4,6 +4,7 @@ import initTranslations from '../i18n';
 import WelcomeBlock from '@/components/WelcomeBlock/WelcomeBlock';
 import HowToBegin from '@/components/HowTo/HowToBegin';
 import HowToUse from '@/components/HowTo/HowToUse';
+import CardGrid from '@/components/CardGrid/CardGrid';
 
 interface Metadata {
   params: {
@@ -52,8 +53,15 @@ export default async function Home({ params: { locale } }: Metadata) {
         />
       </section>
       <section className="mt-32 w-full">
-      <HowToUse
+        <HowToUse
           translations={t('section_four', {
+            returnObjects: true,
+          })}
+        />
+      </section>
+      <section className="mt-32 w-full">
+        <CardGrid
+          translations={t('section_five', {
             returnObjects: true,
           })}
         />

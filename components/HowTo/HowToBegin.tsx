@@ -35,7 +35,7 @@ const HowToBegin: React.FC<Props> = ({ translations }) => {
   const { heading, item_one, item_two, item_three, item_four, item_five } =
     translations;
   return (
-    <div className="flex w-full flex-col items-center justify-center py-[70px] xl:px-10">
+    <div className="flex w-full flex-col items-center justify-center py-[70px]">
       <h3 className="mb-16 max-w-[720px] text-center text-4xl font-[500] leading-[44px] xl:text-[44px]">
         {heading}
       </h3>

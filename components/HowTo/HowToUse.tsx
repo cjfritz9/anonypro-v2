@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react';
+import GetStartedButton from './GetStartedButton';
 
 interface Props {
   translations: {
@@ -17,12 +18,13 @@ interface Props {
 
 const HowToUse: React.FC<Props> = ({ translations }) => {
   const { heading, item_one, item_two, item_three } = translations;
+
   return (
-    <div className="relative flex w-full flex-col items-center justify-center px-10 py-[70px]">
+    <div className="relative flex w-full flex-col items-center justify-center py-[70px]">
       <h3 className="mb-16 text-center text-4xl font-[500] leading-[44px] xl:text-[44px]">
         {heading}
       </h3>
-      <ul className="timeline timeline-vertical absolute xl:static -left-[47%] bottom-5 h-[880px] w-full justify-between xl:timeline-horizontal xl:h-auto">
+      <ul className="timeline timeline-vertical absolute -left-[47%] bottom-5 h-[880px] w-full justify-between xl:timeline-horizontal xl:static xl:h-auto">
         <li className="grow">
           <div className="timeline-middle flex h-12 w-12 items-center justify-center rounded-full bg-base-100">
             <p className="text-xl font-semibold">1</p>
@@ -49,7 +51,7 @@ const HowToUse: React.FC<Props> = ({ translations }) => {
       </ul>
       <div className="mt-12 flex w-full flex-col gap-8 xl:flex-row">
         <Item title={item_one.title}>
-          <label className="input input-bordered flex items-center gap-2 rounded-md bg-base-300">
+          <label className="input input-bordered pointer-events-none flex select-none items-center gap-2 rounded-md bg-base-300">
             <input type="text" className="grow" placeholder="Search" />
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -65,18 +67,23 @@ const HowToUse: React.FC<Props> = ({ translations }) => {
             </svg>
           </label>
         </Item>
+
         <Item title={item_two.title}>
-          <label className="input input-bordered flex items-center gap-2 rounded-md bg-base-300">
+          <label className="input input-bordered pointer-events-none flex select-none items-center gap-2 rounded-md bg-base-300">
             <input type="text" className="grow" value="instagram_user123" />
           </label>
         </Item>
+
         <Item title={item_three.title}>
-          <div className="flex w-[240px] items-center justify-center gap-4">
+          <div className="pointer-events-none flex w-[240px] select-none items-center justify-center gap-4">
             <p>480p</p>
             <p className="underline">720p</p>
             <p>1080p</p>
           </div>
         </Item>
+      </div>
+      <div>
+        <GetStartedButton />
       </div>
     </div>
   );
