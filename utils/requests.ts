@@ -13,6 +13,34 @@ interface Highlight {
   }[];
 }
 
+interface CaptchaResponse {
+  success: boolean;
+  score: number;
+  action: string;
+  challenge_ts: string;
+  hostname: string;
+  'error-codes'?: string[];
+}
+
+export const postRecaptchaToken = async (
+  token: string
+): Promise<CaptchaResponse | undefined> => {
+  try {
+    const response = await fetch(`/api/auth/recaptcha`, {
+      method: 'POST',
+      body: JSON.stringify(token),
+    });
+
+    if (!response) return;
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const fetchProfile = async (username: string) => {
   const response = await fetch('/api/profile', {
     method: 'POST',

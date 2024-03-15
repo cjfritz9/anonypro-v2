@@ -3,9 +3,8 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header/Header';
 import initTranslations from '../i18n';
-import TranslationsProvider from '@/components/Context/TranslationsProvider';
 import i18nConfig from '@/i18n.config';
-import InstagramProvider from '@/components/Context/InstagramProvider';
+import Providers from '../providers';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -37,21 +36,21 @@ export default async function RootLayout({
   const { t, resources } = await initTranslations(locale, ['common']);
 
   return (
-    <TranslationsProvider
-      resources={resources}
-      locale={locale}
-      namespaces={i18nNamespaces}
+    <Providers
+      translationProps={{
+        resources,
+        locale,
+        namespaces: i18nNamespaces,
+      }}
     >
       <html lang={locale}>
         <body className={poppins.className}>
           <Header headerData={t('header', { returnObjects: true })} />
-          <InstagramProvider>
-            <div className="flex min-h-[100dvh] flex-col items-center px-4 py-4 lg:px-24 lg:py-12">
-              {children}
-            </div>
-          </InstagramProvider>
+          <div className="flex min-h-[100dvh] flex-col items-center px-4 py-4 lg:px-24 lg:py-12">
+            {children}
+          </div>
         </body>
       </html>
-    </TranslationsProvider>
+    </Providers>
   );
 }

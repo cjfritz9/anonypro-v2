@@ -6,12 +6,17 @@ import Image from 'next/image';
 import MediaPlayer, { LightboxSlide } from './MediaPlayer';
 import { FaComment, FaHeart, FaPlay, FaVideo } from 'react-icons/fa6';
 import { BiSolidCarousel, BiSolidErrorCircle } from 'react-icons/bi';
-import { fetchHighlightById, getBoostViews } from '@/utils/requests';
+import {
+  fetchHighlightById,
+  getBoostViews,
+  postRecaptchaToken,
+} from '@/utils/requests';
 import { formatNumber, isBoostLimited } from '@/utils/tools';
 import { BsLightningFill } from 'react-icons/bs';
 import { IoCheckmarkCircle } from 'react-icons/io5';
 import Pagination from './Pagination';
 import useWindowSize from '@/utils/hooks/useWindowSize';
+import { useReCaptcha } from 'next-recaptcha-v3';
 
 interface NoContentProps {
   message: string;
@@ -153,6 +158,7 @@ const Story: React.FC<StoryProps> = ({
     remainder: 0,
   });
   const windowSize = useWindowSize();
+  const { executeRecaptcha } = useReCaptcha();
 
   const resetStatus = () => {
     setTimeout(() => {
@@ -171,14 +177,25 @@ const Story: React.FC<StoryProps> = ({
       });
       return;
     }
-
+    
     setIsLoading(true);
-    const response = await getBoostViews(username);
-    setIsLoading(false);
+    const token = await executeRecaptcha('story_boost');
+    const captchaResponse = await postRecaptchaToken(token);
 
-    if (response && response.status === 'ok') {
-      setBoostStatus('success');
+    if (
+      !captchaResponse ||
+      !captchaResponse.success ||
+      captchaResponse.score < 0.7
+    ) {
+      const response = await getBoostViews(username);
+      setIsLoading(false);
+      if (response && response.status === 'ok') {
+        setBoostStatus('success');
+      } else {
+        setBoostStatus('error');
+      }
     } else {
+      setIsLoading(false);
       setBoostStatus('error');
     }
     resetStatus();

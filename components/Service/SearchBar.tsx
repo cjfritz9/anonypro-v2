@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { isRateLimited } from '@/utils/tools';
+import { useReCaptcha } from 'next-recaptcha-v3';
+import { postRecaptchaToken } from '@/utils/requests';
 
 const SearchBar: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -14,6 +16,7 @@ const SearchBar: React.FC = () => {
   });
   const { t } = useTranslation('common');
   const router = useRouter();
+  const { executeRecaptcha } = useReCaptcha();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -35,13 +38,28 @@ const SearchBar: React.FC = () => {
       setIsLoading(false);
       return;
     }
-    const rateLimited = isRateLimited();
-    console.log(rateLimited);
-    router.push(`/user-profile/${username.replaceAll('.', ',').toLowerCase()}`);
 
-    setTimeout(() => {
+    const token = await executeRecaptcha('home_search');
+
+    const captchaResponse = await postRecaptchaToken(token);
+
+    if (
+      !captchaResponse ||
+      !captchaResponse.success ||
+      captchaResponse.score < 0.7
+    ) {
+      setRateLimit({ show: true, remainder: 60 });
       setIsLoading(false);
-    }, 3000);
+      return;
+    } else {
+      router.push(
+        `/user-profile/${username.replaceAll('.', ',').toLowerCase()}`
+      );
+      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
+    }
   };
 
   useEffect(() => {
@@ -89,7 +107,7 @@ const SearchBar: React.FC = () => {
         )}
       </label>
       {rateLimit.show && (
-        <div className="toast toast-end">
+        <div className="toast toast-start">
           <div className="alert alert-error">
             <span>{`Please wait ${rateLimit.remainder} seconds and try again`}</span>
           </div>
@@ -109,6 +127,7 @@ export const HeaderSearchBar: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { t } = useTranslation('common');
+  const { executeRecaptcha } = useReCaptcha();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -130,12 +149,28 @@ export const HeaderSearchBar: React.FC = () => {
       setIsLoading(false);
       return;
     }
-    setUsername('');
-    router.push(`/user-profile/${username.replaceAll('.', ',').toLowerCase()}`);
+    const token = await executeRecaptcha('header_search');
 
-    setTimeout(() => {
+    const captchaResponse = await postRecaptchaToken(token);
+
+    if (
+      !captchaResponse ||
+      !captchaResponse.success ||
+      captchaResponse.score < 0.7
+    ) {
+      setRateLimit({ show: true, remainder: 60 });
       setIsLoading(false);
-    }, 3000);
+      return;
+    } else {
+      setUsername('');
+      router.push(
+        `/user-profile/${username.replaceAll('.', ',').toLowerCase()}`
+      );
+      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
+    }
   };
 
   useEffect(() => {
@@ -186,7 +221,7 @@ export const HeaderSearchBar: React.FC = () => {
         )}
       </label>
       {rateLimit.show && (
-        <div className="toast toast-end">
+        <div className="toast toast-start">
           <div className="alert alert-error">
             <span>{`Please wait ${rateLimit.remainder} seconds and try again`}</span>
           </div>

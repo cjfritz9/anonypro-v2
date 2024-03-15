@@ -9,8 +9,9 @@ import Image from 'next/image';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
 import { FaRegComment, FaRegHeart } from 'react-icons/fa6';
 import { useTranslation } from 'react-i18next';
-import { getBoostLikes } from '@/utils/requests';
+import { getBoostLikes, postRecaptchaToken } from '@/utils/requests';
 import { isBoostLimited } from '@/utils/tools';
+import { useReCaptcha } from 'next-recaptcha-v3';
 
 export interface LightboxSlide {
   id: string;
@@ -257,6 +258,7 @@ const BoostButton: React.FC = () => {
     remainder: 0,
   });
   const { currentSlide } = useLightboxState();
+  const { executeRecaptcha } = useReCaptcha();
 
   const resetStatus = () => {
     setTimeout(() => {
@@ -274,19 +276,30 @@ const BoostButton: React.FC = () => {
       });
       return;
     }
-
-    console.log(isLimited, remainder);
     setIsLoading(true);
-    //@ts-ignore
-    if (!currentSlide?.shortcode) return;
-    //@ts-ignore
-    const response = await getBoostLikes(currentSlide.shortcode);
-    setIsLoading(false);
 
-    if (response && response.status === 'ok') {
-      setStatus('success');
-    } else {
-      setStatus('error');
+    const token = await executeRecaptcha('likes_boost');
+    const captchaResponse = await postRecaptchaToken(token);
+
+    if (
+      !captchaResponse ||
+      !captchaResponse.success ||
+      captchaResponse.score < 0.7
+    ) {
+      //@ts-ignore
+      if (!currentSlide?.shortcode) {
+        setIsLoading(false);
+        return;
+      }
+      //@ts-ignore
+      const response = await getBoostLikes(currentSlide.shortcode);
+      setIsLoading(false);
+
+      if (response && response.status === 'ok') {
+        setStatus('success');
+      } else {
+        setStatus('error');
+      }
     }
     resetStatus();
   };
@@ -308,7 +321,10 @@ const BoostButton: React.FC = () => {
   }, [boostLimited.remainder]);
   return (
     <>
-      <div className={boostLimited.isLimited ? 'tooltip' : ''} data-tip="Next boost in:">
+      <div
+        className={boostLimited.isLimited ? 'tooltip' : ''}
+        data-tip="Next boost in:"
+      >
         <button
           onClick={handleBoost}
           className={`${boostLimited.isLimited ? 'pointer-events-none' : ''} btn btn-success w-28 rounded-none`}

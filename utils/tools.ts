@@ -34,9 +34,9 @@ export const isRateLimited = () => {
 
   const currentTime = new Date().getTime();
   const lastReqTime = new Date(JSON.parse(lastReq)).getTime();
-  const diff = 60 - Math.ceil(currentTime / 1000 - lastReqTime / 1000);
+  const diff = 15 - Math.ceil(currentTime / 1000 - lastReqTime / 1000);
 
-  if (currentTime - 60000 >= lastReqTime) {
+  if (currentTime - 15000 >= lastReqTime) {
     localStorage.setItem(key, JSON.stringify(new Date()));
     return { isLimited: false, remainder: 0 };
   }
