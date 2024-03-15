@@ -2,6 +2,7 @@ import SearchBar from '@/components/Service/SearchBar';
 import ServiceSelector from '@/components/Service/ServiceSelector';
 import initTranslations from '../i18n';
 import WelcomeBlock from '@/components/WelcomeBlock/WelcomeBlock';
+import HowToBegin from '@/components/HowTo/HowToBegin';
 
 interface Metadata {
   params: {
@@ -40,6 +41,11 @@ export default async function Home({ params: { locale } }: Metadata) {
           returnObjects: true,
         })} />
       </section>
+      <section className="w-full mt-32">
+        <HowToBegin translations={t('section_three', {
+          returnObjects: true,
+        })} />
+</section>
     </main>
   );
 }

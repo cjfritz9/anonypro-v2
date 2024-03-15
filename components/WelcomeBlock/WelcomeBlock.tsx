@@ -7,6 +7,7 @@ import arrowTwo from '@/public/assets/arrow-2.svg';
 import { IconType } from 'react-icons';
 import { VscPlayCircle } from 'react-icons/vsc';
 import { RiFolderDownloadLine } from 'react-icons/ri';
+import CircleWithIcon from '../UI/CircleWithIcon';
 
 interface Props {
   translations: {
@@ -47,7 +48,7 @@ const WelcomeBlock: React.FC<Props> = ({ translations }) => {
           Icon={PiPlusSquareBold}
         />
         <Image
-          className="rotate-90 xl:rotate-0 min-h-[310px]"
+          className="min-h-[310px] rotate-90 xl:rotate-0"
           src={arrowOne}
           alt="vector arrow"
         />
@@ -58,7 +59,7 @@ const WelcomeBlock: React.FC<Props> = ({ translations }) => {
           Icon={VscPlayCircle}
         />
         <Image
-          className="rotate-90 xl:rotate-0 min-h-[310px]"
+          className="min-h-[310px] rotate-90 xl:rotate-0"
           src={arrowTwo}
           alt="vector arrow"
         />
@@ -86,12 +87,8 @@ interface ItemProps {
 const Item: React.FC<ItemProps> = ({ iconBgColor, Icon, title, body }) => {
   return (
     <div className="flex max-w-[224px] flex-col items-center text-center">
-      <div
-        className={`flex h-20 w-20 items-center justify-center rounded-full ${iconBgColor}`}
-      >
-        <Icon className="text-[40px] text-white" />
-      </div>
-      <p className="mb-4 mt-6 text-[20px] font-[500]">{title}</p>
+      <CircleWithIcon styles={iconBgColor} Icon={Icon} />
+      <h4 className="mb-4 mt-6 text-[20px] font-[500]">{title}</h4>
       <p className="text-[1rem] font-[300]">{body}</p>
     </div>
   );
