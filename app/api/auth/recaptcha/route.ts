@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export const POST = async (req: NextRequest) => {
   const token = await req.json();
 
-  console.log(token)
-
   if (!token) {
     return NextResponse.json('No Recaptcha token provided');
   }
