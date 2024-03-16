@@ -3,6 +3,8 @@ import CircleWithIcon from '../UI/CircleWithIcon';
 import { FiUnlock } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { RiFolderDownloadLine } from 'react-icons/ri';
+import { TbEyeCheck } from 'react-icons/tb';
+import { IoCompassOutline } from 'react-icons/io5';
 
 interface Props {
   translations: {
@@ -45,12 +47,12 @@ const CardGrid: React.FC<Props> = ({ translations }) => {
         <Card
           title={item_three.title}
           body={item_three.body}
-          Icon={RiFolderDownloadLine}
+          Icon={TbEyeCheck}
         />
         <Card
           title={item_four.title}
           body={item_four.body}
-          Icon={RiFolderDownloadLine}
+          Icon={IoCompassOutline}
         />
       </div>
     </div>
