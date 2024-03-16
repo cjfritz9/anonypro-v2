@@ -28,7 +28,11 @@ const languages = [
   'tl',
 ];
 
-const LanguagePicker: React.FC = () => {
+interface Props {
+  reverse?: boolean;
+}
+
+const LanguagePicker: React.FC<Props> = ({ reverse }) => {
   const { i18n } = useTranslation();
   const currentLocale = i18n.language;
   const router = useRouter();
@@ -62,11 +66,13 @@ const LanguagePicker: React.FC = () => {
   };
 
   return (
-    <div className="dropdown w-full min-w-[140px]">
+    <div
+      className={`dropdown ${reverse ? 'dropdown-top' : 'dropdown-bottom'} w-full min-w-[140px]`}
+    >
       <div
         tabIndex={0}
         role="button"
-        className="btn m-1 w-full bg-base-200 bg-opacity-50 font-normal text-white"
+        className="btn m-1 w-[140px] bg-base-200 bg-opacity-50 font-normal text-white"
       >
         <PiGlobeLight className="text-[20px]" />
         {displayName}
@@ -77,7 +83,7 @@ const LanguagePicker: React.FC = () => {
       </div>
       <ul
         tabIndex={0}
-        className="menu dropdown-content z-[1] mt-[16px] flex w-full flex-col rounded-box bg-[#3E3186] p-2 shadow"
+        className="menu dropdown-content flex-nowrap z-[1] mt-[16px] h-[196px] w-full max-w-[140px] overflow-y-auto rounded-box bg-[#3E3186] p-2 shadow"
       >
         {languages.map((languageCode) => {
           const nameGenerator = new Intl.DisplayNames(languageCode, {

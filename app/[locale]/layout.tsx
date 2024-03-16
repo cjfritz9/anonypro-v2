@@ -5,6 +5,7 @@ import Header from '@/components/Header/Header';
 import initTranslations from '../i18n';
 import i18nConfig from '@/i18n.config';
 import Providers from '../providers';
+import Footer from '@/components/Footer/Footer';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -49,6 +50,7 @@ export default async function RootLayout({
           <div className="flex min-h-[100dvh] flex-col items-center px-4 py-4 lg:px-24 lg:py-12">
             {children}
           </div>
+          <Footer />
         </body>
       </html>
     </Providers>
