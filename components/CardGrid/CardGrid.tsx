@@ -31,7 +31,7 @@ interface Props {
 const CardGrid: React.FC<Props> = ({ translations }) => {
   const { heading, item_one, item_two, item_three, item_four } = translations;
   return (
-    <div className="flex w-full flex-col items-center justify-center rounded-[48px] bg-base-100 bg-opacity-50 px-10 py-[70px]">
+    <div className="flex w-full flex-col items-center justify-center rounded-[48px] bg-base-100 bg-opacity-50 px-2 lg:px-10 py-[70px]">
       <h3 className="mb-6 text-center text-[44px] font-[500] leading-[44px]">
         {heading}
       </h3>

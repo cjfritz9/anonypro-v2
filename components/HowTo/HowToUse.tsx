@@ -24,26 +24,26 @@ const HowToUse: React.FC<Props> = ({ translations }) => {
       <h3 className="mb-16 text-center text-4xl font-[500] leading-[44px] xl:text-[44px]">
         {heading}
       </h3>
-      <ul className="timeline timeline-vertical absolute -left-[47%] bottom-5 h-[880px] w-full justify-between xl:timeline-horizontal xl:static xl:h-auto">
+      <ul className="timeline timeline-vertical absolute -left-[47%] bottom-52 h-[880px] w-full justify-between xl:timeline-horizontal xl:static xl:h-auto">
         <li className="grow">
           <div className="timeline-middle flex h-12 w-12 items-center justify-center rounded-full bg-base-100">
             <p className="text-xl font-semibold">1</p>
           </div>
 
-          <hr className="bg-base-100" />
+          <hr className="hidden bg-base-100 xl:block" />
         </li>
 
         <li className="grow">
-          <hr className="bg-base-100" />
+          <hr className="hidden bg-base-100 xl:block" />
           <div className="timeline-middle flex h-12 w-12 items-center justify-center rounded-full bg-accent">
             <p className="text-xl font-semibold">2</p>
           </div>
 
-          <hr className="bg-base-100" />
+          <hr className="hidden bg-base-100 xl:block" />
         </li>
 
         <li className="grow">
-          <hr className="bg-base-100" />
+          <hr className="hidden bg-base-100 xl:block" />
           <div className="timeline-middle flex h-12 w-12 items-center justify-center rounded-full bg-base-100">
             <p className="text-xl font-semibold">3</p>
           </div>
