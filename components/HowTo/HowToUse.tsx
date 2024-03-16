@@ -52,7 +52,7 @@ const HowToUse: React.FC<Props> = ({ translations }) => {
       <div className="mt-12 flex w-full flex-col gap-8 xl:flex-row">
         <Item title={item_one.title}>
           <label className="input input-bordered pointer-events-none flex select-none items-center gap-2 rounded-md bg-base-300">
-            <input type="text" className="grow" placeholder="Search" />
+            <input type="text" className="grow" placeholder="Search" readOnly />
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -70,7 +70,12 @@ const HowToUse: React.FC<Props> = ({ translations }) => {
 
         <Item title={item_two.title}>
           <label className="input input-bordered pointer-events-none flex select-none items-center gap-2 rounded-md bg-base-300">
-            <input type="text" className="grow" value="instagram_user123" />
+            <input
+              type="text"
+              className="grow"
+              readOnly
+              value="instagram_user123"
+            />
           </label>
         </Item>
 

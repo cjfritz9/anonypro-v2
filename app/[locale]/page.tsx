@@ -5,6 +5,8 @@ import WelcomeBlock from '@/components/WelcomeBlock/WelcomeBlock';
 import HowToBegin from '@/components/HowTo/HowToBegin';
 import HowToUse from '@/components/HowTo/HowToUse';
 import CardGrid from '@/components/CardGrid/CardGrid';
+import FAQ from '@/components/FAQ/FAQ';
+import BlogPreview from '@/components/Blog/BlogPreview';
 
 interface Metadata {
   params: {
@@ -62,6 +64,20 @@ export default async function Home({ params: { locale } }: Metadata) {
       <section className="mt-32 w-full">
         <CardGrid
           translations={t('section_five', {
+            returnObjects: true,
+          })}
+        />
+      </section>
+      <section className="mt-32 w-full">
+        <FAQ
+          translations={t('section_six', {
+            returnObjects: true,
+          })}
+        />
+      </section>
+      <section className="mt-32 w-full">
+        <BlogPreview
+          translations={t('section_seven', {
             returnObjects: true,
           })}
         />
