@@ -2,7 +2,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
-import { fetchPosts, fetchReels } from '@/utils/requests';
+import { fetchPosts, fetchReels } from '@/lib/requests';
 
 const Pagination: React.FC = () => {
   const { igProfile, mode } = useContext(InstagramContext);

@@ -9,8 +9,8 @@ import Image from 'next/image';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
 import { FaRegComment, FaRegHeart } from 'react-icons/fa6';
 import { useTranslation } from 'react-i18next';
-import { getBoostLikes, postRecaptchaToken } from '@/utils/requests';
-import { isBoostLimited } from '@/utils/tools';
+import { getBoostLikes, postRecaptchaToken } from '@/lib/requests';
+import { isBoostLimited } from '@/lib/tools';
 import { useReCaptcha } from 'next-recaptcha-v3';
 
 export interface LightboxSlide {

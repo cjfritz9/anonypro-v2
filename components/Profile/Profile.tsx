@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
 import Link from 'next/link';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
-import { formatNumber } from '@/utils/tools';
+import { formatNumber } from '@/lib/tools';
 import { useParams } from 'next/navigation';
 
 const Profile: React.FC = () => {

@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { isRateLimited } from '@/utils/tools';
+import { isRateLimited } from '@/lib/tools';
 import { useReCaptcha } from 'next-recaptcha-v3';
-import { postRecaptchaToken } from '@/utils/requests';
+import { postRecaptchaToken } from '@/lib/requests';
 
 const SearchBar: React.FC = () => {
   const [username, setUsername] = useState('');

@@ -11,7 +11,7 @@ import {
   fetchProfile,
   fetchReels,
   fetchStories,
-} from '@/utils/requests';
+} from '@/lib/requests';
 import { useParams } from 'next/navigation';
 
 enum Errors {

@@ -21,7 +21,7 @@ export default async function Home({ params: { locale } }: Metadata) {
       <section className="flex w-full max-w-[668px] flex-col items-center">
         <div className="flex w-full max-w-[576px] flex-col items-center gap-10">
           <div className="flex max-w-[576px] flex-col gap-10 text-center">
-            <h1 className="text-[32px] leading-[44px] lg:text-[56px] lg:leading-[66px]">
+            <h1 className="text-[32px] leading-[44px] font-[500] lg:text-[56px] lg:leading-[66px]">
               {t('section_one.heading_one')}
             </h1>
             <h2>

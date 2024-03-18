@@ -72,7 +72,7 @@ const LanguagePicker: React.FC<Props> = ({ reverse }) => {
       <div
         tabIndex={0}
         role="button"
-        className="btn m-1 w-[140px] bg-base-200 bg-opacity-50 font-normal text-white"
+        className="btn m-1 w-full lg:w-[140px] bg-base-200 bg-opacity-50 font-normal text-white"
       >
         <PiGlobeLight className="text-[20px]" />
         {displayName}
@@ -83,7 +83,7 @@ const LanguagePicker: React.FC<Props> = ({ reverse }) => {
       </div>
       <ul
         tabIndex={0}
-        className="menu dropdown-content flex-nowrap z-[1] mt-[16px] h-[196px] w-full max-w-[140px] overflow-y-auto rounded-box bg-[#3E3186] p-2 shadow"
+        className="menu dropdown-content flex-nowrap z-[1] mt-[16px] h-[196px] w-full lg:w-[140px] overflow-y-auto rounded-box bg-[#3E3186] p-2 shadow"
       >
         {languages.map((languageCode) => {
           const nameGenerator = new Intl.DisplayNames(languageCode, {

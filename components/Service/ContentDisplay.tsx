@@ -10,12 +10,12 @@ import {
   fetchHighlightById,
   getBoostViews,
   postRecaptchaToken,
-} from '@/utils/requests';
-import { formatNumber, isBoostLimited } from '@/utils/tools';
+} from '@/lib/requests';
+import { formatNumber, isBoostLimited } from '@/lib/tools';
 import { BsLightningFill } from 'react-icons/bs';
 import { IoCheckmarkCircle } from 'react-icons/io5';
 import Pagination from './Pagination';
-import useWindowSize from '@/utils/hooks/useWindowSize';
+import useWindowSize from '@/lib/hooks/useWindowSize';
 import { useReCaptcha } from 'next-recaptcha-v3';
 
 interface NoContentProps {
@@ -177,7 +177,7 @@ const Story: React.FC<StoryProps> = ({
       });
       return;
     }
-    
+
     setIsLoading(true);
     const token = await executeRecaptcha('story_boost');
     const captchaResponse = await postRecaptchaToken(token);
