@@ -28,6 +28,8 @@ interface LinkableHeaderProps {
   value: any;
 }
 
+export const revalidate = 1800;
+
 const LinkableHeader = ({ children, value }: LinkableHeaderProps) => {
   if (value.style === 'h1') {
     return (

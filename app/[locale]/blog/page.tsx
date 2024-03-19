@@ -10,6 +10,8 @@ interface Metadata {
   };
 }
 
+export const revalidate = 1800;
+
 const Page: React.FC<Metadata> = async ({ params: { locale, category } }) => {
   const { t } = await initTranslations(locale, ['blogging']);
   const articles = await getAllArticles();
