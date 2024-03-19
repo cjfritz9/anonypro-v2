@@ -30,16 +30,16 @@ const author = {
       options: {
         list: [
           {
-            title: 'author',
-            value: 'AUTHOR',
+            title: 'Author',
+            value: 'Author',
           },
           {
-            title: 'contributor',
-            value: 'CONTRIBUTOR',
+            title: 'Contributor',
+            value: 'Contributor',
           },
           {
-            title: 'editor',
-            value: 'EDITOR',
+            title: 'Editor',
+            value: 'Editor',
           },
         ],
       },
@@ -59,7 +59,7 @@ const author = {
             },
             {
               type: 'url',
-              name: 'LinkedIn',
+              name: 'Linkedin',
             },
             {
               type: 'url',

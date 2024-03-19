@@ -1,3 +1,4 @@
+import { toDisplayCategory } from '@/lib/tools';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -24,10 +25,6 @@ const BlogCard: React.FC<Props> = ({
   author,
   datePosted,
 }) => {
-  const toDisplayCategory = (category: string) => {
-    return category.replaceAll('-', ' ').toUpperCase();
-  };
-
   const toTruncatedTitle = (text: string) => {
     if (text.length <= 75) {
       return text;
@@ -51,7 +48,7 @@ const BlogCard: React.FC<Props> = ({
       </Link>
       <div className="h-full w-full p-6">
         <Link href={`/${category}`} className="hover:underline">
-          #{toDisplayCategory(category)}
+          {toDisplayCategory(category)}
         </Link>
         <Link href={`/${category}/${slug}`}>
           <h5 className="h-[88px] py-5 hover:underline">

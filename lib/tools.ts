@@ -50,7 +50,7 @@ export const isBoostLimited = () => {
 
   if (!lastReq) {
     localStorage.setItem(key, JSON.stringify(new Date()));
-    return { isLimited: false, remainder: 0 }
+    return { isLimited: false, remainder: 0 };
   }
 
   const currentTime = new Date().getTime();
@@ -63,4 +63,8 @@ export const isBoostLimited = () => {
   }
 
   return { isLimited: true, remainder: diff };
+};
+
+export const toDisplayCategory = (category: string) => {
+  return '#' + category.replaceAll('-', ' ').toUpperCase();
 };

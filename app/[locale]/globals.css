@@ -8,14 +8,6 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 43, 46, 113, 1;
-    --background-end-rgb: 119, 60, 195, 1;
-  }
-} */
-
 body {
   color: white;
   background: linear-gradient(180deg, #2b2e71 302px, #773cc3 1016px),

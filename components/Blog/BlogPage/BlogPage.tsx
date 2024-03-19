@@ -34,7 +34,7 @@ const BlogPage: React.FC<Props> = ({ articles }) => {
   return (
     <div>
       <h1></h1>
-      <div className="overflow flex gap-8">
+      <div className="overflow flex flex-wrap gap-8">
         {articles.map((article: any) => (
           <BlogCard
             key={article.id}

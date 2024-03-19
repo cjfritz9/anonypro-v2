@@ -2,7 +2,7 @@ import { sanityClient } from '@/app/api/clients';
 
 export const getAllArticles = async (page = 1) => {
   const query = `
-  *[_type == 'article'][${(page - 1) * 12}..${page * 12 - 1}] | order(_createdAt desc) {
+  *[_type == 'article'] | order(_createdAt desc)[${(page - 1) * 12}..${page * 12 - 1}] {
     'id': _id,
     'slug': slug.current,
     title,
@@ -27,16 +27,18 @@ export const getArticleByCategorySlug = async (
   slug: string
 ) => {
   const query = `
-  *[_type == 'article' && category == '${category}' && slug.current == '${slug}'][0] | order(_createdAt desc) {
+  *[_type == 'article' && category == '${category}' && slug.current == '${slug}'] | order(_createdAt desc)[0] {
     title,
     category,
     'author': *[_type == 'author' && article.author._ref == ^.id][0] {
       name,
+      'slug': slug.current,
       bio,
-      titles,
       profilePic {
-        'url': asset->{url}
-      }
+        asset->{url}
+      },
+      socialLinks,
+      titles
     },
     datePosted,
     description,
@@ -53,7 +55,7 @@ export const getArticleByCategorySlug = async (
 
 export const getArticlesByCategory = async (category: string, page = 1) => {
   const query = `
-  *[_type == 'article' && category == '${category}'][${(page - 1) * 12}..${page * 12 - 1}] | order(_createdAt desc) {
+  *[_type == 'article' && category == '${category}'] | order(_createdAt desc)[${(page - 1) * 12}..${page * 12 - 1}] {
     'id': _id,
     'slug': slug.current,
     title,
