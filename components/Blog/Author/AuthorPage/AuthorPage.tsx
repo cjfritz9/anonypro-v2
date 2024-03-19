@@ -21,7 +21,6 @@ interface Props {
 }
 
 const AuthorPage: React.FC<Props> = ({ data }) => {
-  console.log(data)
   return <div>
     <Profile data={data} />
   </div>;
