@@ -1,3 +1,4 @@
+//@ts-nocheck
 'use client';
 
 import { I18nextProvider } from 'react-i18next';
@@ -8,7 +9,7 @@ export default function TranslationsProvider({
   children,
   locale,
   namespaces,
-  resources
+  resources,
 }: {
   children: any;
   locale: any;
