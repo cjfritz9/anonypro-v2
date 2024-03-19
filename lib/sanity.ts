@@ -110,3 +110,21 @@ export const getArticlesByCategory = async (category: string, page = 1) => {
 
   return data;
 };
+
+export const getAuthorBySlug = async (slug: string) => {
+  const query = `
+    *[_type == 'author' && slug.current == '${slug}'][0] {
+      name,
+      'slug': slug.current,
+      'bio': bioLong,
+      profilePic {
+        asset->{url}
+      },
+      socialLinks,
+      titles
+  }`;
+
+  const data = await client.fetch(query);
+
+  return data;
+};

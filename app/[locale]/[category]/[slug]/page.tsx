@@ -1,6 +1,6 @@
 import initTranslations from '@/app/i18n';
 import ArticleRating from '@/components/Blog/ArticleRating';
-import AuthorCard from '@/components/Blog/AuthorCard';
+import AuthorCard from '@/components/Blog/Author/AuthorCard';
 import BlogPreview from '@/components/Blog/BlogPreview';
 import ScrollToSection from '@/components/Blog/ScrollToSection';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';

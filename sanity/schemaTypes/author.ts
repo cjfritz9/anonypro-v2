@@ -70,8 +70,16 @@ const author = {
       ],
     },
     {
-      name: 'bio',
-      title: 'About the Author',
+      name: 'bioLong',
+      title: 'About the Author - Long Bio for the /author page',
+      type: 'text',
+      description:
+        'Use Enter/Return between paragraphs to ensure that it shows up correctly on the website',
+      validation: (rule: any) => rule.required(),
+    },
+    {
+      name: 'bioShort',
+      title: 'Short Bio to display on a card',
       type: 'text',
       validation: (rule: any) => rule.required(),
     },
