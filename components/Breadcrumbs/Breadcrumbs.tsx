@@ -3,10 +3,15 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { FiHome } from 'react-icons/fi';
 
 const Breadcrumbs: React.FC = () => {
   const pathname = usePathname();
+  const {
+    i18n: { language: locale },
+  } = useTranslation();
+
   const crumbs = [
     { name: 'home', path: '/' },
     ...pathname
@@ -26,15 +31,17 @@ const Breadcrumbs: React.FC = () => {
       <ul className="pl-0">
         {crumbs.map((crumb, i) =>
           i < crumbs.length - 1 ? (
-            <li key={crumb.name}>
-              <Link
-                prefetch={false}
-                href={`/${crumb.path}`}
-                className="font-bold underline underline-offset-2 hover:text-secondary"
-              >
-                {crumb.name}
-              </Link>
-            </li>
+            crumb.name === locale ? null : (
+              <li key={crumb.name}>
+                <Link
+                  prefetch={false}
+                  href={`/${crumb.path}`}
+                  className="font-bold underline underline-offset-2 hover:text-secondary"
+                >
+                  {crumb.name}
+                </Link>
+              </li>
+            )
           ) : (
             <li key={crumb.name} className="select-none">
               {crumb.name}

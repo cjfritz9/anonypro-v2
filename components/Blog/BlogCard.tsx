@@ -1,7 +1,10 @@
+'use client';
+
 import { toDisplayCategory } from '@/lib/tools';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { FiUser } from 'react-icons/fi';
 import { LuCalendarDays } from 'react-icons/lu';
 
@@ -25,6 +28,10 @@ const BlogCard: React.FC<Props> = ({
   author,
   datePosted,
 }) => {
+  const {
+    i18n: { language: locale },
+  } = useTranslation();
+  
   const toTruncatedTitle = (text: string) => {
     if (text.length <= 75) {
       return text;
@@ -32,8 +39,6 @@ const BlogCard: React.FC<Props> = ({
       return text.slice(0, 72) + '...';
     }
   };
-
-  console.log();
 
   return (
     <div className="flex h-[472px] max-w-[376px] flex-col overflow-clip rounded-[48px] bg-base-100">
@@ -63,7 +68,13 @@ const BlogCard: React.FC<Props> = ({
           </Link>
           <div className="flex gap-2">
             <LuCalendarDays size={20} />
-            <p>{datePosted}</p>
+            <p>
+              {new Date(datePosted).toLocaleDateString(locale, {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            </p>
           </div>
         </div>
       </div>

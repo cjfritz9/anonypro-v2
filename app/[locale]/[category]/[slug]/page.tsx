@@ -1,7 +1,10 @@
+import initTranslations from '@/app/i18n';
+import ArticleRating from '@/components/Blog/ArticleRating';
 import AuthorCard from '@/components/Blog/AuthorCard';
+import BlogPreview from '@/components/Blog/BlogPreview';
 import ScrollToSection from '@/components/Blog/ScrollToSection';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
-import { getArticleByCategorySlug } from '@/lib/sanity';
+import { getArticleByCategorySlug, getLatestThreeArticles } from '@/lib/sanity';
 import { toDisplayCategory } from '@/lib/tools';
 import { PortableTextComponents } from '@portabletext/react';
 import { PortableText } from 'next-sanity';
@@ -14,6 +17,7 @@ import { LuCalendarDays } from 'react-icons/lu';
 
 interface Metadata {
   params: {
+    locale: string;
     category: string;
     slug: string;
   };
@@ -89,9 +93,12 @@ const components: PortableTextComponents = {
   },
 };
 
-const Page: React.FC<Metadata> = async ({ params: { category, slug } }) => {
+const Page: React.FC<Metadata> = async ({
+  params: { locale, category, slug },
+}) => {
+  const { t } = await initTranslations(locale, ['blogging']);
   const article: any = await getArticleByCategorySlug(category, slug);
-  console.log(article);
+  const latestArticles = await getLatestThreeArticles();
 
   if (!article) return notFound();
 
@@ -100,49 +107,64 @@ const Page: React.FC<Metadata> = async ({ params: { category, slug } }) => {
   );
 
   return (
-    <div className="my-12 w-full max-w-[970px] text-center lg:text-left">
-      <Breadcrumbs />
-      <div className="prose">
-        <h1 className="text-white">{article.title}</h1>
-        <p>{article.description}</p>
-      </div>
-      <div className="prose mt-8 flex flex-col items-center gap-2 text-white lg:flex-row lg:gap-6">
-        <Link
-          href={`/${article.category}`}
-          className="flex w-fit gap-4 rounded-sm bg-[#505186] px-2 py-1 text-white hover:brightness-110"
-          style={{ textDecoration: 'none' }}
-        >
-          {toDisplayCategory(article.category)}
-        </Link>
-        <Link
-          href={`/author/${article.author.slug}`}
-          className="flex items-center gap-2 text-white"
-          style={{ textDecoration: 'none' }}
-        >
-          <FiUser size={20} />
-          <p className=" m-0 hover:underline">{article.author.name}</p>
-        </Link>
-        <div className="flex items-center gap-2">
-          <LuCalendarDays size={20} />
-          <p className="m-0">{article.datePosted}</p>
+    <div
+      className="flex max-w-[100dvw] flex-col items-center"
+      style={{
+        background: 'linear-gradient(180deg, #2B2E71 22.89%, #773CC3 114.77%)',
+      }}
+    >
+      <div className="my-12 w-full max-w-[970px] text-center lg:text-left">
+        <Breadcrumbs />
+        <div className="prose">
+          <h1 className="text-white">{article.title}</h1>
+          <p>{article.description}</p>
+        </div>
+        <div className="prose mt-8 flex flex-col items-center gap-2 text-white lg:flex-row lg:gap-6">
+          <Link
+            href={`/${article.category}`}
+            className="flex w-fit gap-4 rounded-sm bg-[#505186] px-2 py-1 text-white hover:brightness-110"
+            style={{ textDecoration: 'none' }}
+          >
+            {toDisplayCategory(article.category)}
+          </Link>
+          <Link
+            href={`/author/${article.author.slug}`}
+            className="flex items-center gap-2 text-white"
+            style={{ textDecoration: 'none' }}
+          >
+            <FiUser size={20} />
+            <p className=" m-0 hover:underline">{article.author.name}</p>
+          </Link>
+          <div className="flex items-center gap-2">
+            <LuCalendarDays size={20} />
+            <p className="m-0">{article.datePosted}</p>
+          </div>
+        </div>
+        <div className="my-12 flex w-full justify-center lg:my-20">
+          <Image
+            src={article.heroImage.url.url}
+            alt="Hero Image"
+            height={600}
+            width={970}
+            className="max-h-[600px] w-auto rounded-[48px] object-cover"
+          />
+        </div>
+        <ScrollToSection sections={sections} />
+        <div className="prose w-full max-w-[1280px] text-white">
+          <PortableText components={components} value={article.content} />
+        </div>
+        <div className="my-12 flex w-full max-w-[1280px] justify-center">
+          <AuthorCard data={article.author} />
+        </div>
+        <div className="my-12 flex w-full max-w-[1280px] justify-center">
+          <ArticleRating articleId={article.id} />
         </div>
       </div>
-      <div className="my-12 flex w-full justify-center lg:my-20">
-        <Image
-          src={article.heroImage.url.url}
-          alt="Hero Image"
-          height={600}
-          width={970}
-          className="max-h-[600px] w-auto rounded-[48px] object-cover"
-        />
-      </div>
-      <ScrollToSection sections={sections} />
-      <div className="prose w-full max-w-[1280px] text-white">
-        <PortableText components={components} value={article.content} />
-      </div>
-      <div className="my-12 flex w-full max-w-[1280px] justify-center">
-        <AuthorCard data={article.author} />
-      </div>
+      <section className="flex w-[100dvw] justify-center bg-[#6346A1] py-20">
+        <div className="w-full max-w-[1280px]">
+          <BlogPreview articles={latestArticles} heading={t('title')} />
+        </div>
+      </section>
     </div>
   );
 };

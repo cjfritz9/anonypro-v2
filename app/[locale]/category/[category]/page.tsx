@@ -1,16 +1,19 @@
+import initTranslations from '@/app/i18n';
 import BlogPage from '@/components/Blog/BlogPage/BlogPage';
 import { getArticlesByCategory } from '@/lib/sanity';
 import React from 'react';
 
 interface Metadata {
   params: {
+    locale: string;
     category: string;
   };
 }
 
-const Page: React.FC<Metadata> = async ({ params: { category } }) => {
+const Page: React.FC<Metadata> = async ({ params: { locale, category } }) => {
+  const { t } = await initTranslations(locale, ['blogging']);
   const articles = await getArticlesByCategory(category);
-  return <BlogPage articles={articles} />;
+  return <BlogPage heading={t('title')} articles={articles} />;
 };
 
 export default Page;

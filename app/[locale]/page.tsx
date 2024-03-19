@@ -7,6 +7,7 @@ import HowToUse from '@/components/HowTo/HowToUse';
 import CardGrid from '@/components/CardGrid/CardGrid';
 import FAQ from '@/components/FAQ/FAQ';
 import BlogPreview from '@/components/Blog/BlogPreview';
+import { getLatestThreeArticles } from '@/lib/sanity';
 
 interface Metadata {
   params: {
@@ -16,6 +17,8 @@ interface Metadata {
 
 export default async function Home({ params: { locale } }: Metadata) {
   const { t } = await initTranslations(locale, ['home', 'common']);
+  const articles = await getLatestThreeArticles();
+
   return (
     <main className="mt-12 flex w-full max-w-[1280px] flex-col items-center lg:mt-24">
       <section className="flex w-full max-w-[668px] flex-col items-center">
@@ -77,9 +80,8 @@ export default async function Home({ params: { locale } }: Metadata) {
       </section>
       <section className="mt-32 w-full">
         <BlogPreview
-          translations={t('section_seven', {
-            returnObjects: true,
-          })}
+          articles={articles}
+          heading={t('section_seven.heading')}
         />
       </section>
     </main>

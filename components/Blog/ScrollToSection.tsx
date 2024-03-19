@@ -12,7 +12,7 @@ interface Props {
 const ScrollToSection: React.FC<Props> = ({ sections }) => {
   return (
     <div className="mb-12 flex w-full flex-col items-center">
-      <div className="w-full max-w-[720px] rounded-[48px] bg-base-300 bg-opacity-65 px-8 lg:px-20 py-8 text-white">
+      <div className="w-full max-w-[720px] rounded-[48px] bg-[#43427F] bg-opacity-65 px-8 py-8 text-white lg:px-20">
         <h3 className="my-12 text-center text-4xl font-semibold text-white">
           In This Article:
         </h3>
@@ -57,7 +57,7 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({
       <div className="relative flex h-5 w-5 items-center justify-center rounded-full bg-white">
         <FaCircleArrowDown
           size={24}
-          className={`absolute ${isHovered ? 'text-accent' : 'text-base-200'}`}
+          className={`absolute ${isHovered ? 'text-accent' : 'text-base-300'}`}
         />
       </div>
       <p>{title}</p>
