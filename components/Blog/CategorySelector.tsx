@@ -15,8 +15,6 @@ const CategorySelector: React.FC = () => {
   const [category, setCategory] = useState<Category>(null);
   const router = useRouter();
 
-  console.log(paramCategory);
-
   const handleClick = (category: Category) => {
     if (category === '') {
       router.push('/blog');

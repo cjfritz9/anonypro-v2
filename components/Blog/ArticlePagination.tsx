@@ -32,8 +32,6 @@ const ArticlePagination: React.FC<Props> = ({
     setPage(pageNum);
   };
 
-  console.log(totalPages)
-
   return (
     <div className="flex w-full justify-center gap-6">
       <button
