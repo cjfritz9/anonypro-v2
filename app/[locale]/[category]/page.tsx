@@ -16,7 +16,7 @@ export const revalidate = 1800;
 const Page: React.FC<Metadata> = async ({ params: { locale, category } }) => {
   const { t } = await initTranslations(locale, ['blogging']);
   const articles = await getArticlesByCategory(category);
-  return <BlogPage category={category} heading={t('title')} articles={articles} />;
+  return <BlogPage heading={t('blogging:title')} articles={articles} />;
 };
 
 export default Page;

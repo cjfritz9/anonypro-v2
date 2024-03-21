@@ -117,8 +117,8 @@ const Page: React.FC<Metadata> = async ({
     >
       <div className="my-12 w-full max-w-[970px] text-center lg:text-left">
         <Breadcrumbs />
-        <div className="prose">
-          <h1 className="text-white">{article.title}</h1>
+        <div className="prose px-4 lg:px-0">
+          <h1 className="text-3xl text-white md:text-4xl">{article.title}</h1>
           <p>{article.description}</p>
         </div>
         <div className="prose mt-8 flex flex-col items-center gap-2 text-white lg:flex-row lg:gap-6">
@@ -148,11 +148,11 @@ const Page: React.FC<Metadata> = async ({
             alt="Hero Image"
             height={600}
             width={970}
-            className="max-h-[600px] w-auto rounded-[48px] object-cover"
+            className="max-h-[600px] min-h-[480px] w-auto rounded-[48px] object-cover"
           />
         </div>
         <ScrollToSection sections={sections} />
-        <div className="prose w-full max-w-[1280px] text-white">
+        <div className="prose w-full max-w-[1280px] px-4 text-white">
           <PortableText components={components} value={article.content} />
         </div>
         <div className="my-12 flex w-full max-w-[1280px] justify-center">
@@ -164,7 +164,10 @@ const Page: React.FC<Metadata> = async ({
       </div>
       <section className="flex w-[100dvw] justify-center bg-[#6346A1] py-20">
         <div className="w-full max-w-[1280px]">
-          <BlogPreview articles={latestArticles} heading={t('title')} />
+          <BlogPreview
+            articles={latestArticles}
+            heading={t('blogging:title')}
+          />
         </div>
       </section>
     </div>

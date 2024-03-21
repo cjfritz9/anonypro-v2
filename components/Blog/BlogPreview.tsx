@@ -9,11 +9,11 @@ interface Props {
 }
 const BlogPreview: React.FC<Props> = ({ articles, heading }) => {
   return (
-    <div className="relative flex w-full flex-col items-center justify-center">
+    <div className="relative flex w-full flex-col items-center justify-center px-4">
       <h3 className="mb-16 text-center text-4xl font-[500] leading-[44px] xl:text-[44px]">
         {heading}
       </h3>
-      <div className="lg:items-between flex w-full flex-col flex-wrap items-center justify-between gap-8 lg:flex-row">
+      <div className="xl:items-between flex w-full flex-col flex-wrap items-center justify-center gap-8 lg:flex-row xl:justify-between">
         {articles.map((article) => (
           <BlogCard
             key={article.id}

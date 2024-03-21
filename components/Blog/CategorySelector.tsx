@@ -37,7 +37,7 @@ const CategorySelector: React.FC = () => {
   }, [paramCategory]);
 
   return (
-    <div className="my-8 flex w-full items-center justify-center gap-6">
+    <div className="my-8 flex w-full flex-wrap items-center justify-center gap-6">
       <button
         className={`${category === '' ? 'btn-accent' : ''} btn no-animation text-white`}
         onClick={() => handleClick('')}

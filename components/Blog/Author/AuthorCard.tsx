@@ -31,7 +31,7 @@ interface Props {
 const AuthorCard: React.FC<Props> = ({ data }) => {
   const { name, slug, titles, bio, profilePic, socialLinks } = data;
   return (
-    <div className="relative flex max-w-[720px] flex-col items-center rounded-[48px] bg-[#5C4699] px-10 py-12 md:flex-row">
+    <div className="relative flex max-w-[720px] w-full flex-col items-center rounded-[48px] bg-[#5C4699] px-10 py-12 md:flex-row">
       <Link href={`/author/${slug}`}>
         <figure className="my-6 flex h-[128px] w-[128px] min-w-[128px] items-center justify-center rounded-full bg-accent lg:my-0 lg:mr-8">
           <Image
