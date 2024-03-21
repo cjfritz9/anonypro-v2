@@ -21,8 +21,6 @@ export function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale }));
 }
 
-const i18nNamespaces = ['common', 'home'];
-
 interface ProjectData {
   params: {
     locale: string;
@@ -41,7 +39,7 @@ export default async function RootLayout({
       translationProps={{
         resources,
         locale,
-        namespaces: i18nNamespaces,
+        namespaces: i18nConfig.namespaces,
       }}
     >
       <html lang={locale} className='overflow-x-clip'>

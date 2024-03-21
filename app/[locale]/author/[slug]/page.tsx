@@ -1,3 +1,4 @@
+import initTranslations from '@/app/i18n';
 import AuthorPage from '@/components/Blog/Author/AuthorPage/AuthorPage';
 import Profile from '@/components/Blog/Author/Profile';
 import { getAuthorBySlug } from '@/lib/sanity';

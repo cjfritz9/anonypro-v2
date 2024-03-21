@@ -113,15 +113,44 @@ export const getArticlesByCategory = async (category: string, page = 1) => {
 
 export const getAuthorBySlug = async (slug: string) => {
   const query = `
-    *[_type == 'author' && slug.current == '${slug}'][0] {
-      name,
-      'slug': slug.current,
-      'bio': bioLong,
-      profilePic {
-        asset->{url}
+  *[_type == 'author' && slug.current == '${slug}'][0] {
+    name,
+    'slug': slug.current,
+    'bio': bioLong,
+    profilePic {
+      asset->{url}
       },
-      socialLinks,
-      titles
+    socialLinks,
+    titles,
+    'articles': *[_type == "article" && author._ref in *[_type=="author" && slug.current == '${slug}']._id] | order(_createdAt desc)[0..2] {
+      'id': _id,
+      'slug': slug.current,
+      title,
+      category,
+      datePosted,
+      heroImage {
+      'url': asset->{url}
+      },
+      "total": count(*[_type == "article" && author._ref in *[_type=="author" && slug.current == '${slug}']._id]),
+    }
+  }`;
+
+  const data = await client.fetch(query);
+
+  return data;
+};
+
+export const getArticlesByAuthor = async (slug: string, page = 1) => {
+  const query = `
+  *[_type == "article" && author._ref in *[_type=="author" && slug.current == '${slug}']._id] | order(_createdAt desc)[${(page - 1) * 3}..${page * 3 - 1}] {
+    'id': _id,
+    'slug': slug.current,
+    title,
+    category,
+    datePosted,
+    heroImage {
+    'url': asset->{url}
+    }
   }`;
 
   const data = await client.fetch(query);

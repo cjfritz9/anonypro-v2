@@ -22,20 +22,22 @@ export default async function initTranslations(
     );
   }
 
+
   await i18nInstance.init({
     lng: locale,
     resources,
     fallbackLng: i18nConfig.defaultLocale,
     supportedLngs: i18nConfig.locales,
-    defaultNS: namespaces[0],
-    fallbackNS: namespaces[0],
-    ns: namespaces,
-    preload: resources ? [] : i18nConfig.locales
+    defaultNS: i18nConfig.defaultNS,
+    fallbackNS: i18nConfig.defaultNS,
+    ns: i18nConfig.namespaces,
+    // debug: true,
+    preload: resources ? [] : i18nConfig.locales,
   });
 
   return {
     i18n: i18nInstance,
     resources: i18nInstance.services.resourceStore.data,
-    t: i18nInstance.t
+    t: i18nInstance.t,
   };
 }
