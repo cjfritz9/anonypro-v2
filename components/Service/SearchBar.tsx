@@ -55,10 +55,6 @@ const SearchBar: React.FC = () => {
       router.push(
         `/user-profile/${username.replaceAll('.', ',').toLowerCase()}`
       );
-      setIsLoading(false);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
     }
   };
 

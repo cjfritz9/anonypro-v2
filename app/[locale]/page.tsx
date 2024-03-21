@@ -24,20 +24,20 @@ export default async function Home({ params: { locale } }: Metadata) {
       <section className="flex w-full max-w-[668px] flex-col items-center">
         <div className="flex w-full max-w-[576px] flex-col items-center gap-10">
           <div className="flex max-w-[576px] flex-col gap-10 text-center">
-            <h1 className="text-[32px] leading-[44px] font-[500] lg:text-[56px] lg:leading-[66px]">
-              {t('section_one.heading_one')}
+            <h1 className="text-[32px] font-[500] leading-[44px] lg:text-[56px] lg:leading-[66px]">
+              {t('home:section_one.heading_one')}
             </h1>
             <h2>
-              {t('section_one.heading_two.part_one')}
+              {t('home:section_one.heading_two.part_one')}
               <br />
-              {t('section_one.heading_two.part_two')}
+              {t('home:section_one.heading_two.part_two')}
             </h2>
             <SearchBar />
           </div>
         </div>
         <div className="mt-16 w-full max-w-[668px]">
           <ServiceSelector
-            displayNames={t('common:service_selector.button_names', {
+            displayNames={t('service_selector.button_names', {
               returnObjects: true,
             })}
           />
@@ -45,35 +45,35 @@ export default async function Home({ params: { locale } }: Metadata) {
       </section>
       <section className="mt-32 w-full">
         <WelcomeBlock
-          translations={t('section_two', {
+          translations={t('home:section_two', {
             returnObjects: true,
           })}
         />
       </section>
       <section className="mt-32 w-full">
         <HowToBegin
-          translations={t('section_three', {
+          translations={t('home:section_three', {
             returnObjects: true,
           })}
         />
       </section>
       <section className="mt-32 w-full">
         <HowToUse
-          translations={t('section_four', {
+          translations={t('home:section_four', {
             returnObjects: true,
           })}
         />
       </section>
       <section className="mt-32 w-full">
         <CardGrid
-          translations={t('section_five', {
+          translations={t('home:section_five', {
             returnObjects: true,
           })}
         />
       </section>
       <section className="mt-32 w-full">
         <FAQ
-          translations={t('section_six', {
+          translations={t('home:section_six', {
             returnObjects: true,
           })}
         />
@@ -81,7 +81,7 @@ export default async function Home({ params: { locale } }: Metadata) {
       <section className="mt-32 w-full">
         <BlogPreview
           articles={articles}
-          heading={t('section_seven.heading')}
+          heading={t('home:section_seven.heading')}
         />
       </section>
     </main>

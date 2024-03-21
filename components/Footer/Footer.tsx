@@ -9,7 +9,7 @@ import LanguagePicker from '../Header/LanguagePicker';
 const Footer: React.FC = () => {
   return (
     <div className="mt-16 flex w-full justify-center lg:mt-0 lg:px-5 lg:py-20">
-      <div className="flex w-full max-w-[1280px] flex-col justify-between gap-4 bg-[#544790] bg-opacity-35 px-8 pt-4 lg:flex-row lg:rounded-[48px] lg:px-[70px] lg:py-[52px]">
+      <div className="flex w-full max-w-[1280px] flex-col justify-between gap-4 bg-[#544790] bg-opacity-35 px-8 pt-12 lg:pt-4 lg:flex-row lg:rounded-[48px] lg:px-[70px] lg:py-[52px]">
         <div className="flex h-full w-full flex-col justify-between gap-6 text-center md:min-w-[512px] lg:gap-0 lg:text-left">
           <div className="flex w-full flex-col items-center justify-between gap-6 md:flex-row lg:gap-0">
             <Link href="/" className="flex items-center justify-center gap-4">
@@ -35,10 +35,10 @@ const Footer: React.FC = () => {
           </p>
         </div>
         <div className="divider divider-horizontal xl:mx-[88px]" />
-        <div className="flex flex-col items-start gap-8 p-4 md:min-w-[336px]">
+        <div className="flex flex-col items-center lg:items-start gap-8 p-4 md:min-w-[336px]">
           <LanguagePicker reverse />
           <p className="text-xs">@2024 Anonypro. All Rights Reserved</p>
-          <div className="flex flex-col gap-2 text-xs lg:flex-row">
+          <div className="flex gap-2 text-xs">
             <Link href="/security">Security</Link>
             <div className="divider divider-primary divider-horizontal mx-0 hidden opacity-50 lg:block" />
             <Link href="/privacy">Your Privacy</Link>

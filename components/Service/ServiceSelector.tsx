@@ -46,17 +46,17 @@ const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
       {buttonsData.map((data, i) => (
         <button
           key={data.displayName}
-          className={`btn ${mode === i ? '!bg-accent hover:!bg-accent' : ''} join-item h-[72px] w-[25%] bg-base-100 py-3 font-normal text-primary hover:bg-base-100 hover:brightness-110`}
+          className={`${mode === i ? '!bg-accent hover:!bg-accent' : ''} btn join-item flex h-[84px] w-[25%] flex-col bg-base-100 py-3 font-normal text-primary hover:bg-base-100 hover:brightness-110 md:h-[72px] md:flex-row`}
           onClick={() => handleSelection(i)}
         >
           <Image
             src={data.icon}
             height={24}
             width={24}
-            // className="h-6 w-6"
+            className="xs:h-6 xs:w-6 h-8 w-8"
             alt={`Instagram ${data.displayName} Icon`}
           />
-          <p>{data.displayName}</p>
+          <p className="xs:block hidden">{data.displayName}</p>
         </button>
       ))}
     </div>
