@@ -53,7 +53,7 @@ const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
             src={data.icon}
             height={24}
             width={24}
-            className="xs:h-6 xs:w-6 h-8 w-8"
+            className={`${i === 3 ? 'xs:h-5 xs:w-5 h-7 w-7' : 'xs:h-6 xs:w-6 h-8 w-8'}`}
             alt={`Instagram ${data.displayName} Icon`}
           />
           <p className="xs:block hidden">{data.displayName}</p>
