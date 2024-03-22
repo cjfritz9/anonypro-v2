@@ -58,6 +58,8 @@ export default async function RootLayout({
               policies: '/policies',
               blog: '/blog',
               storyViewer: '/category/story-viewer',
+              postHighlights: '/category/post-highlights',
+              creatingPosts: '/category/creating-posts',
               returnObjects: true,
             })}
           />

@@ -19,7 +19,7 @@ const CategorySelector: React.FC = () => {
     if (category === '') {
       router.push('/blog');
     } else {
-      router.push(`/${category}`);
+      router.push(`/category/${category}`);
     }
   };
 
