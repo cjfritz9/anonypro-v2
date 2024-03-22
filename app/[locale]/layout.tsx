@@ -1,5 +1,11 @@
 import type { Metadata } from 'next';
-import { Instrument_Sans, Mingzat, Poppins, Prompt, Sawarabi_Gothic } from 'next/font/google';
+import {
+  Instrument_Sans,
+  Mingzat,
+  Poppins,
+  Prompt,
+  Sawarabi_Gothic,
+} from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header/Header';
 import initTranslations from '../i18n';
@@ -42,9 +48,19 @@ export default async function RootLayout({
         namespaces: i18nConfig.namespaces,
       }}
     >
-      <html lang={locale} className='overflow-x-clip'>
+      <html lang={locale} className="overflow-x-clip">
         <body className={poppins.className}>
-          <Header headerData={t('header', { returnObjects: true })} />
+          <Header
+            headerData={t('header', {
+              aboutUs: '/about-us',
+              support: '/support',
+              termsOfService: '/terms-of-service',
+              policies: '/policies',
+              blog: '/blog',
+              storyViewer: '/category/story-viewer',
+              returnObjects: true,
+            })}
+          />
           <div className="flex min-h-[100dvh] flex-col items-center px-4 py-4 lg:px-24 lg:py-12">
             {children}
           </div>

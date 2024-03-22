@@ -22,6 +22,8 @@ interface Props {
 
 const Header: React.FC<Props> = ({ headerData }) => {
   const { company, resources, contact_button_text } = headerData;
+
+  console.log(company, resources)
   return (
     <div className="flex w-full justify-center lg:px-5 lg:pt-5">
       <div className="flex w-full max-w-[1280px] flex-col justify-between gap-4 bg-base-200 bg-opacity-25 px-8 pt-4 lg:h-[84px] lg:flex-row lg:rounded-btn lg:py-6">

@@ -28,7 +28,7 @@ const LinkMenu: React.FC<Props> = ({ dropdownName, links }) => {
         {links.map((link) => (
           <li key={link.display_name}>
             <Link
-              href={'/' + link.href.replaceAll(' ', '-')}
+              href={link.href.replaceAll('&#x2F;', '/')}
               className="flex justify-center text-center"
             >
               {link.display_name}
