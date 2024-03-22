@@ -8,6 +8,9 @@ const config = {
   smmRajaApi: {
     baseUrl: ENV.SMMRAJA_API_URL!,
     key: ENV.SMMRAJA_API_KEY!,
+  },
+  resend: {
+    key: ENV.RESEND_API_KEY!
   }
 };
 

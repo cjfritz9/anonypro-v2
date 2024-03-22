@@ -8,7 +8,6 @@ import CardGrid from '@/components/CardGrid/CardGrid';
 import FAQ from '@/components/FAQ/FAQ';
 import BlogPreview from '@/components/Blog/BlogPreview';
 import { getLatestThreeArticles } from '@/lib/sanity';
-import Script from 'next/script';
 
 interface Metadata {
   params: {

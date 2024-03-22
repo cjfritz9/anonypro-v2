@@ -1,7 +1,14 @@
 const i18nConfig = {
   defaultLocale: 'en',
   defaultNS: 'common',
-  namespaces: ['common', 'home', 'about', 'user-profile', 'blogging'],
+  namespaces: [
+    'common',
+    'home',
+    'about',
+    'support',
+    'user-profile',
+    'blogging',
+  ],
   locales: [
     'en',
     'it',

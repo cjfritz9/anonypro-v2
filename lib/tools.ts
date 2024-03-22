@@ -68,3 +68,41 @@ export const isBoostLimited = () => {
 export const toDisplayCategory = (category: string) => {
   return '#' + category.replaceAll('-', ' ').toUpperCase();
 };
+
+export const validateContactForm = ({
+  name,
+  email,
+  subject,
+  message,
+}: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}): { isValid: boolean; message: string } => {
+  if (name.length === 0) {
+    return {
+      isValid: false,
+      message: 'Please enter your name',
+    };
+  }
+
+  if (email.length === 0) {
+    return {
+      isValid: false,
+      message: 'Please enter your Email',
+    };
+  }
+
+  if (message.length === 0) {
+    return {
+      isValid: false,
+      message: 'Please enter a message',
+    };
+  }
+
+  return {
+    isValid: true,
+    message: 'Your message has been sent',
+  };
+};

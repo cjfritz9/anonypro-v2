@@ -50,9 +50,14 @@ const Header: React.FC<Props> = ({ headerData }) => {
           </div>
           <div className="flex items-center justify-center gap-4">
             <LanguagePicker />
-            <button className="btn btn-accent hidden px-4 text-[1rem] font-normal text-white lg:inline-flex">
-              {contact_button_text}
-            </button>
+            <Link
+              href="/support"
+              className=" hidden px-4 text-[1rem] lg:inline-flex"
+            >
+              <button className="btn btn-accent font-normal text-white">
+                {contact_button_text}
+              </button>
+            </Link>
           </div>
         </div>
       </div>

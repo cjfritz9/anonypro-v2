@@ -193,3 +193,35 @@ export const getBoostLikes = cache(async (shortcode: string) => {
     console.error(error);
   }
 });
+
+export const postNewContactForm = async ({
+  name,
+  email,
+  subject,
+  message,
+}: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}) => {
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      body: JSON.stringify({
+        name,
+        email,
+        subject,
+        message,
+      }),
+    });
+
+    if (!response) return;
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
