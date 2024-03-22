@@ -21,7 +21,12 @@ const AboutUsPage: React.FC<Params> = async ({ params: { locale } }) => {
           <h1 className="text-4xl font-semibold text-white xl:text-[44px]">
             {t('about:section_one.heading', { anonypro: 'AnonyPro' })}
           </h1>
-          {(t('about:section_one.body', { anonypro: 'AnonyPro' }) as string)
+          {(
+            t('about:section_one.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
             .split('\n')
             .map((p, i) => (
               <p key={i}>{p}</p>
@@ -51,7 +56,12 @@ const AboutUsPage: React.FC<Params> = async ({ params: { locale } }) => {
             <h3 className="text-[24px] font-normal text-white">
               {t('about:section_two.subheading')}
             </h3>
-            {(t('about:section_two.body', { anonypro: 'AnonyPro' }) as string)
+            {(
+              t('about:section_two.body', {
+                anonypro: 'AnonyPro',
+                br: '\n',
+              }) as string
+            )
               .split('\n')
               .map((p, i) => (
                 <p key={i}>{p}</p>

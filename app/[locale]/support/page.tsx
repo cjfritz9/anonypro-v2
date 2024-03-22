@@ -15,7 +15,7 @@ const SupportPage: React.FC<Params> = async ({ params: { locale } }) => {
 
   return (
     <main className="mt-12 flex w-full max-w-[1280px] flex-col items-center lg:mt-24">
-      <div className="flex w-full flex-col xl:items-start items-center justify-between gap-8 xl:flex-row">
+      <div className="flex w-full flex-col items-center justify-between gap-8 xl:flex-row xl:items-start">
         <SupportForm />
         <div className="prose max-w-[600px] text-center xl:text-left">
           <h1 className="text-3xl font-semibold text-white xl:text-[44px]">
@@ -24,6 +24,7 @@ const SupportPage: React.FC<Params> = async ({ params: { locale } }) => {
           {(
             t('support:section_one.info.body', {
               anonypro: 'AnonyPro',
+              br: '\n',
             }) as string
           )
             .split('\n')

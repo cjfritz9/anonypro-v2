@@ -8,6 +8,8 @@ const i18nConfig = {
     'support',
     'user-profile',
     'blogging',
+    'policies',
+    'tos',
   ],
   locales: [
     'en',
