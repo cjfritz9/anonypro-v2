@@ -42,7 +42,6 @@ export class RajaClient {
 
     if (response && response.ok) {
       const result = await response.json();
-      console.log(result)
 
       if (result.error) {
         return new APIResponse('error', result.error, null);
