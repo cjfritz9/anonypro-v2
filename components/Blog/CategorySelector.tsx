@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { notFound, useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 type Category =
@@ -24,13 +24,15 @@ const CategorySelector: React.FC = () => {
   };
 
   useEffect(() => {
-    if (
-      !paramCategory ||
-      (paramCategory !== 'story-viewer' &&
-        paramCategory !== 'post-highlights' &&
-        paramCategory !== 'creating-posts')
-    ) {
+    console.log(paramCategory);
+    if (!paramCategory) {
       setCategory('');
+    } else if (
+      paramCategory !== 'story-viewer' &&
+      paramCategory !== 'post-highlights' &&
+      paramCategory !== 'creating-posts'
+    ) {
+      return notFound();
     } else {
       setCategory(paramCategory);
     }

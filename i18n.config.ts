@@ -1,7 +1,7 @@
 const i18nConfig = {
   defaultLocale: 'en',
   defaultNS: 'common',
-  namespaces: ['common', 'home', 'user-profile', 'blogging'],
+  namespaces: ['common', 'home', 'about', 'user-profile', 'blogging'],
   locales: [
     'en',
     'it',
@@ -19,8 +19,8 @@ const i18nConfig = {
     'tr',
     'de',
     'pt',
-    'tl'
-  ]
+    'tl',
+  ],
 };
 
 export default i18nConfig;

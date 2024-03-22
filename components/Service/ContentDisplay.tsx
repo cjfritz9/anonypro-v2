@@ -182,8 +182,6 @@ const Story: React.FC<StoryProps> = ({
     const token = await executeRecaptcha('story_boost');
     const captchaResponse = await postRecaptchaToken(token);
 
-    console.log(captchaResponse);
-
     if (
       !captchaResponse ||
       !captchaResponse.success ||

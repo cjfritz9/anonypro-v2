@@ -44,9 +44,6 @@ const FAQ: React.FC<Props> = ({ translations }) => {
     faq_five,
     faq_six,
   } = translations;
-  console.log(
-    toFaqSchema([faq_one, faq_two, faq_three, faq_four, faq_five, faq_six])
-  );
   return (
     <div className="relative flex w-full flex-col items-start justify-center gap-8 py-[70px] lg:flex-row xl:gap-20 xl:px-12">
       <Script id="faq-schema-script" type="application/ld+json">
