@@ -286,6 +286,9 @@ const BoostButton: React.FC = () => {
       !captchaResponse.success ||
       captchaResponse.score < 0.7
     ) {
+      setIsLoading(false);
+      setStatus('error');
+    } else {
       //@ts-ignore
       if (!currentSlide?.shortcode) {
         setIsLoading(false);

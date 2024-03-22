@@ -5,11 +5,13 @@ import { rajaClient } from '../../clients';
 export const POST = async (req: NextRequest) => {
   const { username } = await req.json();
 
+  console.log(username)
   if (!username) {
     return NextResponse.json(
       new APIResponse('error', 'No username provided', null)
     );
   }
+
 
   try {
     const response = await rajaClient.boostStoryViews(username);
