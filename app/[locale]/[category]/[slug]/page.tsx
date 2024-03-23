@@ -5,6 +5,7 @@ import BlogPreview from '@/components/Blog/BlogPreview';
 import ScrollToSection from '@/components/Blog/ScrollToSection';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import { getArticleByCategorySlug, getLatestThreeArticles } from '@/lib/sanity';
+import BRAND from '@/lib/static';
 import { toDisplayCategory } from '@/lib/tools';
 import { PortableTextComponents } from '@portabletext/react';
 import { PortableText } from 'next-sanity';
@@ -30,6 +31,20 @@ interface LinkableHeaderProps {
 }
 
 export const revalidate = 1800;
+
+export async function generateMetadata({
+  params: { category, slug },
+}: {
+  params: { category: string; slug: string };
+}) {
+  const article = await getArticleByCategorySlug(category, slug);
+  if (!article) {
+    return notFound();
+  }
+  return {
+    title: `${article.title} | Instagram Engagement | Likes, Tips and Tricks | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
+  };
+}
 
 const LinkableHeader = ({ children, value }: LinkableHeaderProps) => {
   if (value.style === 'h1') {

@@ -1,12 +1,19 @@
 import initTranslations from '@/app/i18n';
 import Service from '@/components/Service/Service';
 import ServiceSelector from '@/components/Service/ServiceSelector';
+import BRAND from '@/lib/static';
 import React from 'react';
 
 interface Metadata {
   params: {
     locale: string;
     username: string;
+  };
+}
+
+export async function generateMetadata({ params: { username } }: Metadata) {
+  return {
+    title: `${username} | View Instagram Anonymously | Profile | Posts | Stories`,
   };
 }
 

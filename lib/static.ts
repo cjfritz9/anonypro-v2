@@ -1,7 +1,7 @@
 import logoSm from '@/public/assets/Anonypro Logo (sm).png'
 
 const BRAND = {
-  name: 'anonypro',
+  name: 'AnonyPro',
   logoSm: logoSm
 }
 

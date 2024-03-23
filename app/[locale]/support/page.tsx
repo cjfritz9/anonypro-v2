@@ -1,5 +1,6 @@
 import initTranslations from '@/app/i18n';
 import SupportForm from '@/components/Support/SupportForm';
+import BRAND from '@/lib/static';
 import Link from 'next/link';
 import React from 'react';
 import { MdOutlineMailOutline } from 'react-icons/md';
@@ -7,6 +8,13 @@ import { MdOutlineMailOutline } from 'react-icons/md';
 interface Params {
   params: {
     locale: string;
+  };
+}
+
+export async function generateMetadata() {
+  
+  return {
+    title: `Support | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
   };
 }
 

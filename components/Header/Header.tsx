@@ -1,10 +1,10 @@
-import BRAND from '@/public/brand/static';
 import Image from 'next/image';
 import React from 'react';
 import LinkMenu from './LinkMenu';
 import LanguagePicker from './LanguagePicker';
 import Link from 'next/link';
 import { HeaderSearchBar } from '../Service/SearchBar';
+import BRAND from '@/lib/static';
 
 interface Props {
   headerData: {

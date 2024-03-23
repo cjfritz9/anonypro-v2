@@ -1,9 +1,17 @@
 import initTranslations from '@/app/i18n';
+import BRAND from '@/lib/static';
 import React from 'react';
 
 interface Params {
   params: {
     locale: string;
+  };
+}
+
+export async function generateMetadata() {
+  
+  return {
+    title: `Policies | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
   };
 }
 

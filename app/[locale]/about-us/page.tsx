@@ -4,10 +4,18 @@ import React from 'react';
 import aboutOne from '@/public/assets/about-one.svg';
 import aboutTwo from '@/public/assets/about-two.svg';
 import Link from 'next/link';
+import BRAND from '@/lib/static';
 
 interface Params {
   params: {
     locale: string;
+  };
+}
+
+export async function generateMetadata() {
+  
+  return {
+    title: `About Us | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
   };
 }
 

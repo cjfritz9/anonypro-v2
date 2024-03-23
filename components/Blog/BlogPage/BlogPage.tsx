@@ -21,7 +21,7 @@ const BlogPage: React.FC<Props> = ({ articles, category, heading }) => {
     <div className="my-12 lg:my-20">
       <h1 className="mb-12 text-center text-4xl font-semibold">{heading}</h1>
       <CategorySelector />
-      <div className="overflow w-full max-w-[1280px] flex flex-wrap justify-center gap-8">
+      <div className="overflow flex w-full max-w-[1280px] flex-wrap justify-center gap-8">
         {paginatedArticles && paginatedArticles[0] ? (
           paginatedArticles.map((article: any) => (
             <BlogCard
