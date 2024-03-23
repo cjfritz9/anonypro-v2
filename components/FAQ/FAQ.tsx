@@ -63,7 +63,7 @@ const FAQ: React.FC<Props> = ({ translations }) => {
         <h4>{subheading}</h4>
       </div>
       <div className="flex w-full flex-col gap-5">
-        <div className="collapse collapse-arrow bg-base-100">
+        <div className="collapse collapse-arrow bg-base-100 bg-opacity-45">
           <input type="radio" name="my-accordion-2" defaultChecked />
           <div className="collapse-title text-xl font-medium">
             {faq_one.question}
@@ -73,7 +73,7 @@ const FAQ: React.FC<Props> = ({ translations }) => {
           </div>
         </div>
 
-        <div className="collapse collapse-arrow bg-base-100">
+        <div className="collapse collapse-arrow bg-base-100 bg-opacity-45">
           <input type="radio" name="my-accordion-2" />
           <div className="collapse-title text-xl font-medium">
             {faq_two.question}
@@ -83,7 +83,7 @@ const FAQ: React.FC<Props> = ({ translations }) => {
           </div>
         </div>
 
-        <div className="collapse collapse-arrow bg-base-100">
+        <div className="collapse collapse-arrow bg-base-100 bg-opacity-45">
           <input type="radio" name="my-accordion-2" />
           <div className="collapse-title text-xl font-medium">
             {faq_three.question}
@@ -93,7 +93,7 @@ const FAQ: React.FC<Props> = ({ translations }) => {
           </div>
         </div>
 
-        <div className="collapse collapse-arrow bg-base-100">
+        <div className="collapse collapse-arrow bg-base-100 bg-opacity-45">
           <input type="radio" name="my-accordion-2" />
           <div className="collapse-title text-xl font-medium">
             {faq_four.question}
@@ -103,7 +103,7 @@ const FAQ: React.FC<Props> = ({ translations }) => {
           </div>
         </div>
 
-        <div className="collapse collapse-arrow bg-base-100">
+        <div className="collapse collapse-arrow bg-base-100 bg-opacity-45">
           <input type="radio" name="my-accordion-2" />
           <div className="collapse-title text-xl font-medium">
             {faq_five.question}
@@ -113,7 +113,7 @@ const FAQ: React.FC<Props> = ({ translations }) => {
           </div>
         </div>
 
-        <div className="collapse collapse-arrow bg-base-100">
+        <div className="collapse collapse-arrow bg-base-100 bg-opacity-45">
           <input type="radio" name="my-accordion-2" />
           <div className="collapse-title text-xl font-medium">
             {faq_six.question}

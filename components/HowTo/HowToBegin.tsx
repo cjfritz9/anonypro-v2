@@ -107,7 +107,7 @@ interface ItemProps {
 
 const Item: React.FC<ItemProps> = ({ Icon, title, body }) => {
   return (
-    <div className="relative flex h-fit min-h-[280px] w-full flex-col overflow-clip rounded-[48px] bg-base-100 px-6 pb-4 text-center">
+    <div className="relative flex h-fit min-h-[280px] w-full flex-col overflow-clip rounded-[48px] bg-base-100 bg-opacity-45 px-6 pb-4 text-center">
       <Icon />
       <div className="mt-24">
         <h4 className="mb-2 text-[20px] font-[500]">{title}</h4>

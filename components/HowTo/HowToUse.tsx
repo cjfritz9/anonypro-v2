@@ -100,9 +100,9 @@ interface ItemProps extends PropsWithChildren {
 
 const Item: React.FC<ItemProps> = ({ title, children }) => {
   return (
-    <div className="flex h-[248px] w-full flex-col items-center">
+    <div className="flex h-[248px] w-full flex-col items-center bg-opacity-45">
       <h4 className="mb-4">{title}</h4>
-      <div className="flex h-[200px] w-full items-center justify-center rounded-[48px] bg-base-100 px-8 py-[72px] xl:mr-0">
+      <div className="flex h-[200px] w-full items-center justify-center rounded-[48px] bg-base-100 bg-opacity-45 px-8 py-[72px] xl:mr-0">
         {children}
       </div>
     </div>

@@ -31,7 +31,7 @@ interface Props {
 const WelcomeBlock: React.FC<Props> = ({ translations }) => {
   const { heading, body, item_one, item_two, item_three } = translations;
   return (
-    <div className="flex w-full flex-col items-center justify-center rounded-[48px] bg-base-100 px-10 py-[70px]">
+    <div className="flex w-full flex-col items-center justify-center rounded-[48px] bg-base-100 bg-opacity-55 px-10 py-[70px]">
       <div className="mb-16 flex w-full flex-col items-center">
         <h3 className="mb-6 text-center text-[44px] font-[500] leading-[44px]">
           {heading}
