@@ -8,6 +8,7 @@ import CardGrid from '@/components/CardGrid/CardGrid';
 import FAQ from '@/components/FAQ/FAQ';
 import BlogPreview from '@/components/Blog/BlogPreview';
 import { getLatestThreeArticles } from '@/lib/sanity';
+import Script from 'next/script';
 
 interface Metadata {
   params: {
@@ -21,6 +22,19 @@ export default async function Home({ params: { locale } }: Metadata) {
 
   return (
     <main className="mt-12 flex w-full max-w-[1280px] flex-col items-center lg:mt-24">
+      <Script id="main-schema" type="application/ld+json">
+        {JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          name: 'AnonyPro',
+          applicationCategory: 'LifestyleApplication',
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
+          },
+        })}
+      </Script>
       <section className="flex w-full max-w-[668px] flex-col items-center">
         <div className="flex w-full max-w-[576px] flex-col items-center gap-10">
           <div className="flex max-w-[576px] flex-col gap-10 text-center">

@@ -11,6 +11,7 @@ import { PortableText } from 'next-sanity';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import Script from 'next/script';
 import React, { PropsWithChildren } from 'react';
 import { FiUser } from 'react-icons/fi';
 import { LuCalendarDays } from 'react-icons/lu';
@@ -115,6 +116,27 @@ const Page: React.FC<Metadata> = async ({
         background: 'linear-gradient(180deg, #2B2E71 22.89%, #773CC3 114.77%)',
       }}
     >
+      <Script id="article-schema" type="application/ld+json">
+        {JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: article.title,
+          image: [article.heroImage.url.url],
+          datePublished: new Date(article.datePosted).toISOString(),
+          dateModified: new Date(article.datePosted).toISOString(),
+          author: [
+            {
+              '@type': 'Person',
+              name: article.author.name,
+              url: `https://anonypro.com/author/${article.author.slug}`,
+            },
+          ],
+          publisher: {
+            name: 'AnonyPro Blog',
+            url: 'https://anonypro.com',
+          },
+        })}
+      </Script>
       <div className="my-12 w-full max-w-[970px] text-center lg:text-left">
         <Breadcrumbs />
         <div className="prose px-4 lg:px-0">

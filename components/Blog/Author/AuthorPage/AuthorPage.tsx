@@ -1,6 +1,7 @@
 import React from 'react';
 import Profile from '../Profile';
 import AuthorArticles from '../AuthorArticles';
+import Script from 'next/script';
 
 interface Props {
   data: {
@@ -26,7 +27,25 @@ interface Props {
 const AuthorPage: React.FC<Props> = ({ data }) => {
   const { name, slug, articles } = data;
   return (
-    <div className="mt-12 lg:mt-20 flex flex-col items-center">
+    <div className="mt-12 flex flex-col items-center lg:mt-20">
+      <Script id="author-schema" type="application/ld+json">
+        {JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ProfilePage',
+          mainEntity: {
+            '@type': 'Person',
+            name: name,
+            alternateName: slug,
+            identifier: slug,
+            description: data.bio,
+            image: 'https://example.com/avatars/ahuff23.jpg',
+            sameAs: [
+              'https://www.example.com/real-angelo',
+              'https://example.com/profile/therealangelohuff',
+            ],
+          },
+        })}
+      </Script>
       <Profile data={data} />
       <AuthorArticles articles={articles} author={{ name, slug }} />
     </div>

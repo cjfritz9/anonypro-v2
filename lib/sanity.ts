@@ -157,3 +157,28 @@ export const getArticlesByAuthor = async (slug: string, page = 1) => {
 
   return data;
 };
+
+export const getArticlesForSitemap = async () => {
+  const query = `
+  *[_type == "article"] {
+    'slug': slug.current,
+    category,
+    datePosted
+  }`;
+
+  const data = await client.fetch(query);
+
+  return data;
+};
+
+export const getAuthorsForSitemap = async () => {
+  const query = `
+  *[_type == "author"] {
+    'slug': slug.current,
+    _updatedAt
+  }`;
+
+  const data = await client.fetch(query);
+
+  return data;
+}

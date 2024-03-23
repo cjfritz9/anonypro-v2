@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
+import { GoogleAnalytics } from '@next/third-parties/google'
 import {
-  Instrument_Sans,
-  Mingzat,
   Poppins,
-  Prompt,
-  Sawarabi_Gothic,
 } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header/Header';
@@ -68,6 +65,7 @@ export default async function RootLayout({
           </div>
           <Footer />
         </body>
+        <GoogleAnalytics gaId='G-XYZ' />
       </html>
     </Providers>
   );
