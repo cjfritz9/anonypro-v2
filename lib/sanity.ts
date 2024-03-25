@@ -68,7 +68,7 @@ export const getArticleByCategorySlug = async (
     'author': *[_type == 'author' && article.author._ref == ^.id][0] {
       name,
       'slug': slug.current,
-      bio,
+      'bio': bioShort,
       profilePic {
         asset->{url}
       },

@@ -124,6 +124,8 @@ const Page: React.FC<Metadata> = async ({
     section.style.startsWith('h')
   );
 
+  console.log(article.author)
+
   return (
     <div
       className="flex max-w-[100dvw] flex-col items-center"
