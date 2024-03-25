@@ -129,9 +129,6 @@ const Page: React.FC<Metadata> = async ({
   return (
     <div
       className="flex max-w-[100dvw] flex-col items-center"
-      style={{
-        background: 'linear-gradient(180deg, #2B2E71 22.89%, #773CC3 114.77%)',
-      }}
     >
       <Script id="article-schema" type="application/ld+json">
         {JSON.stringify({
