@@ -1,7 +1,7 @@
 import initTranslations from '@/app/i18n';
 import Image from 'next/image';
 import React from 'react';
-import aboutOne from '@/public/assets/about-one.svg';
+import aboutOne from '@/public/assets/about-one.png';
 import aboutTwo from '@/public/assets/about-two.svg';
 import Link from 'next/link';
 import BRAND from '@/lib/static';
@@ -13,7 +13,6 @@ interface Params {
 }
 
 export async function generateMetadata() {
-  
   return {
     title: `About Us | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
   };
@@ -45,7 +44,7 @@ const AboutUsPage: React.FC<Params> = async ({ params: { locale } }) => {
           alt=""
           height={416}
           width={478}
-          className="mb-12"
+          className="mb-12 rounded-lg"
         />
       </div>
       <div className="flex w-[100dvw] flex-col items-center justify-center bg-[#4D428B] xl:flex-row">
