@@ -24,7 +24,6 @@ const CategorySelector: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(paramCategory);
     if (!paramCategory) {
       setCategory('');
     } else if (

@@ -77,7 +77,16 @@ const article = {
       of: [
         {
           type: 'block',
-        },
+          marks: {
+            decorators: [
+              { title: 'Strong', value: 'strong' },
+              { title: 'Emphasis', value: 'em' },
+              { title: 'Code', value: 'code' }
+            ]
+          }
+        }, {
+          type: 'image'
+        }
       ],
       validation: (rule: any) => rule.required(),
     },

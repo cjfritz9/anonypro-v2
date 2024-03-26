@@ -5,10 +5,12 @@ import BlogPreview from '@/components/Blog/BlogPreview';
 import ScrollToSection from '@/components/Blog/ScrollToSection';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import { getArticleByCategorySlug, getLatestThreeArticles } from '@/lib/sanity';
+import urlBuilder from '@sanity/image-url';
+import { getImageDimensions } from '@sanity/asset-utils';
 import BRAND from '@/lib/static';
 import { toDisplayCategory } from '@/lib/tools';
 import { PortableTextComponents } from '@portabletext/react';
-import { PortableText } from 'next-sanity';
+import { PortableText, SanityClient } from 'next-sanity';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -46,68 +48,92 @@ export async function generateMetadata({
   };
 }
 
-const LinkableHeader = ({ children, value }: LinkableHeaderProps) => {
-  if (value.style === 'h1') {
-    return (
-      <h1 className="text-white" id={value._key}>
-        {children}
-      </h1>
-    );
-  }
-
-  if (value.style === 'h2') {
-    return (
-      <h2 className="text-4xl text-white" id={value._key}>
-        {children}
-      </h2>
-    );
-  }
-
-  if (value.style === 'h3') {
-    return (
-      <h3 className="text-3xl text-white" id={value._key}>
-        {children}
-      </h3>
-    );
-  }
-
-  if (value.style === 'h4') {
-    return (
-      <h4 className="text-3xl text-white" id={value._key}>
-        {children}
-      </h4>
-    );
-  }
-
-  if (value.style === 'h5') {
-    return (
-      <h5 className="text-2xl text-white" id={value._key}>
-        {children}
-      </h5>
-    );
-  }
-
+const PortableImage = ({ value, isInline }: any) => {
+  const { width, height } = getImageDimensions(value);
   return (
-    <h6 className="text-white" id={value._key}>
-      {children}
-    </h6>
+    <Image
+      src={urlBuilder({ dataset: 'production', projectId: 'vvw86v5i' })
+        .image(value)
+        .width(isInline ? 100 : 800)
+        .fit('max')
+        .auto('format')
+        .url()}
+      height={height}
+      width={width}
+      alt={value.alt || ' '}
+      loading="lazy"
+      className={isInline ? 'inline-block' : 'block'}
+      style={{ aspectRatio: width / height }}
+    />
   );
+};
+
+const LinkableHeader = ({ children, value }: LinkableHeaderProps) => {
+  // if (value.style === 'h1') {
+  //   return (
+  //     <h1 className="text-white" id={value._key}>
+  //       {children}
+  //     </h1>
+  //   );
+  // }
+
+  // if (value.style === 'h2') {
+  return (
+    <h2 className="text-4xl text-white" id={value._key}>
+      {children}
+    </h2>
+  );
+  // }
+
+  // if (value.style === 'h3') {
+  //   return (
+  //     <h3 className="text-3xl text-white" id={value._key}>
+  //       {children}
+  //     </h3>
+  //   );
+  // }
+
+  // if (value.style === 'h4') {
+  //   return (
+  //     <h4 className="text-3xl text-white" id={value._key}>
+  //       {children}
+  //     </h4>
+  //   );
+  // }
+
+  // if (value.style === 'h5') {
+  //   return (
+  //     <h5 className="text-2xl text-white" id={value._key}>
+  //       {children}
+  //     </h5>
+  //   );
+  // }
+
+  // return (
+  //   <h6 className="text-white" id={value._key}>
+  //     {children}
+  //   </h6>
+  // );
 };
 
 const components: PortableTextComponents = {
   block: {
     //@ts-ignore
-    h1: LinkableHeader,
+    // h1: LinkableHeader,
     //@ts-ignore
     h2: LinkableHeader,
     //@ts-ignore
-    h3: LinkableHeader,
+    // h3: LinkableHeader,
     //@ts-ignore
-    h4: LinkableHeader,
+    // h4: LinkableHeader,
     //@ts-ignore
-    h5: LinkableHeader,
+    // h5: LinkableHeader,/=
     //@ts-ignore
-    h6: LinkableHeader,
+    // h6: LinkableHeader,
+  },
+  types: {
+    //@ts-ignore
+    image: PortableImage,
   },
 };
 
@@ -121,15 +147,11 @@ const Page: React.FC<Metadata> = async ({
   if (!article) return notFound();
 
   const sections = article.content.filter((section: any) =>
-    section.style.startsWith('h')
+    section.style?.startsWith('h2')
   );
 
-  console.log(article.author)
-
   return (
-    <div
-      className="flex max-w-[100dvw] flex-col items-center"
-    >
+    <div className="flex max-w-[100dvw] flex-col items-center">
       <Script id="article-schema" type="application/ld+json">
         {JSON.stringify({
           '@context': 'https://schema.org',

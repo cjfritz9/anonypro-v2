@@ -1,15 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import downArrow from '@/public/assets/down-arrow.svg';
-import Image from 'next/image';
 import { FaCircleArrowDown } from 'react-icons/fa6';
+import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 
 interface Props {
   sections: any[];
 }
 
 const ScrollToSection: React.FC<Props> = ({ sections }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <div className="mb-12 flex w-full flex-col items-center">
       <div className="w-full max-w-[720px] rounded-[48px] bg-[#43427F] bg-opacity-65 px-8 py-8 text-white lg:px-20">
@@ -18,14 +19,43 @@ const ScrollToSection: React.FC<Props> = ({ sections }) => {
         </h3>
 
         <ul className="my-4 flex flex-col gap-4">
-          {sections.map((section: any) => (
-            <SectionHeading
-              key={section._key}
-              title={section.children[0].text}
-              sectionId={section._key}
-            />
-          ))}
+          {sections.length > 4
+            ? isExpanded
+              ? sections.map((section: any) => (
+                  <SectionHeading
+                    key={section._key}
+                    title={section.children[0].text}
+                    sectionId={section._key}
+                  />
+                ))
+              : sections
+                  .slice(0, 4)
+                  .map((section: any) => (
+                    <SectionHeading
+                      key={section._key}
+                      title={section.children[0].text}
+                      sectionId={section._key}
+                    />
+                  ))
+            : null}
         </ul>
+        {!isExpanded ? (
+          <div
+            className="flex w-full cursor-pointer items-center justify-center gap-2 hover:text-accent"
+            onClick={() => setIsExpanded(true)}
+          >
+            <p>Show More</p>
+            <BiChevronDown size={20} />
+          </div>
+        ) : (
+          <div
+            className="flex w-full cursor-pointer items-center justify-center gap-2 hover:text-accent"
+            onClick={() => setIsExpanded(false)}
+          >
+            <p>Show Less</p>
+            <BiChevronUp size={20} />
+          </div>
+        )}
       </div>
     </div>
   );

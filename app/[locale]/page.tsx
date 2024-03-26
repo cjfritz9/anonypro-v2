@@ -35,7 +35,7 @@ export default async function Home({ params: { locale } }: Metadata) {
           },
         })}
       </Script>
-      <section className="flex w-full max-w-[668px] flex-col items-center">
+      <section className="flex w-full max-w-[720px] flex-col items-center">
         <div className="flex w-full max-w-[576px] flex-col items-center gap-10">
           <div className="flex max-w-[576px] flex-col gap-10 text-center">
             <h1 className="text-[32px] font-[500] leading-[44px] lg:text-[56px] lg:leading-[66px]">
@@ -49,7 +49,7 @@ export default async function Home({ params: { locale } }: Metadata) {
             <SearchBar />
           </div>
         </div>
-        <div className="mt-16 w-full max-w-[668px]">
+        <div className="mt-16 w-full max-w-[720px]">
           <ServiceSelector
             displayNames={t('service_selector.button_names', {
               returnObjects: true,

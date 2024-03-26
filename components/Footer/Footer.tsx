@@ -39,11 +39,11 @@ const Footer: React.FC = () => {
           <LanguagePicker reverse />
           <p className="text-xs">@2024 Anonypro. All Rights Reserved</p>
           <div className="flex gap-2 text-xs">
-            <Link href="/security">Security</Link>
+            <Link href="/policies">Security</Link>
             <div className="divider divider-primary divider-horizontal mx-0 hidden opacity-50 lg:block" />
-            <Link href="/privacy">Your Privacy</Link>
+            <Link href="/policies">Your Privacy</Link>
             <div className="divider divider-primary divider-horizontal mx-0 hidden opacity-50 lg:block" />
-            <Link href="/terms-and-conditions">Terms & Conditions</Link>
+            <Link href="/terms-of-service">Terms & Conditions</Link>
           </div>
         </div>
       </div>

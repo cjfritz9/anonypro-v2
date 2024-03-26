@@ -42,7 +42,7 @@ const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
   }, [isLoading, selectorRef]);
 
   return (
-    <div ref={selectorRef} className="join w-full max-w-[668px]">
+    <div ref={selectorRef} className="join w-full max-w-[720px]">
       {buttonsData.map((data, i) => (
         <button
           key={data.displayName}

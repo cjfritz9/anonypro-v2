@@ -13,7 +13,7 @@ const BlogPreview: React.FC<Props> = ({ articles, heading }) => {
       <h3 className="mb-16 text-center text-4xl font-[500] leading-[44px] xl:text-[44px]">
         {heading}
       </h3>
-      <div className="xl:items-between flex w-full flex-col flex-wrap items-center justify-center gap-8 lg:flex-row xl:justify-between">
+      <div className="xl:items-between flex w-full flex-col flex-wrap items-center justify-center gap-8 lg:flex-row">
         {articles.map((article) => (
           <BlogCard
             key={article.id}

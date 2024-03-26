@@ -38,11 +38,7 @@ const AuthorPage: React.FC<Props> = ({ data }) => {
             alternateName: slug,
             identifier: slug,
             description: data.bio,
-            image: 'https://example.com/avatars/ahuff23.jpg',
-            sameAs: [
-              'https://www.example.com/real-angelo',
-              'https://example.com/profile/therealangelohuff',
-            ],
+            image: data.profilePic.asset.url,
           },
         })}
       </Script>

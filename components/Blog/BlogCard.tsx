@@ -31,7 +31,7 @@ const BlogCard: React.FC<Props> = ({
   const {
     i18n: { language: locale },
   } = useTranslation();
-  
+
   const toTruncatedTitle = (text: string) => {
     if (text.length <= 75) {
       return text;
@@ -41,7 +41,7 @@ const BlogCard: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex h-[472px] max-w-[376px] flex-col overflow-clip rounded-[48px] bg-opacity-45 bg-base-100">
+    <div className="flex h-[480px] max-w-[376px] flex-col overflow-clip rounded-[48px] bg-base-100 bg-opacity-45">
       <Link href={`/${category}/${slug}`}>
         <Image
           src={thumbnailUrl}
@@ -64,7 +64,7 @@ const BlogCard: React.FC<Props> = ({
         <div className="mt-5 flex justify-between">
           <Link href={`/author/${author.slug}`} className="flex gap-2">
             <FiUser size={20} />
-            <p className="hover:underline">{author.name}</p>
+            <p className="max-w-[162px] hover:underline">{author.name}</p>
           </Link>
           <div className="flex gap-2">
             <LuCalendarDays size={20} />
