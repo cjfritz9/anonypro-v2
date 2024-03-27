@@ -64,7 +64,7 @@ export default async function RootLayout({
           </div>
           <Footer />
         </body>
-        <GoogleAnalytics gaId="G-8GT7Y2MGJH" />
+        <GoogleAnalytics gaId="G-325NSSQH59" />
       </html>
     </Providers>
   );
