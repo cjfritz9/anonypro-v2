@@ -8,10 +8,11 @@ interface Params {
   };
 }
 
-export async function generateMetadata() {
-  
+export async function generateMetadata({ params: { locale } }: Params) {
+  const { t } = await initTranslations(locale, ['tos']);
+
   return {
-    title: `Terms of Service | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
+    title: t('tos:meta_title', { anonypro: 'AnonyPro' }),
   };
 }
 

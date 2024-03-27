@@ -11,9 +11,10 @@ interface Metadata {
   };
 }
 
-export async function generateMetadata({ params: { username } }: Metadata) {
+export async function generateMetadata({ params: { locale, username } }: Metadata) {
+  const { t } = await initTranslations(locale, ['user-profile']);
   return {
-    title: `${username} | View Instagram Anonymously | Profile | Posts | Stories`,
+    title: t('user-profile:meta_title', {username, anonypro: BRAND.name}),
   };
 }
 
@@ -22,7 +23,7 @@ export default async function UsernamePage({ params }: Metadata) {
   const { t } = await initTranslations(locale, ['user-profile', 'common']);
 
   return (
-    <main className="flex min-h-[6000px] w-full max-w-[1280px] flex-col items-center">
+    <main className="flex min-h-[100dvh] w-full max-w-[1280px] flex-col items-center">
       <section className="flex w-full flex-col items-center">
         <Service
           username={username}

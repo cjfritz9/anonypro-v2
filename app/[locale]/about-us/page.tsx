@@ -12,9 +12,11 @@ interface Params {
   };
 }
 
-export async function generateMetadata() {
+export async function generateMetadata({ params: { locale } }: Params) {
+  const { t } = await initTranslations(locale, ['about']);
+
   return {
-    title: `About Us | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
+    title: t('about:meta_title', { anonypro: BRAND.name }),
   };
 }
 

@@ -2,6 +2,7 @@ import initTranslations from '@/app/i18n';
 import BlogPage from '@/components/Blog/BlogPage/BlogPage';
 import { getArticlesByCategory } from '@/lib/sanity';
 import BRAND from '@/lib/static';
+import { slugToMetaTitle } from '@/lib/tools';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
@@ -21,7 +22,7 @@ export async function generateMetadata({
   }) {
   
   return {
-    title: `${category.replaceAll('-', ' ').toUpperCase()} | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
+    title: `${slugToMetaTitle(category)} | ${BRAND.name}`,
   };
 }
 

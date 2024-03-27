@@ -4,23 +4,21 @@ import { getAllArticles } from '@/lib/sanity';
 import BRAND from '@/lib/static';
 import React from 'react';
 
-interface Metadata {
+interface Params {
   params: {
     locale: string;
-    category: string;
   };
 }
 
-export const revalidate = 1800;
+export async function generateMetadata({ params: { locale } }: Params) {
+  const { t } = await initTranslations(locale, ['blogging']);
 
-export async function generateMetadata() {
-  
   return {
-    title: `Blog | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
+    title: t('blogging:meta_title', { anonypro: 'AnonyPro' }),
   };
 }
 
-const Page: React.FC<Metadata> = async ({ params: { locale } }) => {
+const Page: React.FC<Params> = async ({ params: { locale } }) => {
   const { t } = await initTranslations(locale, ['blogging']);
 
   const articles = await getAllArticles();

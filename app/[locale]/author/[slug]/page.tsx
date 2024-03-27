@@ -3,6 +3,7 @@ import AuthorPage from '@/components/Blog/Author/AuthorPage/AuthorPage';
 import Profile from '@/components/Blog/Author/Profile';
 import { getAuthorBySlug } from '@/lib/sanity';
 import BRAND from '@/lib/static';
+import { slugToMetaTitle, titlesToMetaTitle } from '@/lib/tools';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -15,8 +16,10 @@ interface Props {
 export const revalidate = 1800;
 
 export async function generateMetadata({ params: { slug } }: Props) {
+  const data = await getAuthorBySlug(slug);
+  console.log(data);
   return {
-    title: `${slug.replaceAll('-', ' ').toUpperCase()} | Blog Author | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
+    title: `${data.name} | ${titlesToMetaTitle(data.titles)} - ${BRAND.name}`,
   };
 }
 

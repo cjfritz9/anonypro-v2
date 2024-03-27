@@ -106,3 +106,14 @@ export const validateContactForm = ({
     message: 'Your message has been sent',
   };
 };
+
+export const slugToMetaTitle = (slug: string) => {
+  return slug
+    .split('-')
+    .map((item) => item[0].toUpperCase() + item.slice(1))
+    .join(' ');
+};
+
+export const titlesToMetaTitle = (title: string[]) => {
+  return title.join(', ');
+};
