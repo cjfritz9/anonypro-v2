@@ -25,7 +25,7 @@ const AboutUsPage: React.FC<Params> = async ({ params: { locale } }) => {
 
   return (
     <main className="mt-12 flex w-full flex-col items-center xl:mt-24">
-      <div className="mb-24 flex w-full max-w-[1280px] flex-col-reverse items-center justify-between xl:flex-row">
+      <div className="mb-24 flex w-full max-w-[1280px] flex-col-reverse items-center justify-between gap-8 xl:flex-row">
         <div className="prose text-center xl:text-left">
           <h1 className="text-4xl font-semibold text-white xl:text-[44px]">
             {t('about:section_one.heading', { anonypro: 'AnonyPro' })}
