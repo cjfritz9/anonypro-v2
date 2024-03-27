@@ -26,9 +26,9 @@ const ToSPage: React.FC<Params> = async ({ params: { locale } }) => {
           <h1 className="mb-2 text-center text-4xl font-[500] text-white  lg:text-[56px]">
             {t('tos:heading', { anonypro: 'AnonyPro' })}
           </h1>
-          <h2 className="mt-2 text-center text-xl lg:text-2xl font-normal text-white">
+          <h2 className="mt-2 text-center text-xl font-normal text-white lg:text-2xl">
             {t('tos:subheading', {
-              date: new Date().toLocaleDateString(locale, {
+              date: new Date('11/26/22').toLocaleDateString(locale, {
                 month: 'long',
                 day: '2-digit',
                 year: 'numeric',
@@ -51,10 +51,24 @@ const ToSPage: React.FC<Params> = async ({ params: { locale } }) => {
         </div>
         <div>
           <h3 className="text-3xl font-semibold">
-            {t('tos:general.heading', { anonypro: 'AnonyPro' })}
+            {t('tos:interpretations.heading')}
           </h3>
+          <h3>{t('tos:interpretations.section_one.heading')}</h3>
           {(
-            t('tos:general.body', {
+            t('tos:interpretations.section_one.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+          <h3>{t('tos:interpretations.section_two.heading')}</h3>
+          {(
+            t('tos:interpretations.section_two.body', {
               anonypro: 'AnonyPro',
               br: '\n',
             }) as string
@@ -68,10 +82,10 @@ const ToSPage: React.FC<Params> = async ({ params: { locale } }) => {
         </div>
         <div>
           <h3 className="text-3xl font-semibold">
-            {t('tos:privacy.heading', { anonypro: 'AnonyPro' })}
+            {t('tos:relationship.heading')}
           </h3>
           {(
-            t('tos:privacy.body', {
+            t('tos:relationship.body', {
               anonypro: 'AnonyPro',
               br: '\n',
             }) as string
@@ -85,10 +99,10 @@ const ToSPage: React.FC<Params> = async ({ params: { locale } }) => {
         </div>
         <div>
           <h3 className="text-3xl font-semibold">
-            {t('tos:cookies.heading', { anonypro: 'AnonyPro' })}
+            {t('tos:notes.heading')}
           </h3>
           {(
-            t('tos:cookies.body', {
+            t('tos:notes.body', {
               anonypro: 'AnonyPro',
               br: '\n',
             }) as string
@@ -102,10 +116,10 @@ const ToSPage: React.FC<Params> = async ({ params: { locale } }) => {
         </div>
         <div>
           <h3 className="text-3xl font-semibold">
-            {t('tos:disclaimer.heading', { anonypro: 'AnonyPro' })}
+            {t('tos:ack.heading')}
           </h3>
           {(
-            t('tos:disclaimer.body', {
+            t('tos:ack.body', {
               anonypro: 'AnonyPro',
               br: '\n',
             }) as string
@@ -119,10 +133,10 @@ const ToSPage: React.FC<Params> = async ({ params: { locale } }) => {
         </div>
         <div>
           <h3 className="text-3xl font-semibold">
-            {t('tos:change_of_terms.heading', { anonypro: 'AnonyPro' })}
+            {t('tos:links.heading')}
           </h3>
           {(
-            t('tos:change_of_terms.body', {
+            t('tos:links.body', {
               anonypro: 'AnonyPro',
               br: '\n',
             }) as string
@@ -136,10 +150,10 @@ const ToSPage: React.FC<Params> = async ({ params: { locale } }) => {
         </div>
         <div>
           <h3 className="text-3xl font-semibold">
-            {t('tos:content_liability.heading', { anonypro: 'AnonyPro' })}
+            {t('tos:termination.heading')}
           </h3>
           {(
-            t('tos:content_liability.body', {
+            t('tos:termination.body', {
               anonypro: 'AnonyPro',
               br: '\n',
             }) as string
@@ -150,6 +164,178 @@ const ToSPage: React.FC<Params> = async ({ params: { locale } }) => {
                 {p}
               </p>
             ))}
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">
+            {t('tos:liability.heading')}
+          </h3>
+          {(
+            t('tos:liability.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">
+            {t('tos:as_is.heading')}
+          </h3>
+          {(
+            t('tos:as_is.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">
+            {t('tos:gov.heading')}
+          </h3>
+          {(
+            t('tos:gov.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">
+            {t('tos:disputes.heading')}
+          </h3>
+          {(
+            t('tos:disputes.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">
+            {t('tos:eu.heading')}
+          </h3>
+          {(
+            t('tos:eu.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">
+            {t('tos:us.heading')}
+          </h3>
+          {(
+            t('tos:us.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">
+            {t('tos:severability.heading')}
+          </h3>
+          {(
+            t('tos:severability.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">
+            {t('tos:translation.heading')}
+          </h3>
+          {(
+            t('tos:translation.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">
+            {t('tos:changes.heading')}
+          </h3>
+          {(
+            t('tos:changes.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">
+            {t('tos:contact.heading')}
+          </h3>
+          {(
+            t('tos:contact.body', {
+              anonypro: 'AnonyPro',
+              br: '\n',
+            }) as string
+          )
+            .split('\n')
+            .map((p, i) => (
+              <p key={i} className={p.startsWith('-') ? 'ml-4' : 'ml-0'}>
+                {p}
+              </p>
+            ))}
+            <a className='ml-4' href='mailto:support@anonypro.com'>support@anonypro.com
+          </a>
         </div>
       </div>
     </main>

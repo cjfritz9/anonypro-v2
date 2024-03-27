@@ -15,7 +15,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Script from 'next/script';
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { FiUser } from 'react-icons/fi';
 import { LuCalendarDays } from 'react-icons/lu';
 
@@ -44,7 +44,8 @@ export async function generateMetadata({
     return notFound();
   }
   return {
-    title: `${article.title} | Instagram Engagement | Likes, Tips & Tricks - ${BRAND.name}`,
+    title: article.metaTitle,
+    description: article.metaDesc ?? undefined,
   };
 }
 

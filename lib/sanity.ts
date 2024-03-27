@@ -65,6 +65,8 @@ export const getArticleByCategorySlug = async (
     'id': _id,
     title,
     category,
+    metaTitle,
+    metaDesc,
     'author': *[_type == 'author' && article.author._ref == ^.id][0] {
       name,
       'slug': slug.current,

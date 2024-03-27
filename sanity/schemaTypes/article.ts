@@ -19,6 +19,17 @@ const article = {
       },
     },
     {
+      name: 'metaTitle',
+      title: 'Meta Title',
+      type: 'string',
+      validation: (rule: any) => rule.required(),
+    },
+    {
+      name: 'metaDesc',
+      title: 'Meta Description',
+      type: 'string',
+    },
+    {
       name: 'category',
       title: 'Category',
       type: 'string',
@@ -79,14 +90,15 @@ const article = {
           type: 'block',
           marks: {
             decorators: [
-              { title: 'Strong', value: 'strong' },
-              { title: 'Emphasis', value: 'em' },
-              { title: 'Code', value: 'code' }
-            ]
-          }
-        }, {
-          type: 'image'
-        }
+              {title: 'Strong', value: 'strong'},
+              {title: 'Emphasis', value: 'em'},
+              {title: 'Code', value: 'code'},
+            ],
+          },
+        },
+        {
+          type: 'image',
+        },
       ],
       validation: (rule: any) => rule.required(),
     },
