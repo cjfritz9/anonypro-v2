@@ -44,7 +44,7 @@ export async function generateMetadata({
     return notFound();
   }
   return {
-    title: article.metaTitle,
+    title: article.metaTitle ?? `${article.title} - ${BRAND.name}`,
     description: article.metaDesc ?? undefined,
   };
 }
