@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
             </Link>
             <div className="wrap flex gap-4">
               <Link href="/blog">Resources</Link>
-              <Link href="/company">Company</Link>
+              <Link href="/about-us">Company</Link>
               <Link href="/support">Support</Link>
             </div>
           </div>
@@ -39,11 +39,9 @@ const Footer: React.FC = () => {
           <LanguagePicker reverse />
           <p className="text-xs">@2024 Anonypro. All Rights Reserved</p>
           <div className="flex gap-2 text-xs">
-            <Link href="/policies">Security</Link>
+            <Link href="/policies">Policies</Link>
             <div className="divider divider-primary divider-horizontal mx-0 hidden opacity-50 lg:block" />
-            <Link href="/policies">Your Privacy</Link>
-            <div className="divider divider-primary divider-horizontal mx-0 hidden opacity-50 lg:block" />
-            <Link href="/terms-of-service">Terms & Conditions</Link>
+            <Link href="/terms-of-service">Terms of Service</Link>
           </div>
         </div>
       </div>

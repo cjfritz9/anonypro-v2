@@ -17,7 +17,7 @@ export const revalidate = 1800;
 
 export async function generateMetadata({ params: { slug } }: Props) {
   const data = await getAuthorBySlug(slug);
-  console.log(data);
+
   return {
     title: `${data.name} | ${titlesToMetaTitle(data.titles)} - ${BRAND.name}`,
   };

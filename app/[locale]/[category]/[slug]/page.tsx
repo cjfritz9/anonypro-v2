@@ -44,7 +44,7 @@ export async function generateMetadata({
     return notFound();
   }
   return {
-    title: `${article.title} | Instagram Engagement | Likes, Tips and Tricks | ${BRAND.name} | Anonymous Instagram Story Viewer (View IG Anon: IGAnony)`,
+    title: `${article.title} | Instagram Engagement | Likes, Tips & Tricks - ${BRAND.name}`,
   };
 }
 
@@ -62,7 +62,7 @@ const PortableImage = ({ value, isInline }: any) => {
       width={width}
       alt={value.alt || ' '}
       loading="lazy"
-      className={isInline ? 'inline-block' : 'block'}
+      className={`${isInline ? 'inline-block' : 'block'} rounded-lg`}
       style={{ aspectRatio: width / height }}
     />
   );

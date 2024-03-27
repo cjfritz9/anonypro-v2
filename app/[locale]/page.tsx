@@ -9,10 +9,20 @@ import FAQ from '@/components/FAQ/FAQ';
 import BlogPreview from '@/components/Blog/BlogPreview';
 import { getLatestThreeArticles } from '@/lib/sanity';
 import Script from 'next/script';
+import BRAND from '@/lib/static';
 
 interface Metadata {
   params: {
     locale: string;
+  };
+}
+
+export async function generateMetadata({ params: { locale } }: Metadata) {
+  const { t } = await initTranslations(locale, ['home']);
+
+  return {
+    title: t('home:meta_title', { anonypro: BRAND.name }),
+    description: t('home:meta_desc')
   };
 }
 
