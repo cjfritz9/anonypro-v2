@@ -2,7 +2,7 @@ import initTranslations from '@/app/i18n';
 import Image from 'next/image';
 import React from 'react';
 import aboutOne from '@/public/assets/about-one.png';
-import aboutTwo from '@/public/assets/about-two.svg';
+import aboutTwo from '@/public/assets/about-two.png';
 import Link from 'next/link';
 import BRAND from '@/lib/static';
 
@@ -56,7 +56,7 @@ const AboutUsPage: React.FC<Params> = async ({ params: { locale } }) => {
             alt=""
             height={416}
             width={478}
-            className="mb-12"
+            className="mb-12 rounded-lg"
           />
           <div className="prose text-center xl:text-left">
             <h2 className="mb-2 text-4xl font-semibold text-white xl:text-[44px]">
