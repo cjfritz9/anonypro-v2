@@ -7,8 +7,9 @@ type Category =
   | null
   | ''
   | 'story-viewer'
-  | 'post-highlights'
-  | 'creating-posts';
+  | 'glossary'
+  | 'instagram-captions'
+  | 'quotes';
 
 const CategorySelector: React.FC = () => {
   const { category: paramCategory } = useParams();
@@ -28,8 +29,9 @@ const CategorySelector: React.FC = () => {
       setCategory('');
     } else if (
       paramCategory !== 'story-viewer' &&
-      paramCategory !== 'post-highlights' &&
-      paramCategory !== 'creating-posts'
+      paramCategory !== 'glossary' &&
+      paramCategory !== 'instagram-captions' &&
+      paramCategory !== 'quotes'
     ) {
       return notFound();
     } else {
@@ -38,7 +40,7 @@ const CategorySelector: React.FC = () => {
   }, [paramCategory]);
 
   return (
-    <div className="my-8 flex w-full flex-wrap items-center justify-center gap-6">
+    <div className="my-8 flex w-full flex-wrap items-center justify-center gap-4">
       <button
         className={`${category === '' ? 'btn-accent' : ''} btn no-animation text-white`}
         onClick={() => handleClick('')}
@@ -52,16 +54,22 @@ const CategorySelector: React.FC = () => {
         Story Viewer
       </button>
       <button
-        className={`${category === 'post-highlights' ? 'btn-accent' : ''} btn no-animation text-white`}
-        onClick={() => handleClick('post-highlights')}
+        className={`${category === 'glossary' ? 'btn-accent' : ''} btn no-animation text-white`}
+        onClick={() => handleClick('glossary')}
       >
-        Post Highlights
+        Glossary
       </button>
       <button
-        className={`${category === 'creating-posts' ? 'btn-accent' : ''} btn no-animation text-white`}
-        onClick={() => handleClick('creating-posts')}
+        className={`${category === 'instagram-captions' ? 'btn-accent' : ''} btn no-animation text-white`}
+        onClick={() => handleClick('instagram-captions')}
       >
-        Creating Posts
+        Instagram Captions
+      </button>
+      <button
+        className={`${category === 'quotes' ? 'btn-accent' : ''} btn no-animation text-white`}
+        onClick={() => handleClick('quotes')}
+      >
+        Quotes
       </button>
     </div>
   );
