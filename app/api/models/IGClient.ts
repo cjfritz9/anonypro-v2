@@ -394,7 +394,6 @@ export class IGClient {
       }
     } catch (error) {
       console.error({ error });
-      return error;
     }
   };
 
@@ -424,7 +423,6 @@ export class IGClient {
       }
     } catch (error) {
       console.error({ error });
-      return error;
     }
   };
 
@@ -452,8 +450,7 @@ export class IGClient {
         return this.formatPosts(result);
       }
     } catch (error) {
-      console.error({ error });
-      return error;
+      console.error({ error, userId: id, nextCursor });
     }
   };
 
@@ -482,7 +479,6 @@ export class IGClient {
       }
     } catch (error) {
       console.error({ error });
-      return error;
     }
   };
 
