@@ -53,9 +53,9 @@ export default async function RootLayout({
               termsOfService: '/terms-of-service',
               policies: '/policies',
               blog: '/blog',
-              storyViewer: '/category/story-viewer',
-              postHighlights: '/category/post-highlights',
-              creatingPosts: '/category/creating-posts',
+              glossary: '/category/glossary',
+              instagramCaptions: '/category/instagram-captions',
+              quotes: '/category/quotes',
               returnObjects: true,
             })}
           />
