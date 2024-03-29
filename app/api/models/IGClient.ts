@@ -1,3 +1,4 @@
+import { menuItemsFromInitialValueTemplateItems } from 'sanity/structure';
 import config from '../config';
 
 // INTERFACES
@@ -256,61 +257,64 @@ export class IGClient {
         data.items.length > 5
           ? data.items[5].id
           : data.items[data.items.length - 1].id,
-      items: data.items
-        .map((post) => ({
-          id: post.pk,
-          created_at: post.taken_at,
-          like_count: post.like_count,
-          comment_count: post.comment_count,
-          type:
-            post.product_type === 'clips'
-              ? 'video'
-              : post.product_type === 'carousel_container'
-                ? 'album'
-                : 'image',
-          thumbnail: post.image_versions2.candidates[0].url,
-          media:
-            post.product_type === 'clips'
-              ? [
-                  {
-                    id: post.pk,
-                    type: 'video',
-                    height: post.video_versions![0].height,
-                    width: post.video_versions![0].width,
-                    url: post.video_versions![0].url,
-                  },
-                ]
-              : post.product_type === 'carousel_container'
-                ? post.carousel_media!.map((media) =>
-                    media.video_versions
-                      ? {
-                          id: media.pk,
-                          type: 'video',
-                          height: media.video_versions[0].height,
-                          width: media.video_versions[0].width,
-                          url: media.video_versions[0].url,
-                        }
-                      : {
-                          id: media.pk,
+      items: data.items[0]
+        ? data.items
+            .map((post) => ({
+              id: post.pk,
+              created_at: post.taken_at,
+              like_count: post.like_count,
+              comment_count: post.comment_count,
+              type:
+                post.product_type === 'clips'
+                  ? 'video'
+                  : post.product_type === 'carousel_container'
+                    ? 'album'
+                    : 'image',
+              thumbnail: post.image_versions2.candidates[0].url,
+              media:
+                post.product_type === 'clips'
+                  ? [
+                      {
+                        id: post.pk,
+                        type: 'video',
+                        height: post.video_versions![0].height,
+                        width: post.video_versions![0].width,
+                        url: post.video_versions![0].url,
+                      },
+                    ]
+                  : post.product_type === 'carousel_container'
+                    ? post.carousel_media!.map((media) =>
+                        media.video_versions
+                          ? {
+                              id: media.pk,
+                              type: 'video',
+                              height: media.video_versions[0].height,
+                              width: media.video_versions[0].width,
+                              url: media.video_versions[0].url,
+                            }
+                          : {
+                              id: media.pk,
+                              type: 'image',
+                              height:
+                                media.image_versions2.candidates[0].height,
+                              width: media.image_versions2.candidates[0].width,
+                              url: media.image_versions2.candidates[0].url,
+                            }
+                      )
+                    : [
+                        {
+                          id: post.pk,
                           type: 'image',
-                          height: media.image_versions2.candidates[0].height,
-                          width: media.image_versions2.candidates[0].width,
-                          url: media.image_versions2.candidates[0].url,
-                        }
-                  )
-                : [
-                    {
-                      id: post.pk,
-                      type: 'image',
-                      height: post.image_versions2.candidates[0].height,
-                      width: post.image_versions2.candidates[0].width,
-                      url: post.image_versions2.candidates[0].url,
-                    },
-                  ],
-          caption: post.caption ? post.caption.text : '',
-          shortcode: post.code,
-        }))
-        .slice(0, 6),
+                          height: post.image_versions2.candidates[0].height,
+                          width: post.image_versions2.candidates[0].width,
+                          url: post.image_versions2.candidates[0].url,
+                        },
+                      ],
+              caption: post.caption ? post.caption.text : '',
+              shortcode: post.code,
+            }))
+            .slice(0, 6)
+        : [],
     };
   };
 

@@ -37,10 +37,10 @@ const LanguagePicker: React.FC<Props> = ({ reverse }) => {
   const currentLocale = i18n.language;
   const router = useRouter();
   const currentPathname = usePathname();
-  const nameGenerator = new Intl.DisplayNames(currentLocale, {
+  const nameGenerator = new Intl.DisplayNames(currentLocale ?? 'en', {
     type: 'language',
   });
-  const displayName = nameGenerator.of(currentLocale);
+  const displayName = nameGenerator.of(currentLocale ?? 'en');
 
   const handleClick = (newLocale: string) => {
     const days = 30;
