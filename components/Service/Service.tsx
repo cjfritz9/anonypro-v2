@@ -18,7 +18,6 @@ interface Props {
 const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
   const [error, setError] = useState<Errors | null>(null);
   username = username.replaceAll('%2C', '.');
-  console.log(error);
 
   return (
     <div className="flex w-full flex-col items-center gap-20">

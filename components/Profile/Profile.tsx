@@ -28,7 +28,6 @@ const Profile: React.FC<Props> = ({ onError}) => {
         }
 
         const profile = await fetchProfile(username);
-        console.log(profile);
         if (
           profile.status === 'error' &&
           profile.message === 'INVALID_USERNAME'
