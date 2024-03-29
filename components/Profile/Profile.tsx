@@ -6,21 +6,44 @@ import Link from 'next/link';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
 import { formatNumber } from '@/lib/tools';
 import { useParams } from 'next/navigation';
+import { fetchProfile } from '@/lib/requests';
+import { Errors } from '../Service/Service';
 
-const Profile: React.FC = () => {
+interface Props {
+  onError: (type: null | Errors) => void;
+}
+
+const Profile: React.FC<Props> = ({ onError}) => {
   const [isLoading, setIsLoading] = useState(true);
-  const { igProfile } = useContext(InstagramContext);
+  const { igProfile, setIgProfile, resetUser } = useContext(InstagramContext);
+  const { username }: { username: string } = useParams();
 
   useEffect(() => {
-    if (igProfile) {
-      setIsLoading(false);
-    } else {
+    if (!username) return;
+    (async () => {
       setIsLoading(true);
-    }
-  }, [igProfile]);
+      if (!igProfile || igProfile.username !== username) {
+        if (igProfile && igProfile.username !== username) {
+          resetUser();
+        }
+
+        const profile = await fetchProfile(username);
+        console.log(profile);
+        if (
+          profile.status === 'error' &&
+          profile.message === 'INVALID_USERNAME'
+        ) {
+          onError(Errors.INVALID_USERNAME);
+        } else if (profile && profile.id) {
+          onError(null);
+          setIgProfile(profile);
+        }
+      }
+      setIsLoading(false);
+    })();
+  }, [username, igProfile, resetUser, setIgProfile, onError]);
 
   if (isLoading) return <LoadingProfile />;
-
   if (!igProfile) return null;
 
   return (

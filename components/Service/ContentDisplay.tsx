@@ -8,6 +8,10 @@ import { FaComment, FaHeart, FaPlay, FaVideo } from 'react-icons/fa6';
 import { BiSolidCarousel, BiSolidErrorCircle } from 'react-icons/bi';
 import {
   fetchHighlightById,
+  fetchHighlights,
+  fetchPosts,
+  fetchReels,
+  fetchStories,
   getBoostViews,
   postRecaptchaToken,
 } from '@/lib/requests';
@@ -17,6 +21,7 @@ import { IoCheckmarkCircle } from 'react-icons/io5';
 import Pagination from './Pagination';
 import useWindowSize from '@/lib/hooks/useWindowSize';
 import { useReCaptcha } from 'next-recaptcha-v3';
+import { useParams } from 'next/navigation';
 
 interface NoContentProps {
   message: string;
@@ -24,19 +29,22 @@ interface NoContentProps {
 
 const ContentDisplay: React.FC = () => {
   const { igProfile, mode } = useContext(InstagramContext);
+  let { username }: { username: string } = useParams();
 
-  if (!igProfile) return;
+  if (!username) return;
+
+  username = username.replaceAll('%2C', '.');
 
   return (
     <div>
-      {igProfile.isPrivate ? (
+      {igProfile && igProfile.isPrivate ? (
         <PrivateProfile />
       ) : mode === 0 ? (
-        <Stories />
+        <Stories username={username} />
       ) : mode === 1 ? (
         <Posts />
       ) : mode === 2 ? (
-        <Highlights />
+        <Highlights username={username} />
       ) : (
         <Reels />
       )}
@@ -69,19 +77,37 @@ const PrivateProfile: React.FC = () => {
   );
 };
 
-const Stories: React.FC = () => {
+interface StoriesProps {
+  username: string;
+}
+
+const Stories: React.FC<StoriesProps> = ({ username }) => {
   const [showMediaPlayer, setShowMediaPlayer] = useState(false);
   const [selection, setSelection] = useState(0);
-  const { igProfile, stories } = useContext(InstagramContext);
-
-  if (!stories) {
-    return <LoadingContent />;
-  }
+  const { igProfile, mode, stories, setStories } = useContext(InstagramContext);
 
   const onHandleSelect = (idx: number) => {
     setSelection(idx);
     setShowMediaPlayer(true);
   };
+
+  useEffect(() => {
+    (async () => {
+      if (mode === 0 && stories) return;
+
+      const response = await fetchStories(username);
+
+      if (response && !response.error) {
+        setStories(response);
+      } else if (response && response.error === 'RATE_LIMITED') {
+        console.error(response.error);
+      }
+    })();
+  }, [mode, stories, setStories, username]);
+
+  if (!stories) {
+    return <LoadingContent />;
+  }
 
   const slides: LightboxSlide[] = stories.map((story) => ({
     id: story.id,
@@ -276,15 +302,30 @@ const Posts: React.FC = () => {
     commentCount: 0,
     caption: '',
   });
-  const {
-    igProfile,
-    posts,
-    pagination: { page },
-  } = useContext(InstagramContext);
+  const { igProfile, posts, mode, setPosts, pagination } =
+    useContext(InstagramContext);
+
+  useEffect(() => {
+    (async () => {
+      if (pagination.isLoading) return;
+      if (mode === 1 && posts) return;
+      if (!igProfile) return;
+
+      const response = await fetchPosts(igProfile.id);
+
+      if (response && !response.error) {
+        setPosts(response);
+      } else if (response && response.error === 'RATE_LIMITED') {
+        console.error(response.error);
+      }
+    })();
+  }, [mode, pagination.isLoading, posts, setPosts, igProfile]);
 
   if (!posts) {
     return <LoadingContent />;
   }
+
+  const { page } = pagination;
 
   const onHandleSelect = (idx: number) => {
     const post = posts.items[idx];
@@ -402,10 +443,29 @@ const Post: React.FC<PostProps> = ({ onHandleSelect, index: i, post }) => {
   );
 };
 
-const Highlights: React.FC = () => {
+interface HighlightsProps {
+  username: string;
+}
+
+const Highlights: React.FC<HighlightsProps> = ({ username }) => {
   const [showMediaPlayer, setShowMediaPlayer] = useState(false);
-  const { igProfile, highlights } = useContext(InstagramContext);
+  const { igProfile, highlights, mode, setHighlights } =
+    useContext(InstagramContext);
   const [slides, setSlides] = useState<LightboxSlide[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      if (mode === 2 && highlights) return;
+
+      const response = await fetchHighlights(username);
+
+      if (response && !response.error) {
+        setHighlights(response);
+      } else if (response && response.error === 'RATE_LIMITED') {
+        console.error(response.error);
+      }
+    })();
+  }, [mode, highlights, setHighlights, username]);
 
   if (!highlights) {
     return <LoadingContent />;
@@ -479,11 +539,24 @@ const Reels: React.FC = () => {
   const [showMediaPlayer, setShowMediaPlayer] = useState(false);
   const [selection, setSelection] = useState(0);
   const [slides, setSlides] = useState<LightboxSlide[]>([]);
-  const {
-    igProfile,
-    reels,
-    pagination: { page },
-  } = useContext(InstagramContext);
+  const { igProfile, reels, mode, setReels, pagination } =
+    useContext(InstagramContext);
+
+  useEffect(() => {
+    (async () => {
+      if (pagination.isLoading) return;
+      if (mode === 3 && reels) return;
+      if (!igProfile) return;
+
+      const response = await fetchReels(igProfile.id);
+
+      if (response && !response.error) {
+        setReels(response);
+      } else if (response && response.error === 'RATE_LIMITED') {
+        console.error(response.error);
+      }
+    })();
+  }, [mode, pagination.isLoading, reels, setReels, igProfile]);
 
   if (!reels) {
     return <LoadingContent />;
@@ -516,6 +589,8 @@ const Reels: React.FC = () => {
     likeCount: reel.like_count,
     commentCount: reel.comment_count,
   }));
+
+  const { page } = pagination;
 
   return (
     <div className="flex flex-wrap justify-evenly gap-4">
