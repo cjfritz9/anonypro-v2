@@ -4,6 +4,8 @@ import { getAllArticles } from '@/lib/sanity';
 import BRAND from '@/lib/static';
 import React from 'react';
 
+export const revalidate = 1800;
+
 interface Params {
   params: {
     locale: string;
