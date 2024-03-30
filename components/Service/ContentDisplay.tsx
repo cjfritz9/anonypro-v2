@@ -105,7 +105,7 @@ const Stories: React.FC<StoriesProps> = ({ username }) => {
     })();
   }, [mode, stories, setStories, username]);
 
-  if (!stories) {
+  if (!stories || !igProfile) {
     return <LoadingContent />;
   }
 
@@ -140,7 +140,7 @@ const Stories: React.FC<StoriesProps> = ({ username }) => {
             <Story
               onHandleSelect={onHandleSelect}
               storiesCount={stories.length}
-              username={igProfile!.username}
+              username={igProfile.username}
               story={story}
               key={i}
               index={i}
@@ -396,7 +396,7 @@ const Post: React.FC<PostProps> = ({ onHandleSelect, index: i, post }) => {
         <Image
           key={i}
           src={post.thumbnail}
-          alt={`${igProfile!.username} post #${i + 1}`}
+          alt={`${igProfile ? igProfile.username : ''} post #${i + 1}`}
           height={640}
           width={360}
           className={`${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} h-full max-h-[420px] w-full cursor-pointer rounded-xl object-cover object-center`}
@@ -408,7 +408,7 @@ const Post: React.FC<PostProps> = ({ onHandleSelect, index: i, post }) => {
           <Image
             key={i}
             src={post.thumbnail}
-            alt={`${igProfile!.username} post #${i + 1}`}
+            alt={`${igProfile ? igProfile.username : ''} post #${i + 1}`}
             height={640}
             width={360}
             className={`${isImageLoading ? 'animate-pulse opacity-75' : 'animate-none'} h-full max-h-[420px] w-full cursor-pointer rounded-xl bg-slate-700 object-cover object-center`}
@@ -425,7 +425,7 @@ const Post: React.FC<PostProps> = ({ onHandleSelect, index: i, post }) => {
           <Image
             key={i}
             src={post.thumbnail}
-            alt={`${igProfile!.username} post #${i + 1}`}
+            alt={`${igProfile ? igProfile.username : ''} post #${i + 1}`}
             height={1080}
             width={1920}
             className={`${isImageLoading ? 'animate-pulse opacity-75' : 'animate-none'} h-full max-h-[420px] w-full cursor-pointer rounded-xl bg-slate-700 object-cover object-center`}
@@ -516,7 +516,7 @@ const Highlights: React.FC<HighlightsProps> = ({ username }) => {
                 <Image
                   key={i}
                   src={highlight.imageUrl}
-                  alt={`${igProfile!.username} highlight #${i + 1}`}
+                  alt={`${igProfile ? igProfile.username : ''} highlight #${i + 1}`}
                   height={150}
                   width={150}
                   className=" h-full max-h-[150px] w-full rounded-full object-cover object-center"
@@ -558,7 +558,7 @@ const Reels: React.FC = () => {
     })();
   }, [mode, pagination.isLoading, reels, setReels, igProfile]);
 
-  if (!reels) {
+  if (!reels || !igProfile) {
     return <LoadingContent />;
   }
 
@@ -614,7 +614,7 @@ const Reels: React.FC = () => {
                 likeCount: reel.like_count,
               }}
               onHandleSelect={handleSelect}
-              username={igProfile!.username}
+              username={igProfile.username}
               index={i}
             />
           ))
