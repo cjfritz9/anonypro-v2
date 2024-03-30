@@ -253,10 +253,11 @@ export class IGClient {
     return {
       more_available: data.more_available,
       num_results: data.num_results,
-      next_max_id:
-        data.items.length > 5
+      next_max_id: data.items[0]
+        ? data.items.length > 5
           ? data.items[5].id
-          : data.items[data.items.length - 1].id,
+          : data.items[data.items.length - 1].id
+        : undefined,
       items: data.items[0]
         ? data.items
             .map((post) => ({
