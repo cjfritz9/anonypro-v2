@@ -86,7 +86,7 @@ const LanguagePicker: React.FC<Props> = ({ reverse }) => {
         className="menu dropdown-content z-[1] mt-[16px] h-[196px] w-full flex-nowrap overflow-y-auto rounded-box bg-[#3E3186] p-2 shadow lg:w-[140px]"
       >
         {languages.map((languageCode) => {
-          const nameGenerator = new Intl.DisplayNames(languageCode, {
+          const nameGenerator = new Intl.DisplayNames(languageCode ?? 'en', {
             type: 'language',
           });
           const displayName = nameGenerator.of(languageCode);
