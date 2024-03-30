@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "rm -rf .next && i18nexus pull && next dev",
     "build": "rm -rf .next && i18nexus pull && next build",
+    "build-cache": "i18nexus pull && next build",
     "start": "next start",
     "lint": "next lint"
   },
