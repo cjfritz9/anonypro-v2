@@ -44,7 +44,7 @@ const LanguagePicker: React.FC<Props> = ({ reverse }) => {
   const nameGenerator = new Intl.DisplayNames('en', {
     type: 'language',
   });
-  const displayName = nameGenerator.of('en');
+  const displayName = nameGenerator.of(currentLocale);
 
   const handleClick = (newLocale: string) => {
     const days = 30;
@@ -90,17 +90,17 @@ const LanguagePicker: React.FC<Props> = ({ reverse }) => {
         className="menu dropdown-content z-[1] mt-[16px] h-[196px] w-full flex-nowrap overflow-y-auto rounded-box bg-[#3E3186] p-2 shadow lg:w-[140px]"
       >
         {languages.map((languageCode) => {
-          const nameGenerator = new Intl.DisplayNames('en', {
+          const nameGenerator = new Intl.DisplayNames(languageCode, {
             type: 'language',
           });
-          const displayName = nameGenerator.of(languageCode);
+          const optionName = nameGenerator.of(languageCode);
           return (
             <li
               key={languageCode}
               onClick={() => handleClick(languageCode)}
               className="cursor-pointer p-2"
             >
-              {displayName}
+              {optionName}
             </li>
           );
         })}
