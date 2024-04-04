@@ -7,17 +7,21 @@ import initTranslations from '../i18n';
 import i18nConfig from '@/i18n.config';
 import Providers from '../providers';
 import Footer from '@/components/Footer/Footer';
+import BRAND from '@/lib/static';
 
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
 });
 
-export const metadata: Metadata = {
-  title: 'IgAnony - Anonymous Instagram Story Viewer (View IG Anon)',
-  description:
-    'AnonyPro is a free anonymous IgAnony Instagram story viewer which allows you to anonymously view IG stories and download them without anyone knowing.',
-};
+export async function generateMetadata({ params: { locale } }: any) {
+  const { t } = await initTranslations(locale, ['home']);
+
+  return {
+    title: t('home:meta_title', { anonypro: BRAND.name }),
+    description: t('home:meta_desc')
+  };
+}
 
 export function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale }));
