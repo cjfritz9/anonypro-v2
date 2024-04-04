@@ -14,9 +14,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Anonymous Instagram Story Viewer (View IG Anon: IGAnony)',
+  title: 'IgAnony - Anonymous Instagram Story Viewer (View IG Anon)',
   description:
-    'AnonyPro is a free anonymous Instagram story viewer which allows you to anonymously view IG stories and download them without anyone knowing. Go full IgAnony.',
+    'AnonyPro is a free anonymous IgAnony Instagram story viewer which allows you to anonymously view IG stories and download them without anyone knowing.',
 };
 
 export function generateStaticParams() {
