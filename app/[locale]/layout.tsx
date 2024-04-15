@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Poppins } from 'next/font/google';
 import './globals.css';
@@ -8,6 +7,7 @@ import i18nConfig from '@/i18n.config';
 import Providers from '../providers';
 import Footer from '@/components/Footer/Footer';
 import BRAND from '@/lib/static';
+import Canonical from '@/components/Canonical/Canonical';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -19,7 +19,7 @@ export async function generateMetadata({ params: { locale } }: any) {
 
   return {
     title: t('home:meta_title', { anonypro: BRAND.name }),
-    description: t('home:meta_desc')
+    description: t('home:meta_desc'),
   };
 }
 
@@ -49,6 +49,9 @@ export default async function RootLayout({
       }}
     >
       <html lang={locale} className="overflow-x-clip">
+        <head>
+          <Canonical locale={locale} />
+        </head>
         <body className={poppins.className}>
           <Header
             headerData={t('header', {

@@ -48,7 +48,7 @@ const SearchBar: React.FC = () => {
       !captchaResponse.success ||
       captchaResponse.score < 0.7
     ) {
-      setRateLimit({ show: true, remainder: 60 });
+      setRateLimit({ show: true, remainder: 5 });
       setIsLoading(false);
       return;
     } else {
@@ -154,7 +154,7 @@ export const HeaderSearchBar: React.FC = () => {
       !captchaResponse.success ||
       captchaResponse.score < 0.7
     ) {
-      setRateLimit({ show: true, remainder: 60 });
+      setRateLimit({ show: true, remainder: 5 });
       setIsLoading(false);
       return;
     } else {
