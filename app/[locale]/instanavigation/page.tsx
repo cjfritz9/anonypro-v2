@@ -1,6 +1,6 @@
 import SearchBar from '@/components/Service/SearchBar';
 import ServiceSelector from '@/components/Service/ServiceSelector';
-import initTranslations from '../i18n';
+import initTranslations from '@/app/i18n';
 import WelcomeBlock from '@/components/WelcomeBlock/WelcomeBlock';
 import HowToBegin from '@/components/HowTo/HowToBegin';
 import HowToUse from '@/components/HowTo/HowToUse';
@@ -27,7 +27,11 @@ export async function generateMetadata({ params: { locale } }: Metadata) {
 }
 
 export default async function Home({ params: { locale } }: Metadata) {
-  const { t } = await initTranslations(locale, ['home', 'common']);
+  const { t } = await initTranslations(locale, [
+    'competitors',
+    'home',
+    'common',
+  ]);
   const articles = await getLatestThreeArticles();
 
   return (
@@ -49,12 +53,14 @@ export default async function Home({ params: { locale } }: Metadata) {
         <div className="flex w-full max-w-[576px] flex-col items-center gap-10">
           <div className="flex max-w-[576px] flex-col gap-10 text-center">
             <h1 className="text-[32px] font-[500] leading-[44px] lg:text-[56px] lg:leading-[66px]">
-              {t('home:section_one.heading_one')}
+              {t('competitors:instanavigation.heading', {
+                brand_name: 'InstaNavigation',
+              })}
             </h1>
             <h2>
-              {t('home:section_one.heading_two.part_one')}
+              {t('competitors:instanavigation.subheading.one')}
               <br />
-              {t('home:section_one.heading_two.part_two')}
+              {t('competitors:instanavigation.subheading.two')}
             </h2>
             <SearchBar />
           </div>
@@ -75,13 +81,6 @@ export default async function Home({ params: { locale } }: Metadata) {
         />
       </section>
       <section className="mt-32 w-full">
-        <HowToBegin
-          translations={t('home:section_three', {
-            returnObjects: true,
-          })}
-        />
-      </section>
-      <section className="mt-32 w-full">
         <HowToUse
           translations={t('home:section_four', {
             returnObjects: true,
@@ -89,15 +88,8 @@ export default async function Home({ params: { locale } }: Metadata) {
         />
       </section>
       <section className="mt-32 w-full">
-        <CardGrid
-          translations={t('home:section_five', {
-            returnObjects: true,
-          })}
-        />
-      </section>
-      <section className="mt-32 w-full">
         <FAQ
-          translations={t('home:section_six', {
+          translations={t('competitors:instanavigation.faq', {
             returnObjects: true,
           })}
         />

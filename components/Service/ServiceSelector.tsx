@@ -7,6 +7,7 @@ import postsIcon from '@/public/assets/posts-icon.svg';
 import highlightsIcon from '@/public/assets/highlights-icon.svg';
 import reelsIcon from '@/public/assets/reels-icon.svg';
 import { InstagramContext } from '../Context/InstagramProvider';
+import { usePathname } from 'next/navigation';
 
 const buttonIcons = [storiesIcon, postsIcon, highlightsIcon, reelsIcon];
 
@@ -22,6 +23,7 @@ const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
     pagination: { isLoading },
     setPagination,
   } = useContext(InstagramContext);
+  const pathname = usePathname();
   const buttonsData = buttonIcons.map((icon, i) => ({
     displayName: displayNames[i],
     icon,
@@ -41,6 +43,20 @@ const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
     }
   }, [isLoading, selectorRef]);
 
+  useEffect(() => {
+    if (pathname === '/instagram-story-download') {
+      setMode(0)
+    }
+
+    if (pathname === '/instagram-highlight-viewer') {
+      setMode(2)
+    }
+
+    if (pathname === '/instagram-reels-video-downloader') {
+      setMode(3)
+    }
+  }, [setMode, pathname])
+
   return (
     <div ref={selectorRef} className="join w-full max-w-[720px]">
       {buttonsData.map((data, i) => (
@@ -53,10 +69,10 @@ const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
             src={data.icon}
             height={24}
             width={24}
-            className={`${i === 3 ? 'xs:h-5 xs:w-5 h-7 w-7' : 'xs:h-6 xs:w-6 h-8 w-8'}`}
+            className={`${i === 3 ? 'h-7 w-7 xs:h-5 xs:w-5' : 'h-8 w-8 xs:h-6 xs:w-6'}`}
             alt={`Instagram ${data.displayName} Icon`}
           />
-          <p className="xs:block hidden">{data.displayName}</p>
+          <p className="hidden xs:block">{data.displayName}</p>
         </button>
       ))}
     </div>

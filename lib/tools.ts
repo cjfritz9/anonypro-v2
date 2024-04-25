@@ -117,3 +117,51 @@ export const slugToMetaTitle = (slug: string) => {
 export const titlesToMetaTitle = (title: string[]) => {
   return title.join(', ');
 };
+
+export const toShortenedName = (name: string) => {
+  if (name.length > 15) {
+    return name.replace(name.slice(name.indexOf(' ') + 2), '.');
+  } else {
+    return name;
+  }
+};
+
+export const getFavorites = () => {
+  const savedFavorites = localStorage.getItem('favorites');
+
+  if (savedFavorites) {
+    const favorites = JSON.parse(savedFavorites) as string[];
+    if (Array.isArray(favorites)) {
+      return favorites;
+    }
+  }
+  return null;
+};
+
+export const addToFavorites = (username: string) => {
+  const savedFavorites = localStorage.getItem('favorites');
+  if (savedFavorites) {
+    const favorites = JSON.parse(savedFavorites) as string[];
+    if (!favorites.includes(username)) {
+      localStorage.setItem(
+        'favorites',
+        JSON.stringify([username, ...favorites])
+      );
+    }
+  } else {
+    localStorage.setItem('favorites', JSON.stringify([username]));
+  }
+};
+
+export const removeFavorite = (username: string) => {
+  const favorites = getFavorites();
+
+  if (favorites) {
+    localStorage.setItem(
+      'favorites',
+      JSON.stringify(
+        favorites.filter((savedUsername) => savedUsername !== username)
+      )
+    );
+  }
+};

@@ -1,6 +1,6 @@
 import SearchBar from '@/components/Service/SearchBar';
 import ServiceSelector from '@/components/Service/ServiceSelector';
-import initTranslations from '../i18n';
+import initTranslations from '@/app/i18n';
 import WelcomeBlock from '@/components/WelcomeBlock/WelcomeBlock';
 import HowToBegin from '@/components/HowTo/HowToBegin';
 import HowToUse from '@/components/HowTo/HowToUse';
@@ -36,7 +36,7 @@ export default async function Home({ params: { locale } }: Metadata) {
         {JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'SoftwareApplication',
-          name: 'AnonyPro',
+          name: 'AnonyPro Instagram Story Downloader',
           applicationCategory: 'LifestyleApplication',
           offers: {
             '@type': 'Offer',
