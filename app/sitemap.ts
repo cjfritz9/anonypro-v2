@@ -31,17 +31,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'policies',
     'support',
     'terms-of-service',
+    'instagram-highlight-viewer',
+    'instagram-reels-video-downloader',
+    'instagram-story-download',
   ].map((route) => ({
     url: `${route}`,
     lastModified: new Date().toISOString().split('T')[0],
   }));
 
-  const routesWithLocale = locales.map((locale) =>
-    [...routes, ...articles, ...authors].map((route) => ({
-      url: `${baseUrl}/${locale}/${route.url}`,
-      lastModified: route.lastModified,
-    }))
-  );
+  const routesWithLocale = locales
+    .map((locale) =>
+      [...routes, ...articles, ...authors].map((route) => ({
+        url: `${baseUrl}/${locale}/${route.url}`,
+        lastModified: route.lastModified,
+      }))
+    )
+    .flat();
 
-  return routesWithLocale.flat();
+  return routesWithLocale;
 }
