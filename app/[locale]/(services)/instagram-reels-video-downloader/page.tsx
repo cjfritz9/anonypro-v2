@@ -1,10 +1,12 @@
 import SearchBar from '@/components/Service/SearchBar';
 import ServiceSelector from '@/components/Service/ServiceSelector';
 import initTranslations from '@/app/i18n';
-import WelcomeBlock from '@/components/WelcomeBlock/WelcomeBlock';
+import WelcomeBlock, {
+  WelcomeBlockServices,
+} from '@/components/WelcomeBlock/WelcomeBlock';
 import HowToBegin from '@/components/HowTo/HowToBegin';
 import HowToUse from '@/components/HowTo/HowToUse';
-import CardGrid from '@/components/CardGrid/CardGrid';
+import CardGrid, { CardGridServices } from '@/components/CardGrid/CardGrid';
 import FAQ from '@/components/FAQ/FAQ';
 import BlogPreview from '@/components/Blog/BlogPreview';
 import { getLatestThreeArticles } from '@/lib/sanity';
@@ -17,12 +19,11 @@ interface Metadata {
   };
 }
 
-export async function generateMetadata({ params: { locale } }: Metadata) {
-  const { t } = await initTranslations(locale, ['home']);
-
+export async function generateMetadata() {
   return {
-    title: t('home:meta_title', { anonypro: BRAND.name }),
-    description: t('home:meta_desc'),
+    title: 'Instagram Reels Video Download 1080p - IG Anonymous',
+    description:
+      'AnonyPro is #1 for Instagram reels downloading. Explore anonymously, save in 1080p, and enjoy Instagram while ensuring 100% anonymity.',
   };
 }
 
@@ -49,12 +50,12 @@ export default async function Home({ params: { locale } }: Metadata) {
         <div className="flex w-full max-w-[576px] flex-col items-center gap-10">
           <div className="flex max-w-[576px] flex-col gap-10 text-center">
             <h1 className="text-[32px] font-[500] leading-[44px] lg:text-[56px] lg:leading-[66px]">
-              {t('home:section_one.heading_one')}
+              Instagram Reels Download
             </h1>
             <h2>
-              {t('home:section_one.heading_two.part_one')}
+              Download IG Reels anonymously
               <br />
-              {t('home:section_one.heading_two.part_two')}
+              (without anyone knowing)
             </h2>
             <SearchBar />
           </div>
@@ -68,38 +69,87 @@ export default async function Home({ params: { locale } }: Metadata) {
         </div>
       </section>
       <section className="mt-32 w-full">
-        <WelcomeBlock
-          translations={t('home:section_two', {
-            returnObjects: true,
-          })}
+        <WelcomeBlockServices
+          titles={['Surf Reels', 'Anonymously View', 'Download & Inspect']}
         />
       </section>
-      <section className="mt-32 w-full">
+      {/* <section className="mt-32 w-full">
         <HowToBegin
           translations={t('home:section_three', {
             returnObjects: true,
           })}
         />
-      </section>
+      </section> */}
       <section className="mt-32 w-full">
         <HowToUse
-          translations={t('home:section_four', {
-            returnObjects: true,
-          })}
+          translations={{
+            heading: 'How to Use Our IG Reels Downloader?',
+            item_one: t('home:section_four.item_one', { returnObjects: true }),
+            item_two: t('home:section_four.item_two', { returnObjects: true }),
+            item_three: t('home:section_four.item_three', {
+              returnObjects: true,
+            }),
+          }}
         />
       </section>
       <section className="mt-32 w-full">
-        <CardGrid
-          translations={t('home:section_five', {
-            returnObjects: true,
-          })}
+        <CardGridServices
+          heading="What Makes Our Reels Downloader Different?"
+          item_one={{
+            title: 'View & Download',
+            body: 'Easily explore and download IG reels. Navigate effortlessly, then save your favorites in high-definition for anytime, anywhere access, ensuring uninterrupted enjoyment.',
+          }}
+          item_two={{
+            title: 'Download Reels Anonymously',
+            body: ' Privately explore IG reels. Anonymously download in high definition and browse without leaving any digital footprint. Enjoy easy viewing without sacrificing privacy.',
+          }}
+          item_three={{
+            title: 'Reliability & Speed',
+            body: 'Encounter reliable performance and swift Instagram reel downloads. Experience consistent functionality for effortless browsing, ensuring a seamless user experience every time.',
+          }}
+          item_four={{
+            title: 'Favorite Users',
+            body: 'Stay in touch with favored creators. Easily prioritize reel downloads, ensuring you never miss updates from your preferred accounts. Tailor your browsing experience effortlessly.',
+          }}
         />
       </section>
       <section className="mt-32 w-full">
         <FAQ
-          translations={t('home:section_six', {
-            returnObjects: true,
-          })}
+          translations={{
+            heading: 'Frequently Asked Questions',
+            subheading:
+              'Watch and download content seamlessly the constraints of account registration.',
+            faq_one: {
+              question:
+                ' How does AnonyPro maintain privacy when downloading Instagram reels?',
+              answer:
+                'AnonyPro uses advanced encryption techniques to protect user anonymity while downloading Instagram reels, ensuring privacy throughout the process.',
+            },
+            faq_two: {
+              question:
+                'Can I download Instagram reels anonymously with AnonyPro?',
+              answer:
+                'Yes, AnonyPro enables anonymous downloading of Instagram reels, ensuring your identity remains hidden throughout the process.',
+            },
+            faq_three: {
+              question:
+                'Is it lawful to download Instagram reels anonymously using AnonyPro?',
+              answer:
+                "Yes, AnonyPro operates within Instagram's terms of service, respecting user rights and privacy while facilitating anonymous reel downloads.",
+            },
+            faq_four: {
+              question:
+                'Will Instagram reel creators receive notifications when downloaded anonymously?',
+              answer:
+                'No, AnonyPro ensures discreet downloading, preventing notifications to reel creators, preserving user privacy.',
+            },
+            faq_five: {
+              question:
+                'Can I use AnonyPro for anonymous Instagram reel downloads on mobile devices?',
+              answer:
+                'Absolutely! AnonyPro seamlessly extends its functionality to mobile devices, enabling anonymous Instagram reel downloads on smartphones and tablets.',
+            },
+          }}
         />
       </section>
       <section className="mt-32 w-full">

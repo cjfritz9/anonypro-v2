@@ -67,7 +67,7 @@ export default async function Home({ params: { locale } }: Metadata) {
       </section>
       <section className="mt-32 w-full">
         <WelcomeBlockServices
-          titles={['Surf Stories', 'Anonymously View', 'Download & Inspect']}
+          titles={['Surf Highlights', 'Anonymously View', 'Download & Inspect']}
         />
       </section>
       {/* <section className="mt-32 w-full">
@@ -82,8 +82,8 @@ export default async function Home({ params: { locale } }: Metadata) {
           translations={{
             heading: 'How to Use Our IG Highlights Viewer?',
             item_one: t('home:section_four.item_one', { returnObjects: true }),
-            item_two: t('home:section_four.item_one', { returnObjects: true }),
-            item_three: t('home:section_four.item_one', {
+            item_two: t('home:section_four.item_two', { returnObjects: true }),
+            item_three: t('home:section_four.item_three', {
               returnObjects: true,
             }),
           }}
