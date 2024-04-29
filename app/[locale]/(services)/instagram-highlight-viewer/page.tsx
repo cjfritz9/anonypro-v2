@@ -79,9 +79,14 @@ export default async function Home({ params: { locale } }: Metadata) {
       </section> */}
       <section className="mt-32 w-full">
         <HowToUse
-          translations={t('home:section_four', {
-            returnObjects: true,
-          })}
+          translations={{
+            heading: 'How to Use Our IG Highlights Viewer?',
+            item_one: t('home:section_four.item_one', { returnObjects: true }),
+            item_two: t('home:section_four.item_one', { returnObjects: true }),
+            item_three: t('home:section_four.item_one', {
+              returnObjects: true,
+            }),
+          }}
         />
       </section>
       <section className="mt-32 w-full">
