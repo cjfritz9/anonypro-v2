@@ -24,6 +24,7 @@ interface Props {
   features: {
     heading: string;
   };
+  howToUseTitle: string;
   FAQs: {
     heading: string;
     subheading?: string;
@@ -59,6 +60,7 @@ const BrandPage: React.FC<Props> = async ({
   headings,
   description,
   features,
+  howToUseTitle,
   FAQs,
 }) => {
   const { t } = await initTranslations(locale, ['home', 'common']);
@@ -66,19 +68,6 @@ const BrandPage: React.FC<Props> = async ({
 
   return (
     <main className="mt-12 flex w-full max-w-[1280px] flex-col items-center lg:mt-24">
-      <Script id="main-schema" type="application/ld+json">
-        {JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'SoftwareApplication',
-          name: 'AnonyPro',
-          applicationCategory: 'LifestyleApplication',
-          offers: {
-            '@type': 'Offer',
-            price: '0',
-            priceCurrency: 'USD',
-          },
-        })}
-      </Script>
       <section className="flex w-full max-w-[720px] flex-col items-center">
         <div className="flex w-full max-w-[576px] flex-col items-center gap-10">
           <div className="flex max-w-[576px] flex-col gap-10 text-center">
@@ -113,7 +102,7 @@ const BrandPage: React.FC<Props> = async ({
       </section>
       <section className="mt-32 w-full">
         <HowToUse
-          altTitle="How to Use InstaNavigation Instagram Stories Viewer?"
+          altTitle={howToUseTitle}
           translations={t('home:section_four', {
             returnObjects: true,
           })}

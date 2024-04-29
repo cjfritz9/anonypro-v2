@@ -1,15 +1,3 @@
-import SearchBar from '@/components/Service/SearchBar';
-import ServiceSelector from '@/components/Service/ServiceSelector';
-import initTranslations from '@/app/i18n';
-import WelcomeBlock from '@/components/WelcomeBlock/WelcomeBlock';
-import HowToBegin from '@/components/HowTo/HowToBegin';
-import HowToUse from '@/components/HowTo/HowToUse';
-import CardGrid from '@/components/CardGrid/CardGrid';
-import FAQ from '@/components/FAQ/FAQ';
-import BlogPreview from '@/components/Blog/BlogPreview';
-import { getLatestThreeArticles } from '@/lib/sanity';
-import Script from 'next/script';
-import BRAND from '@/lib/static';
 import BrandPage from '@/components/BrandPage/BrandPage';
 import Link from 'next/link';
 
@@ -19,12 +7,11 @@ interface Metadata {
   };
 }
 
-export async function generateMetadata({ params: { locale } }: Metadata) {
-  const { t } = await initTranslations(locale, ['home']);
+export async function generateMetadata() {
+  const name = 'InstaNavigation';
 
   return {
-    title: t('home:meta_title', { anonypro: BRAND.name }),
-    description: t('home:meta_desc'),
+    title: `${name} - Anonymous Instagram Story Viewer`,
   };
 }
 
@@ -42,7 +29,7 @@ export default function InstaNavigation({ params: { locale } }: Metadata) {
           <p className="text-center text-[18px] italic text-slate-300 xl:px-12">
             What is InstaNavigation? It’s the revolutionary tool reshaping how
             you{' '}
-            <Link href="/" className="underline">
+            <Link href="https://anonypro.com/" className="underline">
               navigate Instagram anonymously
             </Link>
             . Powered by state-of-the-art technology and dedicated to
@@ -52,6 +39,7 @@ export default function InstaNavigation({ params: { locale } }: Metadata) {
           </p>
         ),
       }}
+      howToUseTitle="How to Use InstaNavigation Instagram Stories Viewer?"
       features={{ heading: 'Features Of Instanavigation' }}
       FAQs={{
         heading: 'Frequently Asked Questions',
