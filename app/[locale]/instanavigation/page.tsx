@@ -41,7 +41,7 @@ export default function InstaNavigation({ params: { locale } }: Metadata) {
         body: (
           <p>
             What is InstaNavigation? It’s the revolutionary tool reshaping how
-            you <Link href="/">navigate Instagram anonymously</Link>. Powered by
+            you <Link href="/" className='underline'>navigate Instagram anonymously</Link>. Powered by
             state-of-the-art technology and dedicated to safeguarding user
             privacy, InstaNavigation sets out to revolutionize your Instagram
             viewing experience. Dive into the captivating realm of Instagram

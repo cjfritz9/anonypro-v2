@@ -47,14 +47,22 @@ const FAQ: React.FC<Props> = ({ translations }) => {
   return (
     <div className="relative flex w-full flex-col items-start justify-center gap-8 py-[70px] lg:flex-row xl:gap-20 xl:px-12">
       <Script id="faq-schema-script" type="application/ld+json">
-        {toFaqSchema([
-          faq_one,
-          faq_two,
-          faq_three,
-          faq_four,
-          faq_five,
-          faq_six,
-        ])}
+        {faq_six
+          ? toFaqSchema([
+              faq_one,
+              faq_two,
+              faq_three,
+              faq_four,
+              faq_five,
+              faq_six,
+            ])
+          : faq_five
+            ? toFaqSchema([faq_one, faq_two, faq_three, faq_four, faq_five])
+            : faq_four
+              ? toFaqSchema([faq_one, faq_two, faq_three, faq_four])
+              : faq_three
+                ? toFaqSchema([faq_one, faq_two, faq_three])
+                : toFaqSchema([faq_one, faq_two])}
       </Script>
       <div className="w-full max-w-[480px]">
         <h3 className="mb-6 text-left text-4xl font-[500] leading-[44px] xl:text-[44px]">
