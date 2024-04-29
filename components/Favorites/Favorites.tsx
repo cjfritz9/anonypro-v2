@@ -55,7 +55,7 @@ const Favorites: React.FC = () => {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu min-h-full w-80 gap-2 bg-base-200 p-4 text-base-content">
+        <ul className="menu min-h-full w-80 gap-2 overflow-y-auto bg-base-200 p-4 text-base-content">
           <h4 className="mb-4 text-xl font-semibold">Your Favorites</h4>
           {favorites.length > 0 ? (
             favorites.map((fav, i) => (

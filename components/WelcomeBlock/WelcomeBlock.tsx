@@ -82,6 +82,47 @@ const WelcomeBlock: React.FC<Props> = ({
   );
 };
 
+interface ServicesProps {
+  titles: [string, string, string];
+}
+
+export const WelcomeBlockServices: React.FC<ServicesProps> = ({ titles }) => {
+  return (
+    <div className="flex w-full flex-col items-center justify-center rounded-[48px] bg-base-100 bg-opacity-55 px-10 py-[70px]">
+      <div className="flex w-full flex-col items-center justify-between xl:flex-row">
+        <Item
+          title={titles[0]}
+          body=""
+          iconBgColor="bg-base-300"
+          Icon={PiPlusSquareBold}
+        />
+        <Image
+          className="min-h-[310px] rotate-90 xl:rotate-0"
+          src={arrowOne}
+          alt="vector arrow"
+        />
+        <Item
+          title={titles[1]}
+          body=""
+          iconBgColor="bg-accent"
+          Icon={VscPlayCircle}
+        />
+        <Image
+          className="min-h-[310px] rotate-90 xl:rotate-0"
+          src={arrowTwo}
+          alt="vector arrow"
+        />
+        <Item
+          title={titles[2]}
+          body=""
+          iconBgColor="bg-base-300"
+          Icon={RiFolderDownloadLine}
+        />
+      </div>
+    </div>
+  );
+};
+
 interface ItemProps {
   /**
    * Tailwind/Daisy UI color
