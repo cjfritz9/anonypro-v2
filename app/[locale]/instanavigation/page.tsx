@@ -39,13 +39,16 @@ export default function InstaNavigation({ params: { locale } }: Metadata) {
       description={{
         title: 'Go Anonymous on Instagram with Instanavigation',
         body: (
-          <p>
+          <p className="text-center text-[18px] italic text-slate-300 xl:px-12">
             What is InstaNavigation? It’s the revolutionary tool reshaping how
-            you <Link href="/" className='underline'>navigate Instagram anonymously</Link>. Powered by
-            state-of-the-art technology and dedicated to safeguarding user
-            privacy, InstaNavigation sets out to revolutionize your Instagram
-            viewing experience. Dive into the captivating realm of Instagram
-            Stories with unprecedented ease and enjoyment!
+            you{' '}
+            <Link href="/" className="underline">
+              navigate Instagram anonymously
+            </Link>
+            . Powered by state-of-the-art technology and dedicated to
+            safeguarding user privacy, InstaNavigation sets out to revolutionize
+            your Instagram viewing experience. Dive into the captivating realm
+            of Instagram Stories with unprecedented ease and enjoyment!
           </p>
         ),
       }}

@@ -94,7 +94,7 @@ interface ItemProps {
 
 const Item: React.FC<ItemProps> = ({ iconBgColor, Icon, title, body }) => {
   return (
-    <div className="flex max-w-[224px] flex-col items-center text-center">
+    <div className="flex w-[224px] flex-col items-center text-center">
       <CircleWithIcon styles={iconBgColor} Icon={Icon} />
       <h4 className="mb-4 mt-6 text-[20px] font-[500]">{title}</h4>
       <p className="text-[1rem] font-[300]">{body}</p>
