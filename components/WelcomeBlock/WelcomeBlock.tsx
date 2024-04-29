@@ -1,6 +1,6 @@
 import initTranslations from '@/app/i18n';
 import Image from 'next/image';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { PiPlusSquareBold } from 'react-icons/pi';
 import arrowOne from '@/public/assets/arrow-1.svg';
 import arrowTwo from '@/public/assets/arrow-2.svg';
@@ -12,7 +12,7 @@ import CircleWithIcon from '../UI/CircleWithIcon';
 interface Props {
   translations: {
     heading: string;
-    body: string;
+    body: ReactElement | string;
     item_one: {
       title: string;
       body: string;
@@ -26,9 +26,13 @@ interface Props {
       body: string;
     };
   };
+  forBrandPage?: boolean;
 }
 
-const WelcomeBlock: React.FC<Props> = ({ translations }) => {
+const WelcomeBlock: React.FC<Props> = ({
+  translations,
+  forBrandPage = false,
+}) => {
   const { heading, body, item_one, item_two, item_three } = translations;
   return (
     <div className="flex w-full flex-col items-center justify-center rounded-[48px] bg-base-100 bg-opacity-55 px-10 py-[70px]">
@@ -36,14 +40,18 @@ const WelcomeBlock: React.FC<Props> = ({ translations }) => {
         <h3 className="mb-6 text-center text-[44px] font-[500] leading-[44px]">
           {heading}
         </h3>
-        <p className="text-center text-[18px] italic text-slate-300 xl:px-12">
-          {body}
-        </p>
+        {forBrandPage ? (
+          body
+        ) : (
+          <p className="text-center text-[18px] italic text-slate-300 xl:px-12">
+            {body}
+          </p>
+        )}
       </div>
       <div className="flex w-full flex-col items-center justify-between xl:flex-row">
         <Item
           title={item_one.title}
-          body={item_one.body}
+          body={forBrandPage ? '' : item_one.body}
           iconBgColor="bg-base-300"
           Icon={PiPlusSquareBold}
         />
@@ -54,7 +62,7 @@ const WelcomeBlock: React.FC<Props> = ({ translations }) => {
         />
         <Item
           title={item_two.title}
-          body={item_two.body}
+          body={forBrandPage ? '' : item_two.body}
           iconBgColor="bg-accent"
           Icon={VscPlayCircle}
         />
@@ -65,7 +73,7 @@ const WelcomeBlock: React.FC<Props> = ({ translations }) => {
         />
         <Item
           title={item_three.title}
-          body={item_three.body}
+          body={forBrandPage ? '' : item_three.body}
           iconBgColor="bg-base-300"
           Icon={RiFolderDownloadLine}
         />

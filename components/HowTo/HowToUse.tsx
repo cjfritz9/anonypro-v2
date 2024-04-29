@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import GetStartedButton from './GetStartedButton';
 
 interface Props {
+  altTitle?: string;
   translations: {
     heading: string;
     item_one: {
@@ -16,13 +17,13 @@ interface Props {
   };
 }
 
-const HowToUse: React.FC<Props> = ({ translations }) => {
+const HowToUse: React.FC<Props> = ({ altTitle, translations }) => {
   const { heading, item_one, item_two, item_three } = translations;
 
   return (
     <div className="relative flex w-full flex-col items-center justify-center py-[70px]">
       <h3 className="mb-16 text-center text-4xl font-[500] leading-[44px] xl:text-[44px]">
-        {heading}
+        {altTitle ? altTitle : heading}
       </h3>
       <ul className="timeline timeline-vertical absolute -left-[47%] bottom-52 h-[880px] w-full justify-between xl:timeline-horizontal xl:static xl:h-auto">
         <li className="grow">
