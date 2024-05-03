@@ -1,22 +1,40 @@
 'use client';
+
 import Image from 'next/image';
 import React, { useContext, useEffect, useState } from 'react';
 import { InstagramContext } from '../Context/InstagramProvider';
 import Link from 'next/link';
 import verifiedBadge from '@/public/assets/verified-badge.svg';
-import { formatNumber } from '@/lib/tools';
+import {
+  addToFavorites,
+  formatNumber,
+  getFavorites,
+  removeFavorite,
+} from '@/lib/tools';
 import { useParams } from 'next/navigation';
 import { fetchProfile } from '@/lib/requests';
 import { Errors } from '../Service/Service';
+import { MdFavorite, MdFavoriteBorder } from 'react-icons/md';
 
 interface Props {
   onError: (type: null | Errors) => void;
 }
 
-const Profile: React.FC<Props> = ({ onError}) => {
+const Profile: React.FC<Props> = ({ onError }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isFavorited, setIsFavorited] = useState(false);
   const { igProfile, setIgProfile, resetUser } = useContext(InstagramContext);
   const { username }: { username: string } = useParams();
+
+  const handleFavorite = () => {
+    if (isFavorited) {
+      removeFavorite(username);
+      setIsFavorited(false);
+    } else {
+      addToFavorites(username);
+      setIsFavorited(true);
+    }
+  };
 
   useEffect(() => {
     if (!username) return;
@@ -40,6 +58,12 @@ const Profile: React.FC<Props> = ({ onError}) => {
       }
       setIsLoading(false);
     })();
+    if (window) {
+      const favorites = getFavorites();
+      if (favorites?.includes(username)) {
+        setIsFavorited(true);
+      }
+    }
   }, [username, igProfile, resetUser, setIgProfile, onError]);
 
   if (isLoading) return <LoadingProfile />;
@@ -47,7 +71,7 @@ const Profile: React.FC<Props> = ({ onError}) => {
 
   return (
     <div className="flex !w-full flex-col items-center justify-between gap-10 lg:max-w-[720px] lg:flex-row">
-      <div className="h-[250px] w-[250px]">
+      <div className="flex w-[250px] flex-col items-center">
         <figure className="flex h-[250px] w-[250px] items-center justify-center rounded-full bg-gradient-to-b from-[#E09B3D] via-[#C21975] via-80% to-[#7024C4]">
           <Image
             priority
@@ -58,6 +82,17 @@ const Profile: React.FC<Props> = ({ onError}) => {
             className="h-[240px] w-[240px] rounded-full"
           />
         </figure>
+        {isFavorited ? (
+          <button className="btn mt-4 bg-accent" onClick={handleFavorite}>
+            <MdFavorite size={20} />
+            <p>Saved</p>
+          </button>
+        ) : (
+          <button className="btn mt-4" onClick={handleFavorite}>
+            <MdFavoriteBorder size={20} />
+            <p>Save</p>
+          </button>
+        )}
       </div>
       <div className="w-fit text-center lg:min-w-[400px] lg:text-start">
         <p className="text-2xl font-[500]">{igProfile.displayName}</p>

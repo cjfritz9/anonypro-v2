@@ -8,6 +8,7 @@ import Providers from '../providers';
 import Footer from '@/components/Footer/Footer';
 import BRAND from '@/lib/static';
 import Canonical from '@/components/Canonical/Canonical';
+import Favorites from '@/components/Favorites/Favorites';
 import Script from 'next/script';
 
 const poppins = Poppins({
@@ -75,6 +76,7 @@ export default async function RootLayout({
           <div className="flex min-h-[100dvh] flex-col items-center px-4 py-4 lg:px-24 lg:py-12">
             {children}
           </div>
+          <Favorites />
           <Footer />
         </body>
         <GoogleAnalytics gaId="G-325NSSQH59" />

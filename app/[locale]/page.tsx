@@ -22,7 +22,7 @@ export async function generateMetadata({ params: { locale } }: Metadata) {
 
   return {
     title: t('home:meta_title', { anonypro: BRAND.name }),
-    description: t('home:meta_desc')
+    description: t('home:meta_desc'),
   };
 }
 

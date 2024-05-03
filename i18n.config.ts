@@ -4,6 +4,7 @@ const i18nConfig = {
   namespaces: [
     'common',
     'home',
+    'competitors',
     'about',
     'support',
     'user-profile',

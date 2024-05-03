@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import BlogCard from '../BlogCard';
 import CategorySelector from '../CategorySelector';
 import ArticlePagination from '../ArticlePagination';
@@ -12,14 +12,21 @@ interface Props {
 
 const BlogPage: React.FC<Props> = ({ articles, category, heading }) => {
   const [paginatedArticles, setPaginatedArticles] = useState(articles);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   const onUpdatePaginatedArticles = (articles: typeof paginatedArticles) => {
     setPaginatedArticles(articles);
+    headingRef?.current?.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'nearest',
+    });
   };
 
   return (
     <div className="my-12 lg:my-20">
-      <h1 className="mb-12 text-center text-4xl font-semibold">{heading}</h1>
+      <h1 ref={headingRef} className="mb-12 text-center text-4xl font-semibold">
+        {heading}
+      </h1>
       <CategorySelector />
       <div className="overflow flex w-full max-w-[1280px] flex-wrap justify-center gap-8">
         {paginatedArticles && paginatedArticles[0] ? (
