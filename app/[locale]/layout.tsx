@@ -9,7 +9,6 @@ import Footer from '@/components/Footer/Footer';
 import BRAND from '@/lib/static';
 import Canonical from '@/components/Canonical/Canonical';
 import Favorites from '@/components/Favorites/Favorites';
-import Script from 'next/script';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -53,11 +52,6 @@ export default async function RootLayout({
       <html lang={locale} className="overflow-x-clip">
         <head>
           <Canonical locale={locale} />
-          <Script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9924000383649266"
-            crossOrigin="anonymous"
-          ></Script>
         </head>
         <body className={poppins.className}>
           <Header
