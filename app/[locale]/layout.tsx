@@ -41,6 +41,8 @@ export default async function RootLayout({
 }: ProjectData) {
   const { t, resources } = await initTranslations(locale, ['common']);
 
+  console.log(process.env.NODE_ENV)
+
   return (
     <Providers
       translationProps={{
