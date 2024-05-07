@@ -10,7 +10,7 @@ const InArticleAd: React.FC = () => {
   if (!isClient) return null;
 
   return (
-    <div className="h-auto w-full">
+    <div className="h-auto w-full py-4">
       <Adsense
         client="ca-pub-9924000383649266"
         slot="5273736659"
