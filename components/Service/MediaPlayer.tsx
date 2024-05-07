@@ -135,7 +135,10 @@ const SidePanel: React.FC<SidePanelProps> = ({
   if (!data || !currentSlide) return null;
 
   return (
-    <div className="flex w-full max-w-md flex-col overflow-y-auto border-t border-gray-700 bg-black lg:h-full lg:border-l lg:border-t-0">
+    <div
+      className="flex w-full max-w-md flex-col overflow-y-auto border-t border-gray-700 bg-black lg:h-full lg:border-l lg:border-t-0"
+      suppressHydrationWarning
+    >
       <header className="flex items-center border-b border-gray-700 p-4">
         <figure className="flex h-[44px] w-[44px] items-center justify-center rounded-full bg-gradient-to-b from-[#E09B3D] via-[#C21975] to-[#7024C4]">
           <Image

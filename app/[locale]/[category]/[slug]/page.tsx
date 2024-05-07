@@ -153,7 +153,7 @@ const Page: React.FC<Metadata> = async ({
 
   return (
     <div className="flex max-w-[100dvw] flex-col items-center">
-      <Script id="article-schema" type="application/ld+json">
+      <Script id="article-schema" type="application/ld+json" suppressHydrationWarning>
         {JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',

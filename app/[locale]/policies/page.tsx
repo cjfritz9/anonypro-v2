@@ -20,7 +20,7 @@ const PoliciesPage: React.FC<Params> = async ({ params: { locale } }) => {
   const { t } = await initTranslations(locale, ['policies']);
 
   return (
-    <main className="mt-12 flex w-full max-w-[1280px] flex-col items-center lg:mt-24">
+    <main className="mt-12 flex w-full max-w-[1280px] flex-col items-center lg:mt-24" suppressHydrationWarning>
       <div className="prose flex w-full max-w-[720px] flex-col text-left prose-p:my-2">
         <div>
           <h2 className="mb-2 text-3xl font-semibold">

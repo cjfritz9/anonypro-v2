@@ -38,9 +38,9 @@ const LanguagePicker: React.FC<Props> = ({ reverse }) => {
   const router = useRouter();
   const currentPathname = usePathname();
   if (!currentLocale || currentLocale === '*') {
-    currentLocale = 'en'
+    currentLocale = 'en';
   }
-    
+
   const nameGenerator = new Intl.DisplayNames('en', {
     type: 'language',
   });
@@ -72,6 +72,7 @@ const LanguagePicker: React.FC<Props> = ({ reverse }) => {
   return (
     <div
       className={`dropdown ${reverse ? 'dropdown-top' : 'dropdown-bottom'} w-full min-w-[140px]`}
+      suppressHydrationWarning
     >
       <div
         tabIndex={0}
