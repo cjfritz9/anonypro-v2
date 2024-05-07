@@ -67,7 +67,9 @@ export default async function Home({ params: { locale } }: Metadata) {
             })}
           />
         </div>
-{/*         <DisplayAd /> */}
+        <div>
+          <DisplayAd />
+        </div>
       </section>
       <section className="mt-32 w-full">
         <WelcomeBlock
