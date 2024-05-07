@@ -70,7 +70,7 @@ export default async function RootLayout({
               returnObjects: true,
             })}
           />
-          <div className="flex min-h-[100dvh] flex-col items-center px-4 py-4 lg:px-24 lg:py-12" suppressHydrationWarning>
+          <div className="flex min-h-[100dvh] flex-col items-center px-4 py-4 lg:px-24 lg:py-12">
             {children}
           </div>
           <Favorites />
