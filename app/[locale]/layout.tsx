@@ -49,12 +49,14 @@ export default async function RootLayout({
         namespaces: i18nConfig.namespaces,
       }}
     >
-      <html
-        lang={locale}
-        className="overflow-x-clip"
-      >
+      <html lang={locale} className="overflow-x-clip">
         <head>
           <Canonical locale={locale} />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9924000383649266"
+            crossOrigin="anonymous"
+          ></script>
         </head>
         <body className={poppins.className}>
           <Header

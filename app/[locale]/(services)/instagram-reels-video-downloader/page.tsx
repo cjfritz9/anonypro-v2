@@ -12,6 +12,7 @@ import BlogPreview from '@/components/Blog/BlogPreview';
 import { getLatestThreeArticles } from '@/lib/sanity';
 import Script from 'next/script';
 import BRAND from '@/lib/static';
+import DisplayAd from '@/components/Ads/DisplayAd';
 
 interface Metadata {
   params: {
@@ -67,6 +68,7 @@ export default async function Home({ params: { locale } }: Metadata) {
             })}
           />
         </div>
+        <DisplayAd />
       </section>
       <section className="mt-32 w-full">
         <WelcomeBlockServices

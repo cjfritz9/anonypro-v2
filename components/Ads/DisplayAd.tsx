@@ -5,11 +5,15 @@ import { Adsense } from '@ctrl/react-adsense';
 import useIsClient from '@/lib/hooks/useIsClient';
 
 const DisplayAd: React.FC = () => {
-  // const isClient = useIsClient();
+  const isClient = useIsClient();
 
-  // if (!isClient) return null;
+  if (!isClient) return null;
 
-  return <Adsense client="ca-pub-9924000383649266" slot="7391767564" />;
+  return (
+    <div className="h-auto w-full">
+      <Adsense client="ca-pub-9924000383649266" slot="7391767564" />
+    </div>
+  );
 };
 
 export default DisplayAd;

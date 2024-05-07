@@ -76,7 +76,6 @@ const ServiceSelector: React.FC<Props> = ({ displayNames }) => {
           <p className="text-xs xs:text-base">{data.displayName}</p>
         </button>
       ))}
-      <DisplayAd />
     </div>
   );
 };

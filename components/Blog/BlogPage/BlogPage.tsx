@@ -47,7 +47,6 @@ const BlogPage: React.FC<Props> = ({ articles, category, heading }) => {
             No articles here yet, stay tuned!
           </h2>
         )}
-        <MultiplexAd />
       </div>
       {articles && articles[0] && (
         <div className="my-12 flex w-full justify-center">
@@ -58,6 +57,7 @@ const BlogPage: React.FC<Props> = ({ articles, category, heading }) => {
           />
         </div>
       )}
+      <MultiplexAd />
     </div>
   );
 };
