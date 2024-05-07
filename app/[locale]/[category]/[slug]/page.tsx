@@ -18,6 +18,8 @@ import Script from 'next/script';
 import React from 'react';
 import { FiUser } from 'react-icons/fi';
 import { LuCalendarDays } from 'react-icons/lu';
+import InArticleAd from '@/components/Ads/InArticleAd';
+import MultiplexAd from '@/components/Ads/MultiplexAd';
 
 interface Metadata {
   params: {
@@ -153,7 +155,11 @@ const Page: React.FC<Metadata> = async ({
 
   return (
     <div className="flex max-w-[100dvw] flex-col items-center">
-      <Script id="article-schema" type="application/ld+json" suppressHydrationWarning>
+      <Script
+        id="article-schema"
+        type="application/ld+json"
+        suppressHydrationWarning
+      >
         {JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',
@@ -211,6 +217,7 @@ const Page: React.FC<Metadata> = async ({
           />
         </div>
         <ScrollToSection sections={sections} />
+        <InArticleAd />
         <div className="prose w-full max-w-[1280px] px-4 text-white">
           <PortableText components={components} value={article.content} />
         </div>
@@ -220,6 +227,7 @@ const Page: React.FC<Metadata> = async ({
         <div className="my-12 flex w-full max-w-[1280px] justify-center">
           <ArticleRating articleId={article.id} />
         </div>
+        <MultiplexAd />
       </div>
       <section className="flex w-[100dvw] justify-center bg-[#6346A1] py-20">
         <div className="w-full max-w-[1280px]">

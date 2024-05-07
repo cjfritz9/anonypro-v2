@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import blogImage from '@/public/assets/blog-image-ph.png';
 import BlogCard from './BlogCard';
 import { getLatestThreeArticles } from '@/lib/sanity';
+import MultiplexAd from '../Ads/MultiplexAd';
 
 interface Props {
   articles: any[];
@@ -26,6 +27,7 @@ const BlogPreview: React.FC<Props> = ({ articles, heading }) => {
           />
         ))}
       </div>
+      <MultiplexAd />
     </div>
   );
 };
