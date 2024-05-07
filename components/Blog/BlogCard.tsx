@@ -41,7 +41,7 @@ const BlogCard: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex h-[472px] max-w-[376px] flex-col overflow-clip rounded-[48px] bg-base-100 bg-opacity-45">
+    <div className="flex h-[472px] max-w-[376px] flex-col overflow-clip rounded-[48px] bg-base-100 bg-opacity-45" suppressHydrationWarning>
       <Link href={`/${category}/${slug}`}>
         <Image
           src={thumbnailUrl}
