@@ -6,16 +6,10 @@ import React, { useEffect } from 'react';
 const InArticleAd: React.FC = () => {
   const isClient = useIsClient();
 
-  useEffect(() => {
-    if (isClient && window.adsbygoogle.loaded === false) {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }
-  }, [isClient]);
-
   if (!isClient) return null;
 
   return (
-    <div>
+    <>
       <ins
         className="adsbygoogle"
         style={{ display: 'block', textAlign: 'center' }}
@@ -24,7 +18,12 @@ const InArticleAd: React.FC = () => {
         data-ad-format="fluid"
         data-ad-slot="5273736659"
       ></ins>
-    </div>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: '(window.adsbygoogle = window.adsbygoogle || []).push({});',
+        }}
+      ></script>
+    </>
   );
 };
 

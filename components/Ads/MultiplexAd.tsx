@@ -6,16 +6,10 @@ import React, { useEffect } from 'react';
 const MultiplexAd: React.FC = () => {
   const isClient = useIsClient();
 
-  useEffect(() => {
-    if (isClient && window.adsbygoogle.loaded === false) {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }
-  }, [isClient]);
-
   if (!isClient) return null;
 
   return (
-    <div>
+    <>
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
@@ -23,7 +17,12 @@ const MultiplexAd: React.FC = () => {
         data-ad-client="ca-pub-9924000383649266"
         data-ad-slot="8529389724"
       ></ins>
-    </div>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: '(window.adsbygoogle = window.adsbygoogle || []).push({});',
+        }}
+      ></script>
+    </>
   );
 };
 
