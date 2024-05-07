@@ -52,7 +52,6 @@ export default async function RootLayout({
       <html
         lang={locale}
         className="overflow-x-clip"
-        suppressHydrationWarning={process?.env?.NODE_ENV === 'production'}
       >
         <head>
           <Canonical locale={locale} />
@@ -71,7 +70,7 @@ export default async function RootLayout({
               returnObjects: true,
             })}
           />
-          <div className="flex min-h-[100dvh] flex-col items-center px-4 py-4 lg:px-24 lg:py-12">
+          <div className="flex min-h-[100dvh] flex-col items-center px-4 py-4 lg:px-24 lg:py-12" suppressHydrationWarning>
             {children}
           </div>
           <Favorites />
