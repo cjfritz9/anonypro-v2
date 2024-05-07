@@ -6,7 +6,7 @@ import useIsClient from '@/lib/hooks/useIsClient';
 const DisplayAd: React.FC = () => {
   const isClient = useIsClient();
   useEffect(() => {
-    if (window) {
+    if (window && window.adsbygoogle && !window.adsbygoogle.loaded) {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     }
   }, []);
