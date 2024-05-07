@@ -2,6 +2,7 @@ import React from 'react';
 import Profile from '../Profile';
 import AuthorArticles from '../AuthorArticles';
 import Script from 'next/script';
+import MultiplexAd from '@/components/Ads/MultiplexAd';
 
 interface Props {
   data: {
@@ -44,6 +45,7 @@ const AuthorPage: React.FC<Props> = ({ data }) => {
       </Script>
       <Profile data={data} />
       <AuthorArticles articles={articles} author={{ name, slug }} />
+      <MultiplexAd />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import BlogCard from '../BlogCard';
 import CategorySelector from '../CategorySelector';
 import ArticlePagination from '../ArticlePagination';
+import MultiplexAd from '@/components/Ads/MultiplexAd';
 
 interface Props {
   category?: string;
@@ -30,7 +31,7 @@ const BlogPage: React.FC<Props> = ({ articles, category, heading }) => {
       <CategorySelector />
       <div className="overflow flex w-full max-w-[1280px] flex-wrap justify-center gap-8">
         {paginatedArticles && paginatedArticles[0] ? (
-          paginatedArticles.map((article: any) => (
+          paginatedArticles.map((article: any, i) => (
             <BlogCard
               key={article.id}
               author={{ name: article.author.name, slug: article.author.slug }}
@@ -56,6 +57,7 @@ const BlogPage: React.FC<Props> = ({ articles, category, heading }) => {
           />
         </div>
       )}
+      <MultiplexAd />
     </div>
   );
 };

@@ -1,29 +1,17 @@
 'use client';
 
-import useIsClient from '@/lib/hooks/useIsClient';
 import React, { useEffect } from 'react';
+import { Adsense } from '@ctrl/react-adsense';
+import useIsClient from '@/lib/hooks/useIsClient';
 
 const DisplayAd: React.FC = () => {
   const isClient = useIsClient();
 
-  useEffect(() => {
-    if (isClient && window.adsbygoogle.loaded === false) {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }
-  }, [isClient]);
-
   if (!isClient) return null;
 
   return (
-    <div>
-      <ins
-        className="adsbygoogle"
-        style={{ display: 'block' }}
-        data-ad-client="ca-pub-9924000383649266"
-        data-ad-slot="7391767564"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      ></ins>
+    <div className="h-auto w-full">
+      <Adsense client="ca-pub-9924000383649266" slot="7391767564" />
     </div>
   );
 };

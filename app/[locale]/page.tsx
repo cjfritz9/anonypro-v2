@@ -11,6 +11,7 @@ import { getLatestThreeArticles } from '@/lib/sanity';
 import Script from 'next/script';
 import BRAND from '@/lib/static';
 import DisplayAd from '@/components/Ads/DisplayAd';
+import MultiplexAd from '@/components/Ads/MultiplexAd';
 
 interface Metadata {
   params: {

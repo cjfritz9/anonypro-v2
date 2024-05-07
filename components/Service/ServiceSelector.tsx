@@ -8,6 +8,7 @@ import highlightsIcon from '@/public/assets/highlights-icon.svg';
 import reelsIcon from '@/public/assets/reels-icon.svg';
 import { InstagramContext } from '../Context/InstagramProvider';
 import { usePathname } from 'next/navigation';
+import DisplayAd from '../Ads/DisplayAd';
 
 const buttonIcons = [storiesIcon, postsIcon, highlightsIcon, reelsIcon];
 

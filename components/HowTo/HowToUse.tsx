@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import GetStartedButton from './GetStartedButton';
+import DisplayAd from '../Ads/DisplayAd';
 
 interface Props {
   altTitle?: string;
@@ -91,6 +92,7 @@ const HowToUse: React.FC<Props> = ({ altTitle, translations }) => {
       <div>
         <GetStartedButton />
       </div>
+      <DisplayAd />
     </div>
   );
 };
