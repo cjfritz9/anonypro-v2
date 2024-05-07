@@ -49,7 +49,10 @@ export default async function RootLayout({
         namespaces: i18nConfig.namespaces,
       }}
     >
-      <html lang={locale} className="overflow-x-clip">
+      <html
+        lang={locale}
+        className="overflow-x-clip"
+      >
         <head>
           <Canonical locale={locale} />
         </head>
