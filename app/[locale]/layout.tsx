@@ -41,8 +41,6 @@ export default async function RootLayout({
 }: ProjectData) {
   const { t, resources } = await initTranslations(locale, ['common']);
 
-  console.log(process.env.NODE_ENV)
-
   return (
     <Providers
       translationProps={{
@@ -51,7 +49,11 @@ export default async function RootLayout({
         namespaces: i18nConfig.namespaces,
       }}
     >
-      <html lang={locale} className="overflow-x-clip">
+      <html
+        lang={locale}
+        className="overflow-x-clip"
+        suppressHydrationWarning={process?.env?.NODE_ENV === 'production'}
+      >
         <head>
           <Canonical locale={locale} />
         </head>
