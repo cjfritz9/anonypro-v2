@@ -15,13 +15,15 @@ const MultiplexAd: React.FC = () => {
   if (!isClient) return null;
 
   return (
-    <ins
-      className="adsbygoogle"
-      style={{ display: 'block' }}
-      data-ad-format="autorelaxed"
-      data-ad-client="ca-pub-9924000383649266"
-      data-ad-slot="8529389724"
-    />
+    <div>
+      <ins
+        className="adsbygoogle"
+        style={{ display: 'block' }}
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-9924000383649266"
+        data-ad-slot="8529389724"
+      ></ins>
+    </div>
   );
 };
 
