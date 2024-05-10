@@ -3,6 +3,7 @@ import DisplayAd from '@/components/Ads/DisplayAd';
 import MultiplexAd from '@/components/Ads/MultiplexAd';
 import Service from '@/components/Service/Service';
 import ServiceSelector from '@/components/Service/ServiceSelector';
+import { getServicesSettings } from '@/lib/sanity';
 import BRAND from '@/lib/static';
 import React from 'react';
 
@@ -12,6 +13,8 @@ interface Metadata {
     username: string;
   };
 }
+
+export const revalidate = 3600;
 
 export async function generateMetadata({
   params: { locale, username },
@@ -25,6 +28,7 @@ export async function generateMetadata({
 export default async function UsernamePage({ params }: Metadata) {
   const { locale, username } = params;
   const { t } = await initTranslations(locale, ['user-profile', 'common']);
+  const { services } = await getServicesSettings();
 
   return (
     <main className="flex min-h-[100dvh] w-full max-w-[1280px] flex-col items-center">
@@ -32,6 +36,7 @@ export default async function UsernamePage({ params }: Metadata) {
         <DisplayAd />
         <Service
           username={username}
+          enabledServices={services}
           serviceButtonsText={t('common:service_selector.button_names', {
             returnObjects: true,
           })}
