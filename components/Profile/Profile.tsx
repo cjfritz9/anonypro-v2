@@ -64,7 +64,8 @@ const Profile: React.FC<Props> = ({ onError }) => {
         setIsFavorited(true);
       }
     }
-  }, [username, igProfile, resetUser, setIgProfile, onError]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [username]);
 
   if (isLoading) return <LoadingProfile />;
   if (!igProfile) return null;
