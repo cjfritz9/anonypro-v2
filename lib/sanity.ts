@@ -7,9 +7,21 @@ export const client = createClient({
   useCdn: false,
 });
 
-// interface Article {
+export const getServicesSettings = async () => {
+  const query = `
+  *[_type == 'admin'][0] {
+    services {
+      stories,
+      posts,
+      highlights,
+      reels
+    }
+  }`;
 
-// }
+  const data = await client.fetch(query);
+
+  return data;
+};
 
 export const getAllArticles = async (page = 1) => {
   const query = `
@@ -183,4 +195,4 @@ export const getAuthorsForSitemap = async () => {
   const data = await client.fetch(query);
 
   return data;
-}
+};

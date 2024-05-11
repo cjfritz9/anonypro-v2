@@ -23,11 +23,24 @@ import useWindowSize from '@/lib/hooks/useWindowSize';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { useParams } from 'next/navigation';
 
+interface Props {
+  enabledServices: {
+    stories: boolean;
+    posts: boolean;
+    highlights: boolean;
+    reels: boolean;
+  };
+}
+
+interface DefaultServiceProps {
+  isEnabled: boolean;
+}
+
 interface NoContentProps {
   message: string;
 }
 
-const ContentDisplay: React.FC = () => {
+const ContentDisplay: React.FC<Props> = ({ enabledServices }) => {
   const { igProfile, mode } = useContext(InstagramContext);
   let { username }: { username: string } = useParams();
 
@@ -40,13 +53,16 @@ const ContentDisplay: React.FC = () => {
       {igProfile && igProfile.isPrivate ? (
         <PrivateProfile />
       ) : mode === 0 ? (
-        <Stories username={username} />
+        <Stories username={username} isEnabled={enabledServices.stories} />
       ) : mode === 1 ? (
-        <Posts />
+        <Posts isEnabled={enabledServices.posts} />
       ) : mode === 2 ? (
-        <Highlights username={username} />
+        <Highlights
+          username={username}
+          isEnabled={enabledServices.highlights}
+        />
       ) : (
-        <Reels />
+        <Reels isEnabled={enabledServices.reels} />
       )}
     </div>
   );
@@ -77,11 +93,11 @@ const PrivateProfile: React.FC = () => {
   );
 };
 
-interface StoriesProps {
+interface StoriesProps extends DefaultServiceProps {
   username: string;
 }
 
-const Stories: React.FC<StoriesProps> = ({ username }) => {
+const Stories: React.FC<StoriesProps> = ({ username, isEnabled }) => {
   const [showMediaPlayer, setShowMediaPlayer] = useState(false);
   const [selection, setSelection] = useState(0);
   const { igProfile, mode, stories, setStories } = useContext(InstagramContext);
@@ -92,6 +108,7 @@ const Stories: React.FC<StoriesProps> = ({ username }) => {
   };
 
   useEffect(() => {
+    if (!isEnabled) return;
     (async () => {
       if (mode === 0 && stories) return;
 
@@ -103,7 +120,7 @@ const Stories: React.FC<StoriesProps> = ({ username }) => {
         console.error(response.error);
       }
     })();
-  }, [mode, stories, setStories, username]);
+  }, [mode, stories, setStories, username, isEnabled]);
 
   if (!stories || !igProfile) {
     return <LoadingContent />;
@@ -125,6 +142,10 @@ const Stories: React.FC<StoriesProps> = ({ username }) => {
       filename: story.id,
     },
   }));
+
+  if (!isEnabled) {
+    return <ServiceDisabled />;
+  }
 
   return (
     <div className="flex flex-wrap justify-evenly gap-4">
@@ -293,7 +314,9 @@ const Story: React.FC<StoryProps> = ({
   );
 };
 
-const Posts: React.FC = () => {
+interface PostsProps extends DefaultServiceProps {}
+
+const Posts: React.FC<PostsProps> = ({ isEnabled }) => {
   const [showMediaPlayer, setShowMediaPlayer] = useState(false);
   const [slides, setSlides] = useState<LightboxSlide[]>([]);
   const [postData, setPostData] = useState({
@@ -306,6 +329,7 @@ const Posts: React.FC = () => {
     useContext(InstagramContext);
 
   useEffect(() => {
+    if (!isEnabled) return;
     (async () => {
       if (pagination.isLoading) return;
       if (mode === 1 && posts) return;
@@ -319,7 +343,11 @@ const Posts: React.FC = () => {
         console.error(response.error);
       }
     })();
-  }, [mode, pagination.isLoading, posts, setPosts, igProfile]);
+  }, [mode, pagination.isLoading, posts, setPosts, igProfile, isEnabled]);
+
+  if (!isEnabled) {
+    return <ServiceDisabled />;
+  }
 
   if (!posts) {
     return <LoadingContent />;
@@ -443,17 +471,18 @@ const Post: React.FC<PostProps> = ({ onHandleSelect, index: i, post }) => {
   );
 };
 
-interface HighlightsProps {
+interface HighlightsProps extends DefaultServiceProps {
   username: string;
 }
 
-const Highlights: React.FC<HighlightsProps> = ({ username }) => {
+const Highlights: React.FC<HighlightsProps> = ({ username, isEnabled }) => {
   const [showMediaPlayer, setShowMediaPlayer] = useState(false);
   const { igProfile, highlights, mode, setHighlights } =
     useContext(InstagramContext);
   const [slides, setSlides] = useState<LightboxSlide[]>([]);
 
   useEffect(() => {
+    if (!isEnabled) return;
     (async () => {
       if (mode === 2 && highlights) return;
 
@@ -465,7 +494,11 @@ const Highlights: React.FC<HighlightsProps> = ({ username }) => {
         console.error(response.error);
       }
     })();
-  }, [mode, highlights, setHighlights, username]);
+  }, [mode, highlights, setHighlights, username, isEnabled]);
+
+  if (!isEnabled) {
+    return <ServiceDisabled />;
+  }
 
   if (!highlights) {
     return <LoadingContent />;
@@ -535,7 +568,9 @@ const Highlights: React.FC<HighlightsProps> = ({ username }) => {
   );
 };
 
-const Reels: React.FC = () => {
+interface ReelsProps extends DefaultServiceProps {}
+
+const Reels: React.FC<ReelsProps> = ({ isEnabled }) => {
   const [showMediaPlayer, setShowMediaPlayer] = useState(false);
   const [selection, setSelection] = useState(0);
   const [slides, setSlides] = useState<LightboxSlide[]>([]);
@@ -543,6 +578,7 @@ const Reels: React.FC = () => {
     useContext(InstagramContext);
 
   useEffect(() => {
+    if (!isEnabled) return;
     (async () => {
       if (pagination.isLoading) return;
       if (mode === 3 && reels) return;
@@ -556,7 +592,11 @@ const Reels: React.FC = () => {
         console.error(response.error);
       }
     })();
-  }, [mode, pagination.isLoading, reels, setReels, igProfile]);
+  }, [mode, pagination.isLoading, reels, setReels, igProfile, isEnabled]);
+
+  if (!isEnabled) {
+    return <ServiceDisabled />;
+  }
 
   if (!reels || !igProfile) {
     return <LoadingContent />;
@@ -698,6 +738,10 @@ const LoadingContent: React.FC = () => {
 
 const NoContent: React.FC<NoContentProps> = ({ message }) => {
   return <div>{message}</div>;
+};
+
+const ServiceDisabled: React.FC = () => {
+  return <p>This service is temporarily unavailable</p>;
 };
 
 export default ContentDisplay;

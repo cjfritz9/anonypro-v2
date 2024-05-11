@@ -13,9 +13,15 @@ export enum Errors {
 interface Props {
   username: string;
   serviceButtonsText: string[];
+  enabledServices: {
+    stories: boolean;
+    posts: boolean;
+    highlights: boolean;
+    reels: boolean;
+  };
 }
 
-const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
+const Service: React.FC<Props> = ({ username, serviceButtonsText, enabledServices }) => {
   const [error, setError] = useState<Errors | null>(null);
   username = username.replaceAll('%2C', '.');
 
@@ -27,7 +33,7 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText }) => {
         <>
           <Profile onError={setError} />
           <ServiceSelector displayNames={serviceButtonsText} />
-          <ContentDisplay />
+          <ContentDisplay enabledServices={enabledServices} />
         </>
       )}
     </div>
