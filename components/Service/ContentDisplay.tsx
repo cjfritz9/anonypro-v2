@@ -21,7 +21,8 @@ import { IoCheckmarkCircle } from 'react-icons/io5';
 import Pagination from './Pagination';
 import useWindowSize from '@/lib/hooks/useWindowSize';
 import { useReCaptcha } from 'next-recaptcha-v3';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface Props {
   enabledServices: {
@@ -156,22 +157,18 @@ const Stories: React.FC<StoriesProps> = ({ username, isEnabled }) => {
           slides={slides}
         />
       )}
-      {stories[0]
-        ? stories.map((story, i) => (
-            <Story
-              onHandleSelect={onHandleSelect}
-              storiesCount={stories.length}
-              username={igProfile.username}
-              story={story}
-              key={i}
-              index={i}
-            />
-          ))
-        : igProfile && (
-            <NoContent
-              message={`${igProfile.username} has no active stories`}
-            />
-          )}
+      {stories[0] &&
+        stories.map((story, i) => (
+          <Story
+            onHandleSelect={onHandleSelect}
+            storiesCount={stories.length}
+            username={igProfile.username}
+            story={story}
+            key={i}
+            index={i}
+          />
+        ))}
+      <StoryAd stories={stories} />
     </div>
   );
 };
@@ -189,7 +186,6 @@ interface StoryProps {
 
 const Story: React.FC<StoryProps> = ({
   onHandleSelect,
-  storiesCount,
   username,
   index,
   story,
@@ -311,6 +307,34 @@ const Story: React.FC<StoryProps> = ({
         </button>
       )}
     </div>
+  );
+};
+
+interface StoryAdProps {
+  stories: null | any[];
+}
+
+const StoryAd: React.FC<StoryAdProps> = ({ stories }) => {
+  if (!Array.isArray(stories)) return null;
+
+  return (
+    <Link
+      className={`relative h-[654px] w-[368px] rounded-xl object-cover object-center text-center duration-150 hover:-translate-y-2`}
+      href="https://vvslikes.com"
+      target="_blank"
+    >
+      <div className="flex h-[654px] w-[368px] cursor-pointer flex-col items-center justify-center rounded-xl bg-gradient-to-br from-green-300 to-blue-400 p-12">
+        <p className="text-2xl">
+          Get REAL Instagram Likes Everytime You Upload, Automatically{' '}
+        </p>
+        <p className="text-2xl">🎉🥳</p>
+
+        <div className="mt-20 flex flex-col gap-8 text-3xl font-bold">
+          <p>Only $7.99/mo</p>
+          <p>VVSLIKES.COM</p>
+        </div>
+      </div>
+    </Link>
   );
 };
 
