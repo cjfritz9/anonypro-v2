@@ -9,6 +9,7 @@ import Footer from '@/components/Footer/Footer';
 import BRAND from '@/lib/static';
 import Canonical from '@/components/Canonical/Canonical';
 import Favorites from '@/components/Favorites/Favorites';
+import Announcement from '@/components/Header/Announcement';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -59,6 +60,7 @@ export default async function RootLayout({
           ></script>
         </head>
         <body className={poppins.className}>
+          <Announcement />
           <Header
             headerData={t('header', {
               aboutUs: '/about-us',

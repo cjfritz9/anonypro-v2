@@ -21,9 +21,10 @@ import { IoCheckmarkCircle } from 'react-icons/io5';
 import Pagination from './Pagination';
 import useWindowSize from '@/lib/hooks/useWindowSize';
 import { useReCaptcha } from 'next-recaptcha-v3';
-import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 interface Props {
+  username: string;
   enabledServices: {
     stories: boolean;
     posts: boolean;
@@ -40,13 +41,8 @@ interface NoContentProps {
   message: string;
 }
 
-const ContentDisplay: React.FC<Props> = ({ enabledServices }) => {
+const ContentDisplay: React.FC<Props> = ({ username, enabledServices }) => {
   const { igProfile, mode } = useContext(InstagramContext);
-  let { username }: { username: string } = useParams();
-
-  if (!username) return;
-
-  username = username.replaceAll('%2C', '.');
 
   return (
     <div>
@@ -156,22 +152,18 @@ const Stories: React.FC<StoriesProps> = ({ username, isEnabled }) => {
           slides={slides}
         />
       )}
-      {stories[0]
-        ? stories.map((story, i) => (
-            <Story
-              onHandleSelect={onHandleSelect}
-              storiesCount={stories.length}
-              username={igProfile.username}
-              story={story}
-              key={i}
-              index={i}
-            />
-          ))
-        : igProfile && (
-            <NoContent
-              message={`${igProfile.username} has no active stories`}
-            />
-          )}
+      {stories[0] &&
+        stories.map((story, i) => (
+          <Story
+            onHandleSelect={onHandleSelect}
+            storiesCount={stories.length}
+            username={igProfile.username}
+            story={story}
+            key={i}
+            index={i}
+          />
+        ))}
+      <StoryAd stories={stories} />
     </div>
   );
 };
@@ -189,7 +181,6 @@ interface StoryProps {
 
 const Story: React.FC<StoryProps> = ({
   onHandleSelect,
-  storiesCount,
   username,
   index,
   story,
@@ -266,7 +257,7 @@ const Story: React.FC<StoryProps> = ({
 
   return (
     <div
-      className={`${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} relative h-[654px] w-[368px] rounded-xl object-cover object-center duration-150 hover:-translate-y-2`}
+      className={`${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} relative h-auto w-auto  rounded-xl object-cover object-center duration-150 hover:-translate-y-2 xs:h-[654px] xs:w-[368px]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -275,7 +266,7 @@ const Story: React.FC<StoryProps> = ({
         alt={`${username} story #${index + 1}`}
         height={640}
         width={360}
-        className="h-[654px] w-[368px] cursor-pointer rounded-xl"
+        className=" h-auto w-auto cursor-pointer rounded-xl xs:h-[654px] xs:w-[368px]"
         onClick={() => onHandleSelect(index)}
         onLoad={() => setIsImageLoading(false)}
       />
@@ -311,6 +302,38 @@ const Story: React.FC<StoryProps> = ({
         </button>
       )}
     </div>
+  );
+};
+
+interface StoryAdProps {
+  stories: null | any[];
+}
+
+const StoryAd: React.FC<StoryAdProps> = ({ stories }) => {
+  if (!Array.isArray(stories)) return null;
+
+  return (
+    <Link
+      className={`relative rounded-xl object-cover object-center text-center duration-150 hover:-translate-y-2 xs:h-[654px] xs:w-[368px]`}
+      href="https://rebrand.ly/storyad"
+      target="_blank"
+    >
+      <div className="relative flex cursor-pointer flex-col items-center justify-center rounded-[20px] border-8 border-blue-500 bg-accent xs:h-[654px] xs:w-[368px]">
+        <div className="absolute right-0 top-0 h-12 w-12 rounded-tr-xl bg-white p-3">
+          <p className="font-bold text-black">AD</p>
+        </div>
+        <video
+          width={368}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="h-full w-full rounded-xl object-cover"
+        >
+          <source src="/assets/vvs-ad.MOV" type="video/mp4" />
+        </video>
+      </div>
+    </Link>
   );
 };
 

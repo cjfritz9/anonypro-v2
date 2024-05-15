@@ -21,9 +21,13 @@ interface Props {
   };
 }
 
-const Service: React.FC<Props> = ({ username, serviceButtonsText, enabledServices }) => {
+const Service: React.FC<Props> = ({
+  username,
+  serviceButtonsText,
+  enabledServices,
+}) => {
   const [error, setError] = useState<Errors | null>(null);
-  username = username.replaceAll('%2C', '.');
+  const formattedUsername = username.replaceAll('%2C', '.');
 
   return (
     <div className="flex w-full flex-col items-center gap-20">
@@ -31,9 +35,12 @@ const Service: React.FC<Props> = ({ username, serviceButtonsText, enabledService
         <Error type={error} />
       ) : (
         <>
-          <Profile onError={setError} />
+          <Profile onError={setError} username={formattedUsername} />
           <ServiceSelector displayNames={serviceButtonsText} />
-          <ContentDisplay enabledServices={enabledServices} />
+          <ContentDisplay
+            enabledServices={enabledServices}
+            username={formattedUsername}
+          />
         </>
       )}
     </div>
@@ -45,7 +52,9 @@ interface ErrorProps {
 }
 
 const Error: React.FC<ErrorProps> = ({ type }) => {
-  const { username } = useParams();
+  let { username } = useParams();
+
+  username = (username as string).replaceAll('%2C', '.');
 
   return (
     <div className="flex flex-col items-center">

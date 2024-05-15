@@ -17,14 +17,14 @@ import { Errors } from '../Service/Service';
 import { MdFavorite, MdFavoriteBorder } from 'react-icons/md';
 
 interface Props {
+  username: string;
   onError: (type: null | Errors) => void;
 }
 
-const Profile: React.FC<Props> = ({ onError }) => {
+const Profile: React.FC<Props> = ({ username, onError }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFavorited, setIsFavorited] = useState(false);
   const { igProfile, setIgProfile, resetUser } = useContext(InstagramContext);
-  const { username }: { username: string } = useParams();
 
   const handleFavorite = () => {
     if (isFavorited) {
@@ -64,7 +64,7 @@ const Profile: React.FC<Props> = ({ onError }) => {
         setIsFavorited(true);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
   if (isLoading) return <LoadingProfile />;

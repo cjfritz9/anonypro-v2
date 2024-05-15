@@ -31,12 +31,12 @@ const Favorites: React.FC = () => {
   }, []);
 
   return (
-    <div className="drawer drawer-end">
+    <div className="drawer drawer-end z-20">
       <input id="favs-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
         <label
           htmlFor="favs-drawer"
-          className={`btn drawer-button fixed right-0 top-0 rounded-sm bg-base-100 sm:top-28 ${isHovered ? 'translate-x-0' : 'translate-x-[72px]'}`}
+          className={`btn drawer-button fixed right-0 top-60 rounded-sm bg-base-100 sm:top-28 ${isHovered ? 'translate-x-0' : 'translate-x-[72px]'}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           onClick={updateFavorites}
