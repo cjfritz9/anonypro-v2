@@ -10,7 +10,12 @@
 
 body {
   color: white;
-  background: repeating-linear-gradient(180deg, #2b2e71, #773cc3 1016px, #2b2e71);
+  background: repeating-linear-gradient(
+    180deg,
+    #2b2e71,
+    #773cc3 1016px,
+    #2b2e71
+  );
 }
 
 /* ===== Scrollbar CSS ===== */

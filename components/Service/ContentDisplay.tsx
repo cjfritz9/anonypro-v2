@@ -21,10 +21,10 @@ import { IoCheckmarkCircle } from 'react-icons/io5';
 import Pagination from './Pagination';
 import useWindowSize from '@/lib/hooks/useWindowSize';
 import { useReCaptcha } from 'next-recaptcha-v3';
-import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 interface Props {
+  username: string;
   enabledServices: {
     stories: boolean;
     posts: boolean;
@@ -41,13 +41,8 @@ interface NoContentProps {
   message: string;
 }
 
-const ContentDisplay: React.FC<Props> = ({ enabledServices }) => {
+const ContentDisplay: React.FC<Props> = ({ username, enabledServices }) => {
   const { igProfile, mode } = useContext(InstagramContext);
-  let { username }: { username: string } = useParams();
-
-  if (!username) return;
-
-  username = username.replaceAll('%2C', '.');
 
   return (
     <div>
@@ -262,7 +257,7 @@ const Story: React.FC<StoryProps> = ({
 
   return (
     <div
-      className={`${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} relative h-[654px] w-[368px] rounded-xl object-cover object-center duration-150 hover:-translate-y-2`}
+      className={`${isImageLoading ? 'animate-pulse bg-slate-700 opacity-75' : 'animate-none'} relative h-auto w-auto  rounded-xl object-cover object-center duration-150 hover:-translate-y-2 xs:h-[654px] xs:w-[368px]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -271,7 +266,7 @@ const Story: React.FC<StoryProps> = ({
         alt={`${username} story #${index + 1}`}
         height={640}
         width={360}
-        className="h-[654px] w-[368px] cursor-pointer rounded-xl"
+        className=" h-auto w-auto cursor-pointer rounded-xl xs:h-[654px] xs:w-[368px]"
         onClick={() => onHandleSelect(index)}
         onLoad={() => setIsImageLoading(false)}
       />
@@ -319,20 +314,24 @@ const StoryAd: React.FC<StoryAdProps> = ({ stories }) => {
 
   return (
     <Link
-      className={`relative h-[654px] w-[368px] rounded-xl object-cover object-center text-center duration-150 hover:-translate-y-2`}
-      href="https://vvslikes.com"
+      className={`relative rounded-xl object-cover object-center text-center duration-150 hover:-translate-y-2 xs:h-[654px] xs:w-[368px]`}
+      href="https://rebrand.ly/storyad"
       target="_blank"
     >
-      <div className="flex h-[654px] w-[368px] cursor-pointer flex-col items-center justify-center rounded-xl bg-gradient-to-br from-green-300 to-blue-400 p-12">
-        <p className="text-2xl">
-          Get REAL Instagram Likes Everytime You Upload, Automatically{' '}
-        </p>
-        <p className="text-2xl">🎉🥳</p>
-
-        <div className="mt-20 flex flex-col gap-8 text-3xl font-bold">
-          <p>Only $7.99/mo</p>
-          <p>VVSLIKES.COM</p>
+      <div className="relative flex cursor-pointer flex-col items-center justify-center rounded-[20px] border-8 border-blue-500 bg-accent xs:h-[654px] xs:w-[368px]">
+        <div className="absolute right-0 top-0 h-12 w-12 rounded-tr-xl bg-white p-3">
+          <p className="font-bold text-black">AD</p>
         </div>
+        <video
+          width={368}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="h-full w-full rounded-xl object-cover"
+        >
+          <source src="/assets/vvs-ad.MOV" type="video/mp4" />
+        </video>
       </div>
     </Link>
   );
