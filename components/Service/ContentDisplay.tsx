@@ -152,7 +152,7 @@ const Stories: React.FC<StoriesProps> = ({ username, isEnabled }) => {
           slides={slides}
         />
       )}
-      {stories[0] &&
+      {stories[0] ?
         stories.map((story, i) => (
           <Story
             onHandleSelect={onHandleSelect}
@@ -162,8 +162,8 @@ const Stories: React.FC<StoriesProps> = ({ username, isEnabled }) => {
             key={i}
             index={i}
           />
-        ))}
-      <StoryAd stories={stories} />
+        )) : <NoContent message={`@${username} has no stories right now`} />}
+      {/* <StoryAd stories={stories} /> */}
     </div>
   );
 };

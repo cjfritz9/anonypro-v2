@@ -60,7 +60,7 @@ export default async function RootLayout({
           ></script>
         </head>
         <body className={poppins.className}>
-          <Announcement />
+          {/* <Announcement /> */}
           <Header
             headerData={t('header', {
               aboutUs: '/about-us',
